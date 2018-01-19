@@ -2,11 +2,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Bienvenue sur Naopedia{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body style="text-align: center">
+        <img style="max-width:300px;width:100%" src="{{ asset("images/blue.png") }}" alt=""><br>
+        {% block body %}Bienvenue sur Naopedia<br>Site en construction{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
