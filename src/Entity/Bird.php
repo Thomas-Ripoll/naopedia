@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+* @ORM\Entity(repositoryClass="App\Repository\BirdRepository")
+*/
+class Bird
+{
+  /**
+  * @ORM\Id
+  * @ORM\GeneratedValue
+  * @ORM\Column(type="integer")
+  */
+  private $id;
+
+  /**
+  * @ORM\Column(type="string")
+  */
+  private $name;
+
+  /**
+  * @ORM\Column(type="string")
+  */
+  private $latinName;
+
+  /**
+  * @ORM\Column(type="string")
+  */
+  private $ordre;
+
+  /**
+  * @ORM\Column(type="string")
+  */
+  private $famille;
+
+  /**
+  * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+  */
+  private $images;
+
+  /**
+  * Get the value of Id
+  *
+  * @return mixed
+  */
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  /**
+  * Set the value of Id
+  *
+  * @param mixed id
+  *
+  * @return self
+  */
+  public function setId($id)
+  {
+    $this->id = $id;
+
+    return $this;
+  }
+
+  /**
+  * Get the value of Name
+  *
+  * @return mixed
+  */
+  public function getName()
+  {
+    return $this->name;
+  }
+
+  /**
+  * Set the value of Name
+  *
+  * @param mixed name
+  *
+  * @return self
+  */
+  public function setName($name)
+  {
+    $this->name = $name;
+
+    return $this;
+  }
+
+  /**
+  * Get the value of Latin Name
+  *
+  * @return mixed
+  */
+  public function getLatinName()
+  {
+    return $this->latinName;
+  }
+
+  /**
+  * Set the value of Latin Name
+  *
+  * @param mixed latinName
+  *
+  * @return self
+  */
+  public function setLatinName($latinName)
+  {
+    $this->latinName = $latinName;
+
+    return $this;
+  }
+
+  /**
+  * Get the value of Ordre
+  *
+  * @return mixed
+  */
+  public function getOrdre()
+  {
+    return $this->ordre;
+  }
+
+  /**
+  * Set the value of Ordre
+  *
+  * @param mixed ordre
+  *
+  * @return self
+  */
+  public function setOrdre($ordre)
+  {
+    $this->ordre = $ordre;
+
+    return $this;
+  }
+
+  /**
+  * Get the value of Famille
+  *
+  * @return mixed
+  */
+  public function getFamille()
+  {
+    return $this->famille;
+  }
+
+  /**
+  * Set the value of Famille
+  *
+  * @param mixed famille
+  *
+  * @return self
+  */
+  public function setFamille($famille)
+  {
+    $this->famille = $famille;
+
+    return $this;
+  }
+
+
+  /**
+  * Get the value of Images
+  *
+  * @return mixed
+  */
+  public function getImages()
+  {
+    return $this->images;
+  }
+
+  /**
+  * Set the value of Images
+  *
+  * @param mixed images
+  *
+  * @return self
+  */
+  public function setImages($images)
+  {
+    $this->images = $images;
+
+    return $this;
+  }
+
+}
