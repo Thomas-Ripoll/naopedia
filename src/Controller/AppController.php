@@ -16,4 +16,13 @@ class AppController extends Controller
         // replace this line with your own code!
        return $this->render("base.html.twig");
     }
+
+    /**
+     * @Route("/admin", name="admin")
+     */
+    public function admin()
+    {
+
+    }
+
 }

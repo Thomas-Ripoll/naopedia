@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+
 
 
 /**
@@ -21,7 +24,7 @@ class User
   private $id;
 
   /**
-  * @ORM\Column(type="string", length=100)
+  * @ORM\Column(type="string",  length=25, unique=true)
   */
   private $name;
 
@@ -33,6 +36,11 @@ class User
   /**
   * @ORM\Column(type="string")
   */
+  private $avatar;
+
+  /**
+  * @ORM\Column(type="string", unique=true)
+  */
   private $email;
 
   /**
@@ -40,20 +48,21 @@ class User
   */
   private $salt;
 
+
   /**
-  * @ORM\Column(type="string")
+  * @ORM\Column(type="string", nullable=true)
   */
   protected $confirmationToken;     // Random string sent to the user email address in order to verify it.
 
   /**
-  *@ORM\Column(type="datetime")
+  *@ORM\Column(type="datetime", nullable=true)
   */
   protected $passwordRequestedAt;
 
   /**
   * @ORM\Column(type="array")
   */
-  protected $roles;
+  protected $role;
 
   /**
   * @ORM\ManyToMany(targetEntity="App\Entity\Image")
@@ -228,30 +237,6 @@ class User
     return $this;
   }
 
-  /**
-  * Get the value of Roles
-  *
-  * @return mixed
-  */
-  public function getRoles()
-  {
-    return $this->roles;
-  }
-
-  /**
-  * Set the value of Roles
-  *
-  * @param mixed roles
-  *
-  * @return self
-  */
-  public function setRoles($roles)
-  {
-    $this->roles = $roles;
-
-    return $this;
-  }
-
 
   /**
   * Get the value of Images
@@ -276,5 +261,81 @@ class User
 
     return $this;
   }
+
+
+
+  /** @see \Serializable::serialize() */
+  public function serialize()
+  {
+      return serialize(array(
+          $this->id,
+          $this->username,
+          $this->password,
+          // see section on salt below
+          // $this->salt,
+      ));
+  }
+
+  /** @see \Serializable::unserialize() */
+  public function unserialize($serialized)
+  {
+      list (
+          $this->id,
+          $this->username,
+          $this->password,
+          // see section on salt below
+          // $this->salt
+      ) = unserialize($serialized);
+  }
+
+    /**
+     * Get the value of Avatar
+     *
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * Set the value of Avatar
+     *
+     * @param mixed avatar
+     *
+     * @return self
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of Role
+     *
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set the value of Role
+     *
+     * @param mixed role
+     *
+     * @return self
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
 
 }

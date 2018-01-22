@@ -10,5 +10,9 @@
         <img style="max-width:300px;width:100%" src="{{ asset("images/blue.png") }}" alt=""><br>
         {% block body %}Bienvenue sur Naopedia<br>Site en construction{% endblock %}
         {% block javascripts %}{% endblock %}
+        <ul>
+          <li><a href="{{path('login')}}">Se connecter</a></li>
+          <li><a href="{{path('signin')}}">S'inscrire</a></li>
+        </ul>
     </body>
 </html>
