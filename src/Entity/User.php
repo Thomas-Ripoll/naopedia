@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
 * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
 */
-class User
+class User  implements UserInterface
 {
   /**
   * @ORM\Id
@@ -26,10 +26,10 @@ class User
   /**
   * @ORM\Column(type="string",  length=25, unique=true)
   */
-  private $name;
+  private $username;
 
   /**
-  * @ORM\Column(type="string", length=100)
+  * @ORM\Column(type="string")
   */
   private $password;
 
@@ -62,7 +62,7 @@ class User
   /**
   * @ORM\Column(type="array")
   */
-  protected $role;
+  protected $roles;
 
   /**
   * @ORM\ManyToMany(targetEntity="App\Entity\Image")
@@ -79,6 +79,11 @@ class User
     return $this->id;
   }
 
+  public function eraseCredentials()
+{
+}
+
+
   /**
   * Set the value of Id
   *
@@ -89,30 +94,6 @@ class User
   public function setId($id)
   {
     $this->id = $id;
-
-    return $this;
-  }
-
-  /**
-  * Get the value of Name
-  *
-  * @return mixed
-  */
-  public function getName()
-  {
-    return $this->name;
-  }
-
-  /**
-  * Set the value of Name
-  *
-  * @param mixed name
-  *
-  * @return self
-  */
-  public function setName($name)
-  {
-    $this->name = $name;
 
     return $this;
   }
@@ -314,26 +295,52 @@ class User
 
 
 
+
+
     /**
-     * Get the value of Role
+     * Get the value of Username
      *
      * @return mixed
      */
-    public function getRole()
+    public function getUsername()
     {
-        return $this->role;
+        return $this->username;
     }
 
     /**
-     * Set the value of Role
+     * Set the value of Username
      *
-     * @param mixed role
+     * @param mixed username
      *
      * @return self
      */
-    public function setRole($role)
+    public function setUsername($username)
     {
-        $this->role = $role;
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Roles
+     *
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set the value of Roles
+     *
+     * @param mixed roles
+     *
+     * @return self
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
 
         return $this;
     }

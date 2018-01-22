@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
 use App\Form\UserType;
 
@@ -40,15 +41,21 @@ class SecurityController extends Controller
     /**
     * @Route("/signin", name="signin")
     */
-      public function signinAction (Request $request) {
+      public function signinAction (Request $request, UserPasswordEncoderInterface $encoder) {
 
       $user = new User();
       $form = $this->createForm(UserType::class, $user);
+
       $user->setSalt(substr(base64_encode(random_bytes(23)),0,23)); //generer un sel aléatoire
-      $user->setRole('ROLE_USER');
+      $user->setRoles('ROLE_USER');
+
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
+
+        $encoded = $encoder->encodePassword($user, $user->getPassword() );
+
+        $user->setPassword($encoded);
 
         $img = $user->getAvatar();
         // Generate a unique name for the file before saving it

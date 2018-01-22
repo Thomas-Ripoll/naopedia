@@ -1,5 +1,12 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        Symfony\Component\Security\Core\User\UserInterface:
+            algorithm: bcrypt
+            cost: 12
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
     providers:
         in_memory: { memory: ~ }
     firewalls:
