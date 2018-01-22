@@ -7,9 +7,13 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body style="text-align: center">
-      {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-      {% endif %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
         <img style="max-width:300px;width:100%" src="{{ asset("images/blue.png") }}" alt=""><br>
         {% block body %}Bienvenue sur Naopedia<br>Site en construction{% endblock %}
         {% block javascripts %}{% endblock %}
