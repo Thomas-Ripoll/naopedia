@@ -47,7 +47,7 @@ class SecurityController extends Controller
       $form = $this->createForm(UserType::class, $user);
 
       $user->setSalt(substr(base64_encode(random_bytes(23)),0,23)); //generer un sel aléatoire
-      $user->setRoles('ROLE_USER');
+      $user->setRoles(['ROLE_USER']);
 
       $form->handleRequest($request);
 
