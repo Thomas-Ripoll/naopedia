@@ -1,0 +1,6 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+        {% if user is defined %}
+                <h2>Bonjour <strong>{{user.username}}</strong> </h2>
+        {% endif %}
+{% endblock %}

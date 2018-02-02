@@ -34,7 +34,7 @@ class SecurityController extends Controller
      */
     public function logoutAction(Request $request, AuthenticationUtils $authUtils)
     {
-        return $this->render('index.html.twig');
+
     }
 
 

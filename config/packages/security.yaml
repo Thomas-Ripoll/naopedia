@@ -13,6 +13,7 @@ security:
                 class: App\Entity\User
                 property: username
     firewalls:
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -22,6 +23,9 @@ security:
                 login_path: login
                 check_path: login
                 provider: our_db_provider
+            logout:
+                path:   /logout
+                target: /
     access_control:
         # require ROLE_ADMIN for /admin*
         - { path: ^/admin, roles: ROLE_ADMIN }
