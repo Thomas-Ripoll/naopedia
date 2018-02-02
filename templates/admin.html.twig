@@ -21,6 +21,7 @@
                              <tr>
                                  <th>Nom d'utilisateur</th>
                                  <th>Role</th>
+                                 <th>avatar</th>
                                  <th></th>  <!-- Actions column -->
                              </tr>
                          </thead>
@@ -29,7 +30,8 @@
                              <td><a class="username" href="{{ path('userpage', { 'username': user.username }) }}">{{ user.username }}</a></td>
 
                              <td>{{ user.roles|join(",") }}</td>
-                             
+                              <td><img src="public/images/avatar/{{ user.avatar }}"</td>
+
 
                              <td>
                                  <a href="" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>

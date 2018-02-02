@@ -37,7 +37,7 @@ class Observation
   private $date;
 
   /**
-  *@ORM\ManyToOne(targetEntity="App\Entity\Image")
+  *@ORM\ManyToOne(targetEntity="App\Entity\Image",cascade={"persist"})
   */
   private $image;
 
@@ -47,9 +47,10 @@ class Observation
   private $valid;
 
   /**
-  * @ORM\ManyToMany(targetEntity="App\Entity\User")
+  * @ORM\Column(type="array") nullable=true)
+  *
   */
-  private $like;
+  private $liked;
 
   /**
   * Get the value of Id

@@ -1,6 +1,15 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-        {% if user is defined %}
                 <h2>Bonjour <strong>{{user.username}}</strong> </h2>
-        {% endif %}
+                <h3> Mes observation : </h3>
+
+                {% for observation in observations %}
+<div>
+                {{observation.bird.name}}
+                {{observation.date|date}}
+                <img src="{{asset('images/post/'~ observation.image.url)}} ">
+
+</div>
+
+                {% endfor %}
 {% endblock %}

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       {% endblock %}
     </head>
-    <body style="text-align: center; background-color: #1E5D93; color: white">
+    <body style="text-align: center; background-color: #1E5D93;">
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -17,14 +17,13 @@
             <img style="max-width:60px;width:100%" src="{{ asset("images/NAOlogobleu.svg") }}" alt=""><br></a>
           </div>
           <ul class="nav navbar-nav">
-
             {% if app.user %}
-              <li>Bonjour {{app.user.username}}</li>
               <li><a href="{{path('userpage',{'username':app.user.username}  )}}">mon profil</a></li>
+              {% if is_granted('ROLE_ADMIN')%}
+                 <li><a href="{{path('admin')}}">Administration</a></li>
+               {% endif %}
+              <li><a href="{{path('post')}}">Poster une observation</a></li>
               <li><a href="{{path('logout')}}">se déconecter</a></li>
-              {% if is_granted('ROLE_ADMIN') %}
-                <li><a href="{{path('admin')}}">Administration</a></li>
-              {% endif %}
             {% else %}
               <li><a href="{{path('login')}}">Se connecter</a></li>
               <li><a href="{{path('signin')}}">S'inscrire</a></li>
