@@ -17,9 +17,14 @@
             <img style="max-width:60px;width:100%" src="{{ asset("images/NAOlogobleu.svg") }}" alt=""><br></a>
           </div>
           <ul class="nav navbar-nav">
+
             {% if app.user %}
+              <li>Bonjour {{app.user.username}}</li>
               <li><a href="{{path('userpage',{'username':app.user.username}  )}}">mon profil</a></li>
               <li><a href="{{path('logout')}}">se déconecter</a></li>
+              {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{path('admin')}}">Administration</a></li>
+              {% endif %}
             {% else %}
               <li><a href="{{path('login')}}">Se connecter</a></li>
               <li><a href="{{path('signin')}}">S'inscrire</a></li>

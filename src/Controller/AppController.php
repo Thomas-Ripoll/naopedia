@@ -19,14 +19,6 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("/admin", name="admin")
-     */
-    public function admin()
-    {
-
-    }
-
-    /**
     * @Route("/user/{username}", name="userpage")
     */
     public function userpage($username)
