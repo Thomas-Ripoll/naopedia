@@ -21,7 +21,7 @@ class AppController extends Controller
     public function index()
     {
         // replace this line with your own code!
-       return $this->render("base.html.twig");
+        return $this->render("base.html.twig");
     }
 
     /**
@@ -32,17 +32,35 @@ class AppController extends Controller
       $em = $this->getDoctrine()->getManager();
       $user = $em->getRepository(User::class)->findOneBy(['username' => $username]);
 
-      $observations = $em->getRepository(Observation::class)->findBy(['user' => $user->getId()]);
-
 
       if (!$user) {
           $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'utilisateur à ce nom');
-          return $this->render("userpage.html.twig");
+          return $this->redirectToRoute('homepage');
       }
       else{
+      $observations = $em->getRepository(Observation::class)->findBy(['user' => $user->getId()]);
        return $this->render("userpage.html.twig", array(
            'user' => $user,
           'observations' => $observations ));
+      }
+    }
+
+    /**
+    * @Route("/bird/{birdname}", name="birdpage")
+    */
+    public function birdPage($birdname)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $bird = $em->getRepository(Bird::class)->findOneBy(['name' => $birdname]);
+
+
+      if (!$bird) {
+          $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'utilisateur à ce nom');
+          return $this->render("birdpage.html.twig");
+      }
+      else{
+       return $this->render("birdpage.html.twig", array(
+           'bird' => $bird));
       }
     }
 
@@ -62,23 +80,30 @@ class AppController extends Controller
 
       if ($form->isSubmitted() && $form->isValid()) {
 
-        // IMAGE GENERATION
         $img = $observation->getImage()->getUrl();
         // Generate a unique name for the file before saving it
         $imgName = md5(uniqid()).'.'.$img->guessExtension();
-        // Move the file to the directory where brochures are stored
         $img->move(
           $this->getParameter('post_directory'),$imgName
         );
-        // Update the 'brochure' property to store the PDF file name
-        // instead of its contents
         $observation->getImage()->setUrl($imgName);
-
-        //Matching with Bird Entity
         $em = $this->getDoctrine()->getManager();
-
         $em->persist($observation);
         $em->flush();
+
+        // IMAGE Entity creation
+        $img = new Image();
+        $img->setUrl($imgName);
+        $img->setAlt( $observation->getImage()->getAlt());
+        $img->setAuthor($this->getUser());
+
+        $bird = $em->getRepository(Bird::class)->findOneBy(['name' => $observation->getBird()->getName()]);
+        $bird->addImage($img);
+
+        // NEED DO UPLOAD IMG WITH AUTHOR HERE
+
+      //  $em->persist($bird);
+        // $em->flush();
 
         $this->addFlash(
           'notice',

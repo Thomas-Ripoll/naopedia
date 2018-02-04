@@ -65,7 +65,7 @@ class User  implements UserInterface
   protected $roles;
 
   /**
-  * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+  * @ORM\OneToMany(targetEntity="App\Entity\Image",mappedBy="author")
   */
   protected $images;
 
@@ -82,6 +82,7 @@ class User  implements UserInterface
   public function eraseCredentials()
 {
 }
+
 
 
   /**
@@ -243,7 +244,10 @@ class User  implements UserInterface
     return $this;
   }
 
-
+  public function __construct()
+      {
+          $this->images = new ArrayCollection();
+      }
 
   /** @see \Serializable::serialize() */
   public function serialize()

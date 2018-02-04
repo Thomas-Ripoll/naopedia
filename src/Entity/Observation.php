@@ -17,12 +17,12 @@ class Observation
   private $id;
 
   /**
-  *@ORM\ManyToOne(targetEntity="App\Entity\User")
+  *@ORM\ManyToOne(targetEntity="App\Entity\User",cascade={"persist"})
   */
   private $user;
 
   /**
-  *@ORM\ManyToOne(targetEntity="App\Entity\Bird")
+  *@ORM\ManyToOne(targetEntity="App\Entity\Bird",cascade={"persist"})
   */
   private $bird;
 
