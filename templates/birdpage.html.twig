@@ -1,0 +1,13 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+<h2>{{bird.name}}  </h2>
+<h3>{{bird.latinName}}</h3>
+
+<p>{{bird.famille}}</p>
+{% if bird.images %}
+  {% for image in bird.images %}
+    <img src="{{asset('images/post/'~ image.url)}} ">
+  {% endfor %}
+
+{% endif %}
+{% endblock %}
