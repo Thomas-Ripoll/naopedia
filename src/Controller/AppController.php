@@ -87,11 +87,15 @@ class AppController extends Controller
           $this->getParameter('post_directory'),$imgName
         );
         $observation->getImage()->setUrl($imgName);
+        $observation->SetValid(FALSE);
+
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($observation);
         $em->flush();
 
         // IMAGE Entity creation
+
         $img = new Image();
         $img->setUrl($imgName);
         $img->setAlt( $observation->getImage()->getAlt());
@@ -102,8 +106,8 @@ class AppController extends Controller
 
         // NEED DO UPLOAD IMG WITH AUTHOR HERE
 
-      //  $em->persist($bird);
-        // $em->flush();
+         $em->persist($bird);
+         $em->flush();
 
         $this->addFlash(
           'notice',

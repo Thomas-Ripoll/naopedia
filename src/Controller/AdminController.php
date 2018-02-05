@@ -22,5 +22,6 @@ class AdminController extends Controller
        return $this->render("admin.html.twig", array(
            'users' => $users));
       }
+      
 
 }
