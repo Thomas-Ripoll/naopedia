@@ -1,15 +1,15 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-                <h2>Bonjour <strong>{{user.username}}</strong> </h2>
-                <h3> Mes observation : </h3>
+<h2>Bonjour <strong>{{user.username}}</strong> </h2>
+<h3> Mes observation : </h3>
 
-                {% for observation in observations %}
+{% for observation in observations %}
 <div>
-                {{observation.bird.name}}
-                {{observation.date|date}}
-                <img src="{{asset('images/post/'~ observation.image.url)}} ">
+  <a class="username" href="{{ path('birdpage', {'birdname': observation.bird.name }) }}">{{observation.bird.name}}</a>
+  {{observation.date|date}}
+  <img src="{{asset('images/post/'~ observation.image.url)}} ">
 
 </div>
 
-                {% endfor %}
+{% endfor %}
 {% endblock %}

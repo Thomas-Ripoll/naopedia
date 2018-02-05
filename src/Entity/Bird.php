@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use App\Entity\Image;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,7 +38,7 @@ class Bird
   private $famille;
 
   /**
-  * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+  * @ORM\ManyToMany(targetEntity="App\Entity\Image",cascade={"persist"})
   */
   private $images;
 
@@ -185,5 +186,12 @@ class Bird
 
     return $this;
   }
+
+  public function addImage(Image $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
 
 }
