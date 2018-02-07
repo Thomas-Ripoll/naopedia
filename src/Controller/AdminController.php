@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Observation;
+use App\Entity\User;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 
@@ -57,6 +60,24 @@ class AdminController extends BaseAdminController
           return $this->redirectToRoute('admin');
       }
 
+      /**
+       * @Route("/admin/changeRole{userId}", name="changeRole")
+       * @Security("has_role('ROLE_ADMIN')")
+       */
+      public function changeRoleAction($userId, Request $request)
+      {
 
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($userId);
+
+
+        $roles= $request->request->get('ROLE');
+        $user->setRoles($roles);
+
+        $em->persist($user);
+        $em->flush();
+
+          return $this->redirectToRoute('homepage');
+      }
 
 }
