@@ -5,6 +5,7 @@ namespace App\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Observation;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
@@ -43,8 +44,16 @@ class AdminController extends BaseAdminController
       /**
        * @Route("/admin/refuse{observationId}", name="refuse")
        */
-      public function RefuseAction($observationId)
+      public function RefuseAction($observationId, Request $request)
       {
+        $refuseMessage = $request->request->get('refuseMessage');
+        $em = $this->getDoctrine()->getManager();
+        $observation = $em->getRepository(Observation::Class)->find($observationId);
+
+        $observation->setRefuseMessage($refuseMessage);
+        $em->persist($observation);
+        $em->flush();
+
           return $this->redirectToRoute('admin');
       }
 

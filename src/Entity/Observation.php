@@ -42,6 +42,11 @@ class Observation
   private $image;
 
   /**
+  *@ORM\Column(type="string", nullable=true)
+  */
+  private $refuseMessage;
+
+  /**
   * @ORM\Column(type="boolean")
   */
   private $valid;
@@ -215,5 +220,30 @@ class Observation
     return $this;
   }
 
+
+
+    /**
+     * Get the value of Refuse Message
+     *
+     * @return mixed
+     */
+    public function getRefuseMessage()
+    {
+        return $this->refuseMessage;
+    }
+
+    /**
+     * Set the value of Refuse Message
+     *
+     * @param mixed refuseMessage
+     *
+     * @return self
+     */
+    public function setRefuseMessage($refuseMessage)
+    {
+        $this->refuseMessage = $refuseMessage;
+
+        return $this;
+    }
 
 }
