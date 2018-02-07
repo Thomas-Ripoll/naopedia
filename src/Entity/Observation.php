@@ -46,11 +46,6 @@ class Observation
   */
   private $valid;
 
-  /**
-  * @ORM\Column(type="array") nullable=true)
-  *
-  */
-  private $liked;
 
   /**
   * Get the value of Id
@@ -220,28 +215,5 @@ class Observation
     return $this;
   }
 
-  /**
-  * Get the value of Like
-  *
-  * @return mixed
-  */
-  public function getLike()
-  {
-    return $this->like;
-  }
-
-  /**
-  * Set the value of Like
-  *
-  * @param mixed like
-  *
-  * @return self
-  */
-  public function setLike($like)
-  {
-    $this->like = $like;
-
-    return $this;
-  }
 
 }
