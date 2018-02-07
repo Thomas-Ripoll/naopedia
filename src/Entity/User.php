@@ -69,6 +69,8 @@ class User  implements UserInterface
   */
   protected $images;
 
+  protected static $rolesParameter = ['ROLE_ADMIN' =>'Administrateur','ROLE_NATURALISTE' =>'Naturaliste','ROLE_REDACTEUR' =>'Redacteur', 'ROLE_USER' =>'Observateur'];
+
   /**
   * Get the value of Id
   *
@@ -88,6 +90,16 @@ public function __toString()
     return $this->getUsername();
 }
 
+public function getFormatedRoles()
+{
+  $roles = $this->getRoles();
+  $formatedRoles = '';
+  foreach($roles as $role){
+    $formatedRoles.= self::$rolesParameter[$role].", ";
+  }
+  $formatedRoles = substr($formatedRoles, 0, -2);
+  return $formatedRoles;
+}
 
   /**
   * Set the value of Id

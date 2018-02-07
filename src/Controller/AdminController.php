@@ -80,4 +80,16 @@ class AdminController extends BaseAdminController
           return $this->redirectToRoute('homepage');
       }
 
+      /**
+       * @Route("/admin/checkProfil{id}", name="checkProfil")
+       * @Security("has_role('ROLE_ADMIN')")
+       */
+      public function checkProfilAction()
+      {
+         $id = $this->request->query->get('id');
+         $user = $this->em->getRepository(User::Class)->find($id);
+
+        return $this->redirectToRoute("userpage", array('username' => $user->getUsername()));
+      }
+
 }
