@@ -1,7 +1,7 @@
 {% extends "layout.html.twig" %}
 {% block content %}
 <h2>Bonjour <strong>{{user.username}}</strong> </h2>
-<sm>vous êtes {{user.roles|join(',')}}</sm>
+<sm>vous êtes {{user.formatedRoles}}</sm>
 {% if is_granted('ROLE_ADMIN')%}
   <form method="post" action="{{ path('changeRole', {'userId': user.id }) }}">
     <input type="checkbox" name="ROLE[]" value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %} checked {% endif %} > Admin<br>
