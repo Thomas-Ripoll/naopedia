@@ -52,6 +52,11 @@ class Bird
     return $this->id;
   }
 
+  public function __toString()
+  {
+      return $this->getName();
+  }
+
   /**
   * Set the value of Id
   *
