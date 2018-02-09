@@ -1,13 +1,23 @@
 {% extends "layout.html.twig" %}
 {% block content %}
 <h2>Bonjour <strong>{{user.username}}</strong> </h2>
+<sm>vous êtes {{user.formatedRoles}}</sm>
+{% if is_granted('ROLE_ADMIN')%}
+  <form method="post" action="{{ path('changeRole', {'userId': user.id }) }}">
+    <input type="checkbox" name="ROLE[]" value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %} checked {% endif %} > Admin<br>
+    <input type="checkbox" name="ROLE[]" value="ROLE_NATURALISTE" {% if 'ROLE_NATURALISTE' in user.roles %} checked {% endif %}  >Naturaliste<br>
+    <input type="checkbox" name="ROLE[]" value="ROLE_REDACTEUR" {% if 'ROLE_REDACTEUR' in user.roles %} checked {% endif %}  >Redacteur<br>
+    <input type="submit" value="Submit">
+    <button type="submit" class="btn btn-primary">Valider</button>
+  </form>
+ {% endif %}
 <h3> Mes observation : </h3>
 
 {% for observation in observations %}
-<div>
+<div >
   <a class="username" href="{{ path('birdpage', {'birdname': observation.bird.name }) }}">{{observation.bird.name}}</a>
   {{observation.date|date}}
-  <img src="{{asset('images/post/'~ observation.image.url)}} ">
+  <img style="width:100px;" src="{{asset('images/post/'~ observation.image.url)}} ">
 
 </div>
 

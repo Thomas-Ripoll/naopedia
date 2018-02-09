@@ -1,0 +1,60 @@
+easy_admin:
+    entities:
+        User:
+            class: App\Entity\User
+            label: 'Utilisateurs'
+            disabled_actions: ['new', 'edit']
+            list:
+                fields:
+                  - { property: 'avatar', type: 'image', base_path: '/images/avatar' }
+                  - { property: 'username', label: 'Pseudo' }
+                  - email
+                  - { property: 'formatedRoles', label: 'Roles' }
+                actions:
+                  - { name: 'checkProfil', label: 'Voir le profil', icon: 'user' }
+                  - { name: 'delete', icon: 'remove' }
+            edit:
+                fields:
+                    - roles
+        Observation:
+            disabled_actions: ['new','edit']
+            class: App\Entity\Observation
+            label: 'Observations'
+            list:
+                fields:
+                  - { property: 'user', label: 'Pseudo' }
+                  - { property: 'bird', label: 'Oiseau' }
+                  - date
+                  - { property: 'valid', label: 'validée' }
+                actions: ['check']
+
+
+
+        Bird:
+            class: App\Entity\Bird
+            label: 'Oiseaux'
+            list:
+                fields:
+                  - name
+                  - contributor
+                  - description
+
+        Article:
+            class: App\Entity\Article
+            label: 'Articles'
+            list:
+                fields:
+                  - title
+                  - author
+                  - date
+                  - image
+
+
+
+    design:
+        menu:
+            - { label: 'Accueil', route: 'homepage', icon: 'home' }
+            - { entity: 'User', icon: 'user' }
+            - { entity: 'Observation', icon: 'camera' }
+            - { entity: 'Article', icon: 'newspaper-o' }
+            - { entity: 'Bird', icon: 'pencil-square' }
