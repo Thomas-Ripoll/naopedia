@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use App\Entity\Image;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,9 +38,21 @@ class Bird
   private $famille;
 
   /**
-  * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+  * @ORM\ManyToMany(targetEntity="App\Entity\Image",cascade={"persist"})
   */
   private $images;
+
+  /**
+  * @ORM\Column(type="string", nullable=true)
+
+  */
+  private $description;
+
+  /**
+  * @ORM\Column(type="string", nullable=true)
+  */
+  private $contributor;
+
 
   /**
   * Get the value of Id
@@ -49,6 +62,11 @@ class Bird
   public function getId()
   {
     return $this->id;
+  }
+
+  public function __toString()
+  {
+      return $this->getName();
   }
 
   /**
@@ -185,5 +203,61 @@ class Bird
 
     return $this;
   }
+
+  public function addImage(Image $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Description
+     *
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the value of Description
+     *
+     * @param mixed description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Contributor
+     *
+     * @return mixed
+     */
+    public function getContributor()
+    {
+        return $this->contributor;
+    }
+
+    /**
+     * Set the value of Contributor
+     *
+     * @param mixed contributor
+     *
+     * @return self
+     */
+    public function setContributor($contributor)
+    {
+        $this->contributor = $contributor;
+
+        return $this;
+    }
 
 }

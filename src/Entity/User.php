@@ -65,9 +65,11 @@ class User  implements UserInterface
   protected $roles;
 
   /**
-  * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+  * @ORM\OneToMany(targetEntity="App\Entity\Image",mappedBy="author")
   */
   protected $images;
+
+  protected static $rolesParameter = ['ROLE_ADMIN' =>'Administrateur','ROLE_NATURALISTE' =>'Naturaliste','ROLE_REDACTEUR' =>'Redacteur', 'ROLE_USER' =>'Observateur'];
 
   /**
   * Get the value of Id
@@ -83,6 +85,21 @@ class User  implements UserInterface
 {
 }
 
+public function __toString()
+{
+    return $this->getUsername();
+}
+
+public function getFormatedRoles()
+{
+  $roles = $this->getRoles();
+  $formatedRoles = '';
+  foreach($roles as $role){
+    $formatedRoles.= self::$rolesParameter[$role].", ";
+  }
+  $formatedRoles = substr($formatedRoles, 0, -2);
+  return $formatedRoles;
+}
 
   /**
   * Set the value of Id
@@ -243,7 +260,10 @@ class User  implements UserInterface
     return $this;
   }
 
-
+  public function __construct()
+      {
+          $this->images = new ArrayCollection();
+      }
 
   /** @see \Serializable::serialize() */
   public function serialize()
@@ -328,7 +348,6 @@ class User  implements UserInterface
      */
     public function getRoles()
     {
-      dump($this->roles);
         return $this->roles;
     }
 

@@ -17,12 +17,12 @@ class Observation
   private $id;
 
   /**
-  *@ORM\ManyToOne(targetEntity="App\Entity\User")
+  *@ORM\ManyToOne(targetEntity="App\Entity\User",cascade={"persist"})
   */
   private $user;
 
   /**
-  *@ORM\ManyToOne(targetEntity="App\Entity\Bird")
+  *@ORM\ManyToOne(targetEntity="App\Entity\Bird",cascade={"persist"})
   */
   private $bird;
 
@@ -37,19 +37,20 @@ class Observation
   private $date;
 
   /**
-  *@ORM\ManyToOne(targetEntity="App\Entity\Image")
+  *@ORM\ManyToOne(targetEntity="App\Entity\Image",cascade={"persist"})
   */
   private $image;
+
+  /**
+  *@ORM\Column(type="string", nullable=true)
+  */
+  private $refuseMessage;
 
   /**
   * @ORM\Column(type="boolean")
   */
   private $valid;
 
-  /**
-  * @ORM\ManyToMany(targetEntity="App\Entity\User")
-  */
-  private $like;
 
   /**
   * Get the value of Id
@@ -219,28 +220,30 @@ class Observation
     return $this;
   }
 
-  /**
-  * Get the value of Like
-  *
-  * @return mixed
-  */
-  public function getLike()
-  {
-    return $this->like;
-  }
 
-  /**
-  * Set the value of Like
-  *
-  * @param mixed like
-  *
-  * @return self
-  */
-  public function setLike($like)
-  {
-    $this->like = $like;
 
-    return $this;
-  }
+    /**
+     * Get the value of Refuse Message
+     *
+     * @return mixed
+     */
+    public function getRefuseMessage()
+    {
+        return $this->refuseMessage;
+    }
+
+    /**
+     * Set the value of Refuse Message
+     *
+     * @param mixed refuseMessage
+     *
+     * @return self
+     */
+    public function setRefuseMessage($refuseMessage)
+    {
+        $this->refuseMessage = $refuseMessage;
+
+        return $this;
+    }
 
 }

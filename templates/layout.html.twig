@@ -5,11 +5,16 @@
         <title>{% block title %}Bienvenue sur Naopedia{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}
+        <script
+        			  src="http://code.jquery.com/jquery-3.3.1.min.js"
+        			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        			  crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       {% endblock %}
     </head>
-    <body style="text-align: center; background-color: #1E5D93; color: white">
+    <body style="text-align: center; background-color: #1E5D93;">
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -19,6 +24,10 @@
           <ul class="nav navbar-nav">
             {% if app.user %}
               <li><a href="{{path('userpage',{'username':app.user.username}  )}}">mon profil</a></li>
+              {% if is_granted('ROLE_ADMIN')%}
+                 <li><a href="{{path('admin')}}">Administration</a></li>
+               {% endif %}
+              <li><a href="{{path('post')}}">Poster une observation</a></li>
               <li><a href="{{path('logout')}}">se déconecter</a></li>
             {% else %}
               <li><a href="{{path('login')}}">Se connecter</a></li>
