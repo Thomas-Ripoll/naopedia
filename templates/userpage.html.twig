@@ -17,7 +17,7 @@
 <div >
   <a class="username" href="{{ path('birdpage', {'birdname': observation.bird.name }) }}">{{observation.bird.name}}</a>
   {{observation.date|date}}
-  <img src="{{asset('images/post/'~ observation.image.url)}} ">
+  <img style="width:100px;" src="{{asset('images/post/'~ observation.image.url)}} ">
 
 </div>
 

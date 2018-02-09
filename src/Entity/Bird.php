@@ -43,6 +43,18 @@ class Bird
   private $images;
 
   /**
+  * @ORM\Column(type="string", nullable=true)
+
+  */
+  private $description;
+
+  /**
+  * @ORM\Column(type="string", nullable=true)
+  */
+  private $contributor;
+
+
+  /**
   * Get the value of Id
   *
   * @return mixed
@@ -195,6 +207,55 @@ class Bird
   public function addImage(Image $image)
     {
         $this->images[] = $image;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Description
+     *
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the value of Description
+     *
+     * @param mixed description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Contributor
+     *
+     * @return mixed
+     */
+    public function getContributor()
+    {
+        return $this->contributor;
+    }
+
+    /**
+     * Set the value of Contributor
+     *
+     * @param mixed contributor
+     *
+     * @return self
+     */
+    public function setContributor($contributor)
+    {
+        $this->contributor = $contributor;
 
         return $this;
     }
