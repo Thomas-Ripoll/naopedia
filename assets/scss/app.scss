@@ -1,0 +1,166 @@
+@import "~bootstrap/scss/bootstrap";
+@import '~leaflet/dist/leaflet.css';
+@import './jqueryui/jquery-ui.min.css';
+@import './map/MarkerCluster.css';
+@import './map/Leaflet.Photo.css';
+
+.ui-menu.ui-widget.ui-widget-content.ui-autocomplete{
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index:1000;
+    .ui-menu-item a{
+        padding:1em 0.2em; 
+        &.ui-state-active{
+            background-color: gray;
+            border: 0px;
+            span.latin{
+                color:lightgray;
+            }
+        }
+        &:hover{
+            text-decoration: none; 
+        }
+        span.main{
+            font-weight:bold;
+        }
+        span.latin{
+            color:gray;
+            font-style: italic;
+        }
+    }
+    .ui-menu-item a, .ui-menu-item a span{
+        display:block;
+        text-align: left;
+    }
+}
+.map{
+    width:100%;
+    height:100vh;
+    background-color: red; 
+}
+body{
+    background-color: #fafafa;
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    &.onObserve #addObervation{
+        @extend .btn-warning;
+        &:before{
+            content:"\00d7 ";
+        }
+    }
+    &:not(.onObserve) #addObervation{
+        @extend .btn-primary;
+    }
+    h1{
+        color:red;
+        @include media-breakpoint-down(md){
+            color:blue;
+        }
+        span{
+            color:yellow;
+        }
+    }
+    h2{
+        color:blue;
+        transform: rotate(45deg);
+    }
+    #mapid { 
+        flex:1;
+        @at-root body.onObserve #mapid{
+            cursor: crosshair;
+            .ripple{
+                background-color:#333;
+            }
+        }
+        .ripple{
+            background-color:transparent;
+            position:absolute;
+            width:100px;
+            height:100px;
+            border-radius:100px;
+            margin-left:-50px;
+            margin-top:-50px;
+            transform : scale(0);
+            opacity:1;
+            transition:transform  0.2s ease, opacity  0.2s ease;
+            z-index:10000;
+            animation: ripple .2s;
+            animation-fill-mode: both;
+            animation-timing-function: ease-out
+        }
+        
+        
+    }
+    .minimapContainer{
+        
+        #minimap{
+            height:300px;
+            width:100%;
+            max-width:300px;
+            position:relative;
+           margin: 0px auto;
+        }
+    }
+    #exampleModal{
+        #file-upload{
+            display:none;
+        }
+        #image-preview{
+            height:100px;
+            display:none;
+        }
+    } 
+}
+
+
+// animations
+@keyframes ripple {
+    from {
+        transform:scale(0);
+        opacity:1
+    }
+    to {
+        transform: scale(1);
+        opacity:0
+    }
+}
+.leaflet-marker-heat{
+    &>div{
+        border-radius:100%;
+        height:40px;
+        width:40px;   
+        line-height: 40px;
+        
+    }
+} 
+.heat-0{
+    &>div{
+        background-color: #F0FF00;
+    }
+}
+.heat-1{
+    &>div{
+        background-color: #FFCE00;
+        
+    }
+} 
+.heat-2{
+    &>div{
+        background-color: #FF9A00;
+    }
+}
+.heat-3{
+    &>div{
+        background-color: #FF5A00;   
+        color:white;
+    }
+}
+.heat-4{
+    &>div{
+        
+        background-color: #FF0000;   
+        color:white;
+    }
+}

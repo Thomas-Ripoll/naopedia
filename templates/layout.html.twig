@@ -5,43 +5,62 @@
         <title>{% block title %}Bienvenue sur Naopedia{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}
-        <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-      {% endblock %}
+            <!-- Latest compiled and minified CSS -->
+
+        {% endblock %}
     </head>
     <body style="text-align: center; background-color: #1E5D93;">
-      <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-          <div class="navbar-header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <a class="navbar-brand" href="{{path('homepage')}}">
-            <img style="max-width:60px;width:100%" src="{{ asset("images/NAOlogobleu.svg") }}" alt=""><br></a>
-          </div>
-          <ul class="nav navbar-nav">
-            {% if app.user %}
-              <li><a href="{{path('userpage',{'username':app.user.username}  )}}">mon profil</a></li>
-              {% if is_granted('ROLE_ADMIN')%}
-                 <li><a href="{{path('admin')}}">Administration</a></li>
-               {% endif %}
-              <li><a href="{{path('post')}}">Poster une observation</a></li>
-              <li><a href="{{path('logout')}}">se déconecter</a></li>
-            {% else %}
-              <li><a href="{{path('login')}}">Se connecter</a></li>
-              <li><a href="{{path('signin')}}">S'inscrire</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      </nav>
-      <nav>
+                <img style="max-width:60px;width:100%" src="{{ asset("images/NAOlogobleu.svg") }}" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('map')}}">La carte</a>
+                    </li>
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a href="{{path('userpage',{'username':app.user.username}  )}}">mon profil</a>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN')%}
+                        <li>
+                            <a class="nav-link" href="{{path('admin')}}">Administration</a>
+                        </li>
+                        {% endif %}
 
-      </nav>
-      {% for label, messages in app.flashes %}
-          {% for message in messages %}
-              <div class="flash-{{ label }}">
-                  {{ message }}
-              </div>
-          {% endfor %}
-      {% endfor %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{path('post')}}">Poster une observation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{path('logout')}}">se déconecter</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{path('login')}}">Se connecter</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{path('signin')}}">S'inscrire</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
 
-    {% block content %}{% endblock %}
-    </body>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+{% block content %}{% endblock %}
+
+{% block javascript %}{% endblock %}
+
+</body>
 </html>
