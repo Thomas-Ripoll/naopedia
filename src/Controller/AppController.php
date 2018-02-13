@@ -53,7 +53,7 @@ class AppController extends Controller
       $em = $this->getDoctrine()->getManager();
       $bird = $em->getRepository(Bird::class)->findOneBy(['name' => $birdname]);
 
-
+      
       if (!$bird) {
           $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'utilisateur à ce nom');
           return $this->render("birdpage.html.twig");
@@ -63,7 +63,31 @@ class AppController extends Controller
            'bird' => $bird));
       }
     }
-
+    /**
+     * @Route("/carte", name="map")
+     */
+    public function application(Request $request){
+        return $this->render("map.html.twig");
+    }
+    /**
+     * @Route("/get-bird-list", name="bird-search")
+     */
+    public function birdSearch(Request $request){
+        $query = $request->query->get("term");
+        $em = $this->getDoctrine()->getManager();
+        $birdsList = $em->getRepository(Bird::class)->search($query);
+        $birdJson = [];
+        foreach($birdsList as $bird){
+            $birdJson[] = [
+                "birdId" => $bird->getId(),
+                "birdName" => $bird->getName(),
+                "birdLatinName" => $bird->getLatinName()
+            ];
+        }
+        return $this->json($birdJson);
+    }
+    
+    
     /**
     * @Route("/post", name="post")
     */

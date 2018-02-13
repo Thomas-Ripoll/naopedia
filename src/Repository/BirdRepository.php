@@ -12,7 +12,14 @@ class BirdRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Bird::class);
     }
-
+    
+    public function search($query){
+        return $this->createQueryBuilder('b')
+            ->where('b.name LIKE :value OR b.latinName LIKE :value')
+                ->setParameter('value', '%'.$query."%")
+                ->getQuery()
+                ->getResult();
+    }
     /*
     public function findBySomething($value)
     {
