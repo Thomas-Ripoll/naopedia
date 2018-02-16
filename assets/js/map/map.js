@@ -96,17 +96,17 @@ $(document).ready(function() {
    }
    console.log(birds)
    
-   	var photoLayer = L.photo.cluster().on('click', function (evt) {
-		var photo = evt.layer.photo,
-			template = '<img src="{url}"/></a><p>{caption}</p>';
-		if (photo.video && (!!document.createElement('video').canPlayType('video/mp4; codecs=avc1.42E01E,mp4a.40.2'))) {
-			template = '<video autoplay controls poster="{url}"><source src="{video}" type="video/mp4"/></video>';
-		}; 
-		evt.layer.bindPopup(L.Util.template(template, photo), {
-			className: 'leaflet-popup-photo',
-			minWidth: 400
-		}).openPopup();
-	});
+    var photoLayer = L.photo.cluster().on('click', function (evt) {
+            var photo = evt.layer.photo,
+                    template = '<img src="{url}"/></a><p>{caption}</p>';
+            if (photo.video && (!!document.createElement('video').canPlayType('video/mp4; codecs=avc1.42E01E,mp4a.40.2'))) {
+                    template = '<video autoplay controls poster="{url}"><source src="{video}" type="video/mp4"/></video>';
+            }; 
+            evt.layer.bindPopup(L.Util.template(template, photo), {
+                    className: 'leaflet-popup-photo',
+                    minWidth: 400
+            }).openPopup();
+    });
    
    
    
@@ -115,6 +115,8 @@ $(document).ready(function() {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(mymap);
+    
+    
     mymap.on('click', function(e) {   
         if(observeMode){  
             //console.log(e.latlng);
@@ -156,6 +158,8 @@ $(document).ready(function() {
             }
         },100);
       });
+      
+      
     $("#file-upload").on("change", function () {
         var reader = new FileReader();
 
@@ -169,6 +173,8 @@ $(document).ready(function() {
         reader.readAsDataURL(this.files[0]);
 
     });
+    
+    
     $("#especes").change(function(){
         photoLayer.clear();
         var id = $(this).val();

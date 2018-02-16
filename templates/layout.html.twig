@@ -5,8 +5,7 @@
         <title>{% block title %}Bienvenue sur Naopedia{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}
-               <link href="{{ asset("build/css/app.min.css") }}" rel="stylesheet" type="text/css">
-
+            <link href="{{ asset("build/css/app.min.css") }}" rel="stylesheet" type="text/css">
         {% endblock %}
     </head>
     <body style="text-align: center; background-color: #1E5D93;">
@@ -20,6 +19,14 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        Accueil
+                        <ul class="sideMenu">
+                            <li>top</li>
+                            <li>bal</li>
+                            <li>bottom</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{path('map')}}">La carte</a>
                     </li>
                     {% if app.user %}
@@ -27,9 +34,9 @@
                             <a href="{{path('userpage',{'username':app.user.username}  )}}">mon profil</a>
                         </li>
                         {% if is_granted('ROLE_ADMIN')%}
-                        <li>
-                            <a class="nav-link" href="{{path('admin')}}">Administration</a>
-                        </li>
+                            <li>
+                                <a class="nav-link" href="{{path('admin')}}">Administration</a>
+                            </li>
                         {% endif %}
 
                         <li class="nav-item">
@@ -38,7 +45,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{path('logout')}}">se déconecter</a>
                         </li>
-                        {% else %}
+                    {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{path('login')}}">Se connecter</a>
                         </li>
@@ -47,20 +54,32 @@
                         </li>
                     {% endif %}
                 </ul>
+                <ul class="navbar-social">
+                    <li>f</li>
+                    <li>t</li>
+                    <li>p</li>
+                </ul>
             </div>
         </nav>
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="flash-{{ label }}">
-                {{ message }}
-            </div>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
 
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
-{% block javascript %}{% endblock %}
+    {% block javascript %}
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="{{ asset("build/js/autocomplete.min.js") }}"></script>
+    {% endblock %}
 
 </body>
 </html>
