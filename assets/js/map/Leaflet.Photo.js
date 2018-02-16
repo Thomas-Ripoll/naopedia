@@ -51,7 +51,7 @@ if (L.MarkerClusterGroup) {
 			showCoverageOnHover: false,
 			iconCreateFunction: function(cluster) {
                                 var count = cluster.getChildCount();
-                                var range = 0;
+                                var range = 4;
                                 for(var i = degrees.length-1; i >= 0 ; i--){
                                     if(count < degrees[i]){
                                         range = i;

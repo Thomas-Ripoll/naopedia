@@ -132,6 +132,8 @@ body{
         height:40px;
         width:40px;   
         line-height: 40px;
+        font-weight:bold;
+        color:blue;
         
     }
 } 
@@ -160,7 +162,7 @@ body{
 .heat-4{
     &>div{
         
-        background-color: #FF0000;   
+        background-color: #FF0088;   
         color:white;
     }
 }
