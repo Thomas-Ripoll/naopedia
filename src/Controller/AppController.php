@@ -45,6 +45,30 @@ class AppController extends Controller
       }
     }
 
+
+    /**
+     * @Route("/bird/change/{birdId}", name="birdDescription")
+     */
+    public function birdDescriptionAction($birdId, Request $request)
+    {
+    $em = $this->getDoctrine()->getManager();
+    $bird = $em->getRepository(Bird::class)->find($birdId);
+
+
+    $description= $request->request->get('description');
+    $bird->setDescription($description);
+
+    $em->persist($bird);
+    $em->flush();
+
+        return $this->redirectToRoute("birdpage", array(
+            'slug'=> $bird->getSlug(),
+            'bird'=> $bird
+        ));
+
+    }
+
+
     /**
     * @Route("/bird/{slug}", name="birdpage")
     */
@@ -177,4 +201,5 @@ class AppController extends Controller
 
     }
 
+ 
 }
