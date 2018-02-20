@@ -13,6 +13,7 @@ Encore
 
     // uncomment to define the assets of the project
      .addEntry('js/app.min', './assets/js/app.js')
+     .addEntry('js/autocomplete.min', './assets/js/autocomplete.js')
      .addStyleEntry('css/app.min', './assets/scss/app.scss')
      
     // uncomment if you use Sass/SCSS files

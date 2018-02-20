@@ -4,7 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/var/www/html/naopedia/templates/base.html.twig</file>
+            <file>file:/var/www/html/naopedia/src/DataFixtures/AppFixtures.php</file>
             <file>file:/var/www/html/naopedia/assets/scss/app.scss</file>
+            <file>file:/var/www/html/naopedia/src/Controller/AdminController.php</file>
             <file>file:/var/www/html/naopedia/config/bundles.php</file>
             <file>file:/var/www/html/naopedia/templates/map.html.twig</file>
             <file>file:/var/www/html/naopedia/.env</file>
@@ -13,8 +15,8 @@
             <file>file:/var/www/html/naopedia/src/Entity/Observation.php</file>
             <file>file:/var/www/html/naopedia/templates/birdpage.html.twig</file>
             <file>file:/var/www/html/naopedia/assets/js/app.js</file>
-            <file>file:/var/www/html/naopedia/public/dist/js/jquery-ui.min.js</file>
-            <file>file:/var/www/html/naopedia/webpackconfig/postcss.config.js</file>
+            <file>file:/var/www/html/naopedia/assets/js/map/leaflet.markercluster.js</file>
+            <file>file:/var/www/html/naopedia/src/Entity/User.php</file>
             <file>file:/var/www/html/naopedia/templates/layout.html.twig</file>
             <file>file:/var/www/html/naopedia/assets/js/map/Leaflet.Photo.js</file>
             <file>file:/var/www/html/naopedia/webpack.config.js</file>
