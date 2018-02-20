@@ -33,7 +33,8 @@ class AppFixtures extends Fixture{
             $content = mb_convert_encoding($rawcontent, 'UTF-8', mb_detect_encoding($rawcontent, 'UTF-8, ISO-8859-1', true));
             
             $data = $serializer->decode($content, 'csv');
-            
+            $i = 0;
+            $selectedBird = null;
             foreach($data as $birdData){
                 
                 $bird = new Bird();
@@ -41,8 +42,12 @@ class AppFixtures extends Fixture{
                 $bird->setLatinName(trim($birdData["LB_NOM"]));
                 $bird->setFamille(trim($birdData["FAMILLE"]));
                 $bird->setOrdre(trim($birdData["ORDRE"]));
-                
+                if($i == 3300){
+                    $selectedBird = $bird;
+                }
                 $manager->persist($bird);
+                
+                $i++;
                 
             }
             $user = new User();
@@ -63,7 +68,12 @@ class AppFixtures extends Fixture{
             $user->setRoles(["ROLE_ADMIN"]);
             $manager->persist($user);
             
+            
+            
+            
             $manager->flush();
+            
+            
 
 }
 }

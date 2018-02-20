@@ -87,7 +87,36 @@ class AppController extends Controller
         return $this->json($birdJson);
     }
 
-
+    
+    /**
+     * 
+     * @param \App\Controller\Resquest $request
+     * @Route("/get-observations", name="getObservations")
+     */
+    public function getObservations(Request $request){
+        $corbeau = [
+            "corbeau-2-143327.jpg",
+            "corbeau.d.australie.pain.8g.jpg",
+            "corbeau.d.australie.pain.9p.jpg",
+            "cover-r4x3w1000-593821dd68ae6-sipa-rex40247619-000001.jpg",
+            "grand.corbeau.auau.5p.jpg"         
+        ];
+        $max = rand(250,500);
+        $data = [];
+        for($i = 0; $i < $max; $i++ ){
+            $data[] = [
+                "lat" => (rand(0,800)/100) + 42,
+                "lng" => (rand(0,1300)/100) -5,
+                "thumbnail"=> "images/uploads/imgs/birds/corbeau/corbeau-2-143327.jpg",
+                "url"=>"images/uploads/imgs/birds/corbeau/corbeau-2-143327.jpg",
+                "caption"=>"corbeau"
+            ];
+        }
+        
+        
+        return $this->json($data);
+    }
+    
     /**
     * @Route("/post", name="post")
     */
