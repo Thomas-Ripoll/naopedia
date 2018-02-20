@@ -46,14 +46,14 @@ class AppController extends Controller
     }
 
     /**
-    * @Route("/bird/{birdname}", name="birdpage")
+    * @Route("/bird/{slug}", name="birdpage")
     */
-    public function birdPage($birdname)
+    public function birdPage($slug)
     {
       $em = $this->getDoctrine()->getManager();
-      $bird = $em->getRepository(Bird::class)->findOneBy(['name' => $birdname]);
+      $bird = $em->getRepository(Bird::class)->findOneBy(['slug' => $slug]);
 
-      
+
       if (!$bird) {
           $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'utilisateur à ce nom');
           return $this->render("birdpage.html.twig");
@@ -86,8 +86,8 @@ class AppController extends Controller
         }
         return $this->json($birdJson);
     }
-    
-    
+
+
     /**
     * @Route("/post", name="post")
     */
