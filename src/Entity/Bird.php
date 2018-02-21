@@ -4,6 +4,7 @@ namespace App\Entity;
 use App\Entity\Image;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
 * @ORM\Entity(repositoryClass="App\Repository\BirdRepository")
@@ -52,6 +53,12 @@ class Bird
   * @ORM\Column(type="string", nullable=true)
   */
   private $contributor;
+
+  /**
+   * @Gedmo\Slug(fields={"name", "latinName"})
+   * @ORM\Column(length=128, unique=true)
+   */
+   private $slug;
 
 
   /**
@@ -256,6 +263,31 @@ class Bird
     public function setContributor($contributor)
     {
         $this->contributor = $contributor;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Slug
+     *
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the value of Slug
+     *
+     * @param mixed slug
+     *
+     * @return self
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }

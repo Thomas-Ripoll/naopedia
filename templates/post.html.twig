@@ -9,3 +9,18 @@
                 {{ form_end(form) }}
 
 {% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script>
+$(function(){
+    $('.birdSearch').birdSearch(function(res){
+        $('.birdId').val(res.birdId);
+        $(this).val(res.birdName +' ' +  res.birdLatinName);
+    })
+
+})
+
+</script>
+
+{% endblock %}

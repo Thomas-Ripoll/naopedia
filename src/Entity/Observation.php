@@ -37,10 +37,15 @@ class Observation
   private $date;
 
   /**
-  *@ORM\ManyToOne(targetEntity="App\Entity\Image",cascade={"persist"})
+  *@ORM\OneToOne(targetEntity="App\Entity\Image",cascade={"persist"})
   */
   private $image;
 
+  /**
+   *
+   * @ORM\Column(type="text")
+   */
+  private $description;
   /**
   *@ORM\Column(type="string", nullable=true)
   */
@@ -52,6 +57,10 @@ class Observation
   private $valid;
 
 
+  public function __construct(){
+      $this->date = new \DateTime();
+      $this->valid = false;
+  }
   /**
   * Get the value of Id
   *
@@ -129,9 +138,16 @@ class Observation
   *
   * @return mixed
   */
-  public function getGeoloc()
+  public function getGeoloc($value = null)
   {
-    return $this->geoloc;
+    if(is_null($value))  
+        return $this->geoloc;
+    if($value=="lat")
+        return $this->geoloc[0];
+    if($value=="lng")
+        return $this->geoloc[1];
+    return null;
+        
   }
 
   /**
@@ -195,6 +211,7 @@ class Observation
 
     return $this;
   }
+  
 
   /**
   * Get the value of Valid
@@ -245,5 +262,15 @@ class Observation
 
         return $this;
     }
+    
+    public function getDescription() {
+        return $this->description;
+    }
+
+    public function setDescription($description) {
+        $this->description = $description;
+        return $this;
+    }
+
 
 }

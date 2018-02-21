@@ -15,19 +15,33 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Form\ImageType;
 use App\Entity\Bird;
+use Doctrine\ORM\EntityManager;                                                    
 
 
 class ObservationType extends AbstractType
 {
+  private $em;
+
+  public function __construct(EntityManager $em){
+    $this->em = $em;
+  }
+
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    
     $builder
-    ->add('bird', EntityType::class, array(
-    'class' => Bird::class,
-    'choice_label' => 'name'))
+    ->add('bird', HiddenType::class, array(
+      'attr'=>['class'=>'birdId']
+    ))
+    ->add('birdSearch', TextType::class, array(
+      'mapped'=>false,
+      'attr'=>['class'=>"birdSearch"]
+    ))
+
     ->add('image', ImageType::class)
     ->add('geoloc', TextType::class)
     ->add('date', DateType::class)
@@ -53,6 +67,22 @@ class ObservationType extends AbstractType
                 }
             ))
         ;
+
+        $em = $this->em;
+        $builder->get('bird')
+        ->addModelTransformer(new CallbackTransformer(
+            function ($birdEntity) {
+              if(!is_null($birdEntity)){
+                return $birdEntity->getId();
+              }
+              return null;
+
+            },
+            function ($birdId) use ($em) {
+              return $em->getRepository(Bird::class)->find($birdId);
+            }
+        ))
+    ;
 
   }
 
