@@ -52,16 +52,19 @@ class DataFaker {
     
     
     
-    public function getData($query) {
+    public function getData($query, $needProxy = false) {
 
-        $proxy = $this->getProxy();
+        
         //dump(count($this->proxies));
         //dump($proxy);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.qwant.com/api/search/images?count=50&offset=1&q=' .urlencode ($query));
-        curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        if($needProxy){
+            $proxy = $this->getProxy();
+            curl_setopt($ch, CURLOPT_PROXY, $proxy);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        }
         curl_setopt($ch, CURLOPT_HEADER, false); // Assuming you're requesting JSON
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_TIMEOUT, 1);
@@ -81,11 +84,12 @@ class DataFaker {
         $bird = $this->em->getRepository(\App\Entity\Bird::class)->find($bird_id);
         
         $max = rand(25, 50);
-        do{
+         $imagedata = $this->getData($bird->getLatinName());
+        while(is_null($imagedata) || $imagedata->status == "error"){
             
-            $imagedata = $this->getData($bird->getLatinName());
+            $imagedata = $this->getData($bird->getLatinName(), true);
         }
-        while(is_null($imagedata) || $imagedata->status == "error"); 
+        
           
             
         
