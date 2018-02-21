@@ -22,17 +22,20 @@ class Image
   private $url;
 
   /**
-  * @ORM\Column(type="string", length=200)
+  * @ORM\Column(type="string")
   */
   private $alt;
 
   /**
   * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="images")
-  * @ORM\Column(nullable=true)
+  * @ORM\JoinColumn(nullable=true)
   */
   private $author;
 
-
+  public function __toString()
+  {
+      return $this->getAlt();
+  }
 
   /**
   * Get the value of Id
@@ -111,7 +114,7 @@ class Image
   *
   * @return mixed
   */
-  public function getAuthor()
+  public function getAuthor()//: Category
   {
     return $this->author;
   }

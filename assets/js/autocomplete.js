@@ -64,10 +64,10 @@ require('webpack-jquery-ui/autocomplete');
             response(results);
         } else {
             $.getJSON("/get-bird-list",
-                    {"term": term},
+                    {"term": term.substring(0, 3)},
                     function (data) {
 
-                        _this.cache[term] = data;
+                        _this.cache[term.substring(0, 3)] = data;
                         data.map(item => {
                             item['label'] =
                                     (item.birdName != "")

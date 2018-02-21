@@ -4,6 +4,7 @@ namespace App\Entity;
 use App\Entity\Image;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
 * @ORM\Entity(repositoryClass="App\Repository\BirdRepository")
@@ -43,6 +44,24 @@ class Bird
   private $images;
 
   /**
+  * @ORM\Column(type="string", nullable=true)
+
+  */
+  private $description;
+
+  /**
+  * @ORM\Column(type="string", nullable=true)
+  */
+  private $contributor;
+
+  /**
+   * @Gedmo\Slug(fields={"name", "latinName"})
+   * @ORM\Column(length=128, unique=true)
+   */
+   private $slug;
+
+
+  /**
   * Get the value of Id
   *
   * @return mixed
@@ -50,6 +69,11 @@ class Bird
   public function getId()
   {
     return $this->id;
+  }
+
+  public function __toString()
+  {
+      return $this->getName();
   }
 
   /**
@@ -190,6 +214,80 @@ class Bird
   public function addImage(Image $image)
     {
         $this->images[] = $image;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Description
+     *
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the value of Description
+     *
+     * @param mixed description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Contributor
+     *
+     * @return mixed
+     */
+    public function getContributor()
+    {
+        return $this->contributor;
+    }
+
+    /**
+     * Set the value of Contributor
+     *
+     * @param mixed contributor
+     *
+     * @return self
+     */
+    public function setContributor($contributor)
+    {
+        $this->contributor = $contributor;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Slug
+     *
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the value of Slug
+     *
+     * @param mixed slug
+     *
+     * @return self
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }

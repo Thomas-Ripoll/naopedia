@@ -110,7 +110,7 @@ var leafletPhotos = require('leaflet.markercluster');
         this.observeMode = false;
         this.modal = null;
         this.L = L;
-
+        this.fakeEmpty = false;
 
 
 
@@ -196,6 +196,7 @@ var leafletPhotos = require('leaflet.markercluster');
         }
     }
     birdApp.prototype.updateFilters = function (data) {
+        this.container.addClass("loading");
         $.extend(this.filters, data);
         console.log(data);
         this.searchBird();
@@ -209,12 +210,12 @@ var leafletPhotos = require('leaflet.markercluster');
                 this.filters,
                 function (data) {
                     console.log(data)
-                    
-                    _this.birdMarkersLayer.clear();
-                    _this.birdMarkersLayer.add(data).addTo(_this.map);
+                        _this.container.removeClass("loading");
+                        _this.birdMarkersLayer.clear();
+                        _this.birdMarkersLayer.add(data).addTo(_this.map);
                 });
     }
-
+   
     $.fn.birdApp = function () {
 
         this.birdApp = new birdApp($(this));
@@ -226,9 +227,9 @@ var leafletPhotos = require('leaflet.markercluster');
 
 
 var birdApp = $(".birdAppContainer").birdApp();
-
+birdApp.birdApp.fakeEmpty = true;
 
 $(".birdAppContainer .search").birdSearch(function (item) {
     $(this).val("");
-    birdApp.birdApp.updateFilters({"bird": item.birdId})
+    birdApp.birdApp.updateFilters({"bird": item.birdId, "birdSlug": item.birdSlug})
 });

@@ -1,4 +1,7 @@
 {
+    "behat/transliterator": {
+        "version": "v1.2.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -68,6 +71,9 @@
     "doctrine/orm": {
         "version": "v2.6.0"
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.33"
+    },
     "javiereguiluz/easyadmin-bundle": {
         "version": "1.17",
         "recipe": {
@@ -110,6 +116,15 @@
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
     },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        }
+    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
@@ -137,6 +152,9 @@
             "ref": "9f94d3ea453cd8a3b95db7f82592d7344fe3a76a"
         }
     },
+    "symfony/css-selector": {
+        "version": "v4.0.4"
+    },
     "symfony/debug": {
         "version": "v4.0.3"
     },
@@ -146,11 +164,17 @@
     "symfony/doctrine-bridge": {
         "version": "v4.0.3"
     },
+    "symfony/dom-crawler": {
+        "version": "v4.0.4"
+    },
     "symfony/dotenv": {
         "version": "v4.0.3"
     },
     "symfony/event-dispatcher": {
         "version": "v4.0.3"
+    },
+    "symfony/expression-language": {
+        "version": "v4.0.4"
     },
     "symfony/filesystem": {
         "version": "v4.0.3"

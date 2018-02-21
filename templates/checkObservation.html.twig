@@ -1,0 +1,39 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+
+<h2>Observation de {{observation.user.username}} </h2>
+
+
+  <a class="username" href="{{ path('birdpage', {'birdname': observation.bird.name }) }}">{{observation.bird.name}}</a>
+  {{observation.date|date}}
+  <img src="{{asset('images/post/'~ observation.image.url)}} ">
+
+  <a class="btn btn-primary" href=" {{ path('valid', {'observationId': observation.id }) }}">Valider</a>
+  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#RefuseModal">Refuser</button>
+
+  <!-- Modal -->
+  <div id="RefuseModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Merci de laisser une raison de refus </h4>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="{{ path('refuse', {'observationId': observation.id }) }}">
+            <input name="refuseMessage">
+            <button type="submit" class="btn btn-danger">Refuser</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
