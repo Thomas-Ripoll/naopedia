@@ -12,7 +12,7 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
-
+   
     /*
     public function findBySomething($value)
     {

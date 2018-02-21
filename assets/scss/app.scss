@@ -37,6 +37,22 @@
 .map{
     width:100%;
     height:100vh;
+    position:relative;
+    @at-root .birdAppContainer.loading &:after{
+        content:"Patience nous chargeons les observations...";
+        color:white;
+        font-weight:bold;
+        padding-top:2em;
+        font-weight:1.5em;
+        text-align: center;
+        position:absolute;
+        top:0px;
+        left:0px;
+        right:0px;
+        bottom:0px;
+        z-index:1000;
+        background-color: rgba(black,0.5);
+    }
 }
 body{
     background-color: #fafafa;
@@ -136,6 +152,9 @@ body{
         
     }
 } 
+.leaflet-popup-content img{
+    width:100%;
+}
 .heat-0{
     &>div{
         background-color: #F0FF00;
