@@ -35,7 +35,14 @@ class Observation
   * @ORM\Column(type="datetime")
   */
   private $date;
+  
+  /**
+  * @ORM\Column(type="integer", nullable=true)
+  */
+  private $searchDate;
 
+  
+  
   /**
   *@ORM\OneToOne(targetEntity="App\Entity\Image",cascade={"persist"})
   */
@@ -58,7 +65,7 @@ class Observation
 
 
   public function __construct(){
-      $this->date = new \DateTime();
+      $this->setDate(new \DateTime());
       $this->valid = false;
   }
   /**
@@ -184,11 +191,21 @@ class Observation
   public function setDate($date)
   {
     $this->date = $date;
-
+    $this->searchDate = $date->format("Ym");
     return $this;
   }
 
   /**
+   * 
+   * @return type
+   */
+  public function getSearchDate() {
+      return $this->searchDate;
+  }
+  
+  
+
+    /**
   * Get the value of Image
   *
   * @return mixed

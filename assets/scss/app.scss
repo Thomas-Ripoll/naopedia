@@ -1,21 +1,50 @@
 @import "~bootstrap/scss/bootstrap";
 @import '~leaflet/dist/leaflet.css';
+@import '~flatpickr/dist/flatpickr.min.css';
+@import '~flatpickr/dist/themes/airbnb.css';
 @import './jqueryui/jquery-ui.min.css';
 @import './map/MarkerCluster.css';
 @import './map/Leaflet.Photo.css';
-
+.autocomplete_menu{
+    padding:0.5em;
+    background-color:white;
+    position:absolute;
+    border-radius:5px;
+    z-index:1000;
+    display:none;
+    &:before{
+        position: absolute;
+        display: block;
+        pointer-events: none;
+        border: solid transparent;
+        border-bottom: 5px solid white;
+        border-width: 5px;
+        margin: 0 -5px;
+        border-bottom-color: #eee;
+        content: '';
+        height: 0;
+        width: 0;
+        left: 22px;
+        top: -10px;
+    }
+}
 .ui-menu.ui-widget.ui-widget-content.ui-autocomplete{
+    
     max-height: 250px;
     overflow-y: auto;
     overflow-x: hidden;
     z-index:1000;
+    border-radius:5px;
+    position:relative;
+    border:0px solid transparent;
     .ui-menu-item a{
+        font-family: var(--font-family-sans-serif);
         padding:1em 0.2em; 
         &.ui-state-active{
-            background-color: gray;
+            background-color: #4f99ff;
             border: 0px;
             span.latin{
-                color:lightgray;
+                color: lighten(#4f99ff,10%); 
             }
         }
         &:hover{
@@ -77,10 +106,6 @@ body{
             color:yellow;
         }
     }
-    h2{
-        color:blue;
-        transform: rotate(45deg);
-    }
     #mapid { 
         flex:1;
         @at-root body.onObserve #mapid{
@@ -105,17 +130,17 @@ body{
             animation-fill-mode: both;
             animation-timing-function: ease-out
         }
-        
-        
+
+
     }
     .minimapContainer{
-        
+
         #minimap{
             height:300px;
             width:100%;
             max-width:300px;
             position:relative;
-           margin: 0px auto;
+            margin: 0px auto;
         }
     }
     #exampleModal{
@@ -149,7 +174,7 @@ body{
         line-height: 40px;
         font-weight:bold;
         color:blue;
-        
+
     }
 } 
 .leaflet-popup-content img{
@@ -163,7 +188,7 @@ body{
 .heat-1{
     &>div{
         background-color: #FFCE00;
-        
+
     }
 } 
 .heat-2{
@@ -179,29 +204,46 @@ body{
 }
 .heat-4{
     &>div{
-        
-        background-color: #FF0088;   
+
+        background-color: #FF0000;   
         color:white;
     }
 }
 .navbar-social{
     @include media-breakpoint-up(lg){
-            position:fixed;
-            right:0px;
-            top:50%;
-            transform: translateY(-50%);
-            background-color: white;
-            z-index:5000;
+        position:fixed;
+        right:0px;
+        top:50%;
+        transform: translateY(-50%);
+        background-color: white;
+        z-index:5000;
     }
-    
+
 }
 .sideMenu{
     @include media-breakpoint-up(lg){
-            position:fixed;
-            left:0px;
-            top:50%;
-            transform: translateY(-50%);
-            background-color: white;
-            z-index:5000;
+        position:fixed;
+        left:0px;
+        top:50%;
+        transform: translateY(-50%);
+        background-color: white;
+        z-index:5000;
     }
+}
+
+.flatpickr-warning{ 
+    @extend .alert-danger;
+    padding:0.5em 0em;
+    font-size: 0.8em;
+    line-height:1em;
+}
+.filter-item{
+    background-color: #fafafa;
+    padding: 0.2em;
+    margin: 0.2em;
+    border-radius:5px;
+    border:1px solid lightgray;
+}
+.filter-column{
+    padding-top: 2em;
 }
