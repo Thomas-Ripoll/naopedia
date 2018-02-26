@@ -12,6 +12,7 @@ use App\Entity\Image;
 use App\Entity\Bird;
 use App\Form\ObservationType;
 use App\Form\ImageType;
+use Knp\Component\Pager\Paginator;
 
 class AppController extends Controller {
 
@@ -67,6 +68,30 @@ class AppController extends Controller {
 
     }
 
+     /**
+     * @Route("/oiseaux", name="birds")
+     */
+    public function birdsPage( /*Paginator $paginator, */ Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+        $birds = $em->getRepository(Bird::class)->findAll();
+       // $qb = $repository->createQueryBuilder('b');
+
+       $birdslist  = $this->get('knp_paginator')->paginate(
+        $birds,
+        $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+          9/*nbre d'éléments par page*/
+    );
+
+        if (!$birds) {
+            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'oiseaux');
+            return $this->render("birds.html.twig");
+        } else {
+            return $this->render("birds.html.twig", array(
+                        'birds' => $birds,
+                        'birdslist' => $birdslist));
+        }
+    }
 
     /**
      * @Route("/bird/{slug}", name="birdpage")

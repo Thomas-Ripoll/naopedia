@@ -27,7 +27,8 @@ easy_admin:
                   - { property: 'bird', label: 'Oiseau' }
                   - date
                   - { property: 'valid', label: 'validée'}
-                actions: ['show']
+                actions: 
+                    - { name: 'show', label: "Voir l'observation", icon: 'user' }
             templates:
                 show: 'checkObservation.html.twig'
 
