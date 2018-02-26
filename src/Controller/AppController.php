@@ -12,6 +12,7 @@ use App\Entity\Image;
 use App\Entity\Bird;
 use App\Form\ObservationType;
 use App\Form\ImageType;
+use Knp\Component\Pager\Paginator;
 
 class AppController extends Controller {
 
@@ -51,12 +52,16 @@ class AppController extends Controller {
     $em = $this->getDoctrine()->getManager();
     $bird = $em->getRepository(Bird::class)->find($birdId);
 
-
+    
     $description= $request->request->get('description');
     $bird->setDescription($description);
+    $bird->setDescriptionValid(false);
+    $bird->setContributor($this->getUser());
 
     $em->persist($bird);
     $em->flush();
+
+    $this->get('session')->getFlashBag()->add('success', 'La description a été soumise');
 
         return $this->redirectToRoute("birdpage", array(
             'slug'=> $bird->getSlug(),
@@ -65,21 +70,47 @@ class AppController extends Controller {
 
     }
 
+     /**
+     * @Route("/oiseaux", name="birds")
+     */
+    public function birdsPage( /*Paginator $paginator, */ Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+        $birds = $em->getRepository(Bird::class)->findAll();
+       // $qb = $repository->createQueryBuilder('b');
+
+       $birdslist  = $this->get('knp_paginator')->paginate(
+        $birds,
+        $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+          9/*nbre d'éléments par page*/
+    );
+
+        if (!$birds) {
+            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'oiseaux');
+            return $this->render("birds.html.twig");
+        } else {
+            return $this->render("birds.html.twig", array(
+                        'birds' => $birds,
+                        'birdslist' => $birdslist));
+        }
+    }
 
     /**
-     * @Route("/bird/{slug}", name="birdpage")
+     * @Route("/oiseau/{slug}", name="birdpage")
      */
     public function birdPage($slug) {
         $em = $this->getDoctrine()->getManager();
         $bird = $em->getRepository(Bird::class)->findOneBy(['slug' => $slug]);
+        $observations = $em->getRepository(Observation::class)->findBy(['bird' => $bird]);
 
 
         if (!$bird) {
-            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'utilisateur à ce nom');
+            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'oiseau à ce nom');
             return $this->render("birdpage.html.twig");
         } else {
             return $this->render("birdpage.html.twig", array(
-                        'bird' => $bird));
+                        'bird' => $bird,
+                        'obs'=> $observations ));
         }
     }
 
@@ -159,6 +190,7 @@ class AppController extends Controller {
             );
             $observation->getImage()->setUrl($imgName);
             $observation->SetValid(FALSE);
+            $observation->setDescription($observation->getImage()->getAlt());
 
 
             $em = $this->getDoctrine()->getManager();

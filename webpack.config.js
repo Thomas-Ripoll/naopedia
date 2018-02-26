@@ -28,10 +28,11 @@ Encore
     // uncomment for legacy applications that require $/jQuery as a global variable
      //.autoProvidejQuery()
 ;
+
 if(!Encore.isProduction()){
-    Encore.addPlugin(new BundleAnalyzerPlugin({
+    /*Encore.addPlugin(new BundleAnalyzerPlugin({
          openAnalyser:false
-     }));
+     }));*/
 }
 else{
     Encore.configureUglifyJsPlugin((options) => {
