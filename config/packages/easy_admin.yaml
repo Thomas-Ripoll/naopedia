@@ -26,15 +26,18 @@ easy_admin:
                   - { property: 'user', label: 'Pseudo' }
                   - { property: 'bird', label: 'Oiseau' }
                   - date
-                  - { property: 'valid', label: 'validée' }
-                actions: ['check']
+                  - { property: 'valid', label: 'validée'}
+                actions: ['show']
+            templates:
+                show: 'checkObservation.html.twig'
 
 
 
         Bird:
             class: App\Entity\Bird
-            label: 'Oiseaux'
+            label: 'Contribution'
             list:
+                dql_filter: 'entity.description = false'
                 fields:
                   - name
                   - contributor

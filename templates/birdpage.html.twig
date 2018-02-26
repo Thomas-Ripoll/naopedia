@@ -13,11 +13,15 @@
     {% if bird.description is null %}
       <h3>Il n'y a pas de fiche pour cet oiseaux. </h3>
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#birdChange">
-        Launch demo modal
+      <button type="button" class="btn btn-primary col-lg-3" data-toggle="modal" data-target="#birdChange">
+        Ajouter une description
       </button>
     {% else %}
-      {{ bird.description}}
+      {% if bird.descriptionValid is null %}
+        <p> Une description de cet oiseau est en cours de validation</p>
+      {% else %}
+        <p> {{bird.description}}</p>
+      {% endif %}
     {% endif %}
 
   {% endif %}

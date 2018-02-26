@@ -51,9 +51,11 @@ class AppController extends Controller {
     $em = $this->getDoctrine()->getManager();
     $bird = $em->getRepository(Bird::class)->find($birdId);
 
-
+    
     $description= $request->request->get('description');
     $bird->setDescription($description);
+    $bird->setDescriptionValid(false);
+    $bird->setContributor($this->get('security.context')->getToken()->getUser()->getUsername());
 
     $em->persist($bird);
     $em->flush();
@@ -72,6 +74,7 @@ class AppController extends Controller {
     public function birdPage($slug) {
         $em = $this->getDoctrine()->getManager();
         $bird = $em->getRepository(Bird::class)->findOneBy(['slug' => $slug]);
+        $observations = $em->getRepository(Observation::class)->findBy(['bird' => $bird]);
 
 
         if (!$bird) {
@@ -79,7 +82,8 @@ class AppController extends Controller {
             return $this->render("birdpage.html.twig");
         } else {
             return $this->render("birdpage.html.twig", array(
-                        'bird' => $bird));
+                        'bird' => $bird,
+                        'obs'=> $observations ));
         }
     }
 
@@ -159,6 +163,7 @@ class AppController extends Controller {
             );
             $observation->getImage()->setUrl($imgName);
             $observation->SetValid(FALSE);
+            $observation->setDescription($observation->getImage()->getAlt());
 
 
             $em = $this->getDoctrine()->getManager();

@@ -49,11 +49,18 @@ class Bird
   */
   private $description;
 
+    /**
+  * @ORM\Column(type="boolean", nullable=true)
+  */
+  private $descriptionValid;
+
   /**
   * @ORM\Column(type="string", nullable=true)
   */
   private $contributor;
 
+
+  
   /**
    * @Gedmo\Slug(fields={"name", "latinName"})
    * @ORM\Column(length=128, unique=true)
@@ -292,4 +299,24 @@ class Bird
         return $this;
     }
 
+
+  /**
+   * Get the value of descriptionValid
+   */ 
+  public function getDescriptionValid()
+  {
+    return $this->descriptionValid;
+  }
+
+  /**
+   * Set the value of descriptionValid
+   *
+   * @return  self
+   */ 
+  public function setDescriptionValid($descriptionValid)
+  {
+    $this->descriptionValid = $descriptionValid;
+
+    return $this;
+  }
 }

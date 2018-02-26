@@ -1,14 +1,30 @@
-{% extends "layout.html.twig" %}
-{% block content %}
+{% set _entity_config = easyadmin_entity(app.request.query.get('entity')) %}
+{# the empty string concatenation is needed when the primary key is an object (e.g. an Uuid object) #}
+{% set _entity_id = '' ~ attribute(entity, _entity_config.primary_key_field_name) %}
+{% trans_default_domain _entity_config.translation_domain %}
+{% set _trans_parameters = { '%entity_name%': _entity_config.name|trans, '%entity_label%': _entity_config.label|trans, '%entity_id%': _entity_id } %}
 
-<h2>Observation de {{observation.user.username}} </h2>
+{% extends _entity_config.templates.layout %}
+
+{% block body_id 'easyadmin-show-' ~ _entity_config.name ~ '-' ~ _entity_id %}
+{% block body_class 'show show-' ~ _entity_config.name|lower %}
+
+{% block content_title %}
+{% spaceless %}
+    {% set _default_title = 'show.page_title'|trans(_trans_parameters, 'EasyAdminBundle') %}
+    {{ _entity_config.show.title is defined ? _entity_config.show.title|trans(_trans_parameters) : _default_title }}
+{% endspaceless %}
+{% endblock %}
+{% block main %}
+
+<h2>Observation de {{entity.user.username}} </h2>
 
 
-  <a class="username" href="{{ path('birdpage', {'birdname': observation.bird.name }) }}">{{observation.bird.name}}</a>
-  {{observation.date|date}}
-  <img src="{{asset('images/post/'~ observation.image.url)}} ">
+  <a class="username" href="{{ path('birdpage', {'slug': entity.bird.slug }) }}">{{entity.bird.name}}</a>
+  {{entity.date|date}}
+  <img src="{{asset('images/post/'~ entity.image.url)}} ">
 
-  <a class="btn btn-primary" href=" {{ path('valid', {'observationId': observation.id }) }}">Valider</a>
+  <a class="btn btn-primary" href=" {{ path('valid', {'observationId': entity.id }) }}">Valider</a>
   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#RefuseModal">Refuser</button>
 
   <!-- Modal -->
@@ -22,7 +38,7 @@
           <h4 class="modal-title">Merci de laisser une raison de refus </h4>
         </div>
         <div class="modal-body">
-          <form method="post" action="{{ path('refuse', {'observationId': observation.id }) }}">
+          <form method="post" action="{{ path('refuse', {'observationId': entity.id }) }}">
             <input name="refuseMessage">
             <button type="submit" class="btn btn-danger">Refuser</button>
           </form>
