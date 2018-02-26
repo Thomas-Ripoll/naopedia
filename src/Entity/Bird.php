@@ -55,7 +55,7 @@ class Bird
   private $descriptionValid;
 
   /**
-  * @ORM\Column(type="string", nullable=true)
+  * @ORM\ManyToOne(targetEntity="App\Entity\User")
   */
   private $contributor;
 

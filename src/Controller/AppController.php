@@ -56,10 +56,12 @@ class AppController extends Controller {
     $description= $request->request->get('description');
     $bird->setDescription($description);
     $bird->setDescriptionValid(false);
-    $bird->setContributor($this->getUser()->getUsername());
+    $bird->setContributor($this->getUser());
 
     $em->persist($bird);
     $em->flush();
+
+    $this->get('session')->getFlashBag()->add('success', 'La description a été soumise');
 
         return $this->redirectToRoute("birdpage", array(
             'slug'=> $bird->getSlug(),
@@ -103,7 +105,7 @@ class AppController extends Controller {
 
 
         if (!$bird) {
-            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'utilisateur à ce nom');
+            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'oiseau à ce nom');
             return $this->render("birdpage.html.twig");
         } else {
             return $this->render("birdpage.html.twig", array(

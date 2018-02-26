@@ -35,7 +35,7 @@ easy_admin:
 
 
         Bird:
-            disabled_actions: ['new','edit']
+            disabled_actions: ['new','edit','delete']
             class: App\Entity\Bird
             label: 'Contribution'
             list:

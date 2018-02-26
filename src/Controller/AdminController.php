@@ -69,6 +69,8 @@ class AdminController extends BaseAdminController
 
          $bird->setDescriptionValid(false);
          $bird->setDescription(null);
+         $bird->setContributor(null);
+
          $em->persist($bird);
          $em->flush();
           return $this->redirectToRoute('admin');

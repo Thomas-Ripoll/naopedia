@@ -20,7 +20,8 @@
       {% if bird.descriptionValid == FALSE %}
         <p> Une description de cet oiseau est en cours de validation</p>
       {% else %}
-        <p> {{bird.description}}</p>
+        <p> Description : {{bird.description}}</p>
+        <p> une description de <i>{{bird.contributor.username}}</i>
       {% endif %}
     {% endif %}
 
