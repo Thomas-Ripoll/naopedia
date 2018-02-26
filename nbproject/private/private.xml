@@ -3,27 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/naopedia/templates/base.html.twig</file>
+            <file>file:/var/www/html/naopedia/assets/js/datepicker.js</file>
+            <file>file:/var/www/html/naopedia/assets/js/autocomplete.js</file>
             <file>file:/var/www/html/naopedia/src/DataFixtures/AppFixtures.php</file>
             <file>file:/var/www/html/naopedia/assets/scss/app.scss</file>
             <file>file:/var/www/html/naopedia/config/services.yaml</file>
+            <file>file:/var/www/html/naopedia/src/Repository/UserRepository.php</file>
             <file>file:/var/www/html/naopedia/src/Controller/AdminController.php</file>
-            <file>file:/var/www/html/naopedia/config/bundles.php</file>
-            <file>file:/var/www/html/naopedia/templates/map.html.twig</file>
+            <file>file:/var/www/html/naopedia/src/Repository/ObservationRepository.php</file>
             <file>file:/var/www/html/naopedia/.env</file>
+            <file>file:/var/www/html/naopedia/templates/map.html.twig</file>
             <file>file:/var/www/html/naopedia/assets/js/map/map.js</file>
-            <file>file:/var/www/html/naopedia/yarn.lock</file>
             <file>file:/var/www/html/naopedia/src/Controller/AppController.php</file>
             <file>file:/var/www/html/naopedia/src/Entity/Observation.php</file>
-            <file>file:/var/www/html/naopedia/src/Entity/Image.php</file>
-            <file>file:/var/www/html/naopedia/templates/birdpage.html.twig</file>
+            <file>file:/var/www/html/naopedia/src/Services/DataFaker.php</file>
             <file>file:/var/www/html/naopedia/assets/js/app.js</file>
-            <file>file:/var/www/html/naopedia/assets/js/map/leaflet.markercluster.js</file>
-            <file>file:/var/www/html/naopedia/src/Entity/User.php</file>
+            <file>file:/var/www/html/naopedia/src/Command/ShuffleObservations.php</file>
             <file>file:/var/www/html/naopedia/templates/layout.html.twig</file>
-            <file>file:/var/www/html/naopedia/assets/js/map/Leaflet.Photo.js</file>
-            <file>file:/var/www/html/naopedia/webpack.config.js</file>
+            <file>file:/var/www/html/naopedia/src/Services/QueryStringDecoder.php</file>
             <file>file:/var/www/html/naopedia/package.json</file>
+            <file>file:/var/www/html/naopedia/webpack.config.js</file>
         </group>
     </open-files>
 </project-private>

@@ -1,0 +1,45 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+
+{# total items count #}
+<div class="count">
+    {{ birdslist.getTotalItemCount }}
+</div>
+<form> Vous recherchez un oiseau ? 
+    <input type="text" class='birdSearch'> 
+</form>
+<div class="container" style="text-align:center; display:flex; flex-wrap: wrap">
+
+
+
+    {% for bird in birdslist %}
+    <div class="card col-lg-3" style="margin:20px;">
+        <img class="card-img-top" src="" alt="image">
+        <div class="card-block">
+            <h4 class="card-title">{{bird.name}}</h4>
+            <p class="card-text">{{bird.latinName}} </br> {{bird.description}}</p>
+            <a href="{{ path('birdpage', {'slug': bird.slug }) }}" class="btn btn-primary">Voir la page</a>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="text-center">{{ knp_pagination_render(birdslist) }}</div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script>
+$(function(){
+    $('.birdSearch').birdSearch(function(res){
+        $('.birdId').val(res.birdId);
+        $(this).val(res.birdName +' ' +  res.birdLatinName);
+        window.location="bird/" + res.birdSlug ;
+    })
+
+})
+
+</script>
+
+{% endblock %}

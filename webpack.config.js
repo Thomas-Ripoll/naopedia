@@ -15,6 +15,7 @@ Encore
     // uncomment to define the assets of the project
      .addEntry('js/app.min', './assets/js/app.js')
      .addEntry('js/autocomplete.min', './assets/js/autocomplete.js')
+     .addEntry('js/datepicker.min', './assets/js/datepicker.js')
      .addStyleEntry('css/app.min', './assets/scss/app.scss')
      
     // uncomment if you use Sass/SCSS files
@@ -28,10 +29,11 @@ Encore
     // uncomment for legacy applications that require $/jQuery as a global variable
      //.autoProvidejQuery()
 ;
+
 if(!Encore.isProduction()){
-    Encore.addPlugin(new BundleAnalyzerPlugin({
+    /*Encore.addPlugin(new BundleAnalyzerPlugin({
          openAnalyser:false
-     }));
+     }));*/
 }
 else{
     Encore.configureUglifyJsPlugin((options) => {

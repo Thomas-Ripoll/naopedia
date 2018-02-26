@@ -26,19 +26,29 @@ easy_admin:
                   - { property: 'user', label: 'Pseudo' }
                   - { property: 'bird', label: 'Oiseau' }
                   - date
-                  - { property: 'valid', label: 'validée' }
-                actions: ['check']
+                  - { property: 'valid', label: 'validée'}
+                actions: 
+                    - { name: 'show', label: "Voir l'observation", icon: 'user' }
+            templates:
+                show: 'admin/checkObservation.html.twig'
 
 
 
         Bird:
+            disabled_actions: ['new','edit','delete']
             class: App\Entity\Bird
-            label: 'Oiseaux'
+            label: 'Contribution'
             list:
+                dql_filter: 'entity.description = false' #description non nul
                 fields:
                   - name
                   - contributor
                   - description
+                  - { property: 'descriptionValid', label: 'validée'}
+                actions: 
+                    - { name: 'show', label: "Voir la contribution", icon: 'user' }
+            templates:
+                show: 'admin/checkContribution.html.twig'
 
         Article:
             class: App\Entity\Article

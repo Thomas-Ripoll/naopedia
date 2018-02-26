@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Bird;
+use App\Entity\Image;
+use App\Entity\Observation;
+use App\Entity\User;
+use App\Form\ObservationType;
+use App\Services\QueryStringDecoder;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\Observation;
@@ -12,6 +18,7 @@ use App\Entity\Image;
 use App\Entity\Bird;
 use App\Form\ObservationType;
 use App\Form\ImageType;
+use Knp\Component\Pager\Paginator;
 
 class AppController extends Controller {
 
@@ -51,12 +58,16 @@ class AppController extends Controller {
     $em = $this->getDoctrine()->getManager();
     $bird = $em->getRepository(Bird::class)->find($birdId);
 
-
+    
     $description= $request->request->get('description');
     $bird->setDescription($description);
+    $bird->setDescriptionValid(false);
+    $bird->setContributor($this->getUser());
 
     $em->persist($bird);
     $em->flush();
+
+    $this->get('session')->getFlashBag()->add('success', 'La description a été soumise');
 
         return $this->redirectToRoute("birdpage", array(
             'slug'=> $bird->getSlug(),
@@ -65,35 +76,98 @@ class AppController extends Controller {
 
     }
 
+     /**
+     * @Route("/oiseaux", name="birds")
+     */
+    public function birdsPage( /*Paginator $paginator, */ Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+        $birds = $em->getRepository(Bird::class)->findAll();
+       // $qb = $repository->createQueryBuilder('b');
+
+       $birdslist  = $this->get('knp_paginator')->paginate(
+        $birds,
+        $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+          9/*nbre d'éléments par page*/
+    );
+
+        if (!$birds) {
+            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'oiseaux');
+            return $this->render("birds.html.twig");
+        } else {
+            return $this->render("birds.html.twig", array(
+                        'birds' => $birds,
+                        'birdslist' => $birdslist));
+        }
+    }
 
     /**
-     * @Route("/bird/{slug}", name="birdpage")
+     * @Route("/oiseau/{slug}", name="birdpage")
      */
     public function birdPage($slug) {
         $em = $this->getDoctrine()->getManager();
         $bird = $em->getRepository(Bird::class)->findOneBy(['slug' => $slug]);
+        $observations = $em->getRepository(Observation::class)->findBy(['bird' => $bird]);
 
 
         if (!$bird) {
-            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'utilisateur à ce nom');
+            $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'oiseau à ce nom');
+
             return $this->render("birdpage.html.twig");
         } else {
             return $this->render("birdpage.html.twig", array(
-                        'bird' => $bird));
+                        'bird' => $bird,
+                        'obs'=> $observations ));
         }
     }
 
     /**
      * @Route("/carte", name="map")
      */
-    public function application(Request $request) {
-        return $this->render("map.html.twig");
+    public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
+        $parameters = $qsd->decodeUrl($request->query);
+        
+        $observations = $em->getRepository(Observation::class)->findByFilters($parameters["query"]);
+        
+        $datesArray = [];
+        foreach($observations as $obs){
+            $img = $obs->getImage();
+            if(!key_exists($obs->getSearchDate(), $datesArray)){
+                $datesArray[$obs->getSearchDate()] = [];
+            }
+            $datesArray[$obs->getSearchDate()][] = [
+                                "lat" => $obs->getGeoloc("lat"),
+                                "lng" => $obs->getGeoloc("lng"),
+                                "thumbnail" => (!is_null($img))?$img->getUrl():"",
+                                "url" => (!is_null($img))?$img->getUrl():"",
+                                "caption" => $obs->getDescription(),
+                                "author" => $obs->getUser()->getUsername(),
+                                "day" => $obs->getDate()->format("j"),
+                                "date"=> $obs->getDate()->format("d/m/Y")
+                            ];
+        }
+        if($request->query->has("dates")){
+            foreach($parameters["query"]["dates"] as $date){
+                if(!key_exists($date, $datesArray)){
+                    $datesArray[$date] = [];
+                }
+            }
+        }
+        $bird = ($request->query->has("bird"))?$parameters["query"]["bird"]:"all";
+        $dataArray = [];
+        $dataArray=[
+            "data"=>[$bird=>$datesArray],
+            "filters"=>$parameters["filters"]
+        ];
+                
+        return $this->render("map.html.twig",["birdsloaded"=> $dataArray]);
     }
 
     /**
      * @Route("/get-bird-list", name="bird-search")
      */
     public function birdSearch(Request $request) {
+        
         $query = $request->query->get("term");
         $em = $this->getDoctrine()->getManager();
         $birdsList = $em->getRepository(Bird::class)->search($query);
@@ -107,33 +181,57 @@ class AppController extends Controller {
             ];
         }
         return $this->json($birdJson);
+        
     }
 
     /**
      * 
      * @Route("/get-observations", name="getObservations")
      */
-    public function getObservations(Request $request, \Doctrine\ORM\EntityManagerInterface $em) {
+    public function getObservations(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
 
-        $observations = $em->getRepository(Observation::class)->findByBird($request->query->get("bird"));
-
-        if(count($observations)<=0 && $this->getParameter('fake_data')){
-            $observations = $this->get("data_faker")->getfakeObservations($request->query->get("bird"));
-        }
+        $query = $qsd->decode($request->query);
+        //dump($query);
+        $observations = $em->getRepository(Observation::class)->findByFilters($query);
         
-        return $this->json(
-                        array_map(function($obs) {
-                            
-                            $img = $obs->getImage();
-                            return [
+        if(count($observations)<=0 && $this->getParameter('fake_data') && $request->query->has("bird")){
+            
+            $this->get("data_faker")->getfakeObservations($request->query->get("bird"));
+            $observations = $em->getRepository(Observation::class)->findByFilters($query);
+          
+        }
+        //$observations = [];
+        /* foreach($em->getRepository(Observation::class)->findAll() as $obs){
+             $obs->setDate($obs->getDate());
+             $em->persist($obs);
+         }
+         $em->flush();*/
+        $datesArray = [];
+        foreach($observations as $obs){
+            $img = $obs->getImage();
+            if(!key_exists($obs->getSearchDate(), $datesArray)){
+                $datesArray[$obs->getSearchDate()] = [];
+            }
+            $datesArray[$obs->getSearchDate()][] = [
                                 "lat" => $obs->getGeoloc("lat"),
                                 "lng" => $obs->getGeoloc("lng"),
                                 "thumbnail" => (!is_null($img))?$img->getUrl():"",
                                 "url" => (!is_null($img))?$img->getUrl():"",
-                                "caption" => $obs->getDescription()
+                                "caption" => $obs->getDescription(),
+                                "author" => $obs->getUser()->getUsername(),
+                                "day" => $obs->getDate()->format("j"),
+                                "date"=> $obs->getDate()->format("d/m/Y")
                             ];
-                        }, $observations)
-        );
+        }
+        if($request->query->has("dates")){
+            foreach($query["dates"] as $date){
+                if(!key_exists($date, $datesArray)){
+                    $datesArray[$date] = [];
+                }
+            }
+        }
+        
+        return $this->json($datesArray);
     }
 
     /**
@@ -159,12 +257,13 @@ class AppController extends Controller {
             );
             $observation->getImage()->setUrl($imgName);
             $observation->SetValid(FALSE);
+            $observation->setDescription($observation->getImage()->getAlt());
 
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($observation);
             $em->flush();
-
+            
             // IMAGE Entity creation
 
             $img = new Image();
