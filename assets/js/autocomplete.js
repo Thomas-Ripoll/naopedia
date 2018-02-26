@@ -21,7 +21,6 @@ require('webpack-jquery-ui/autocomplete');
                 initSource.call(this);
             }
         },
-
         _renderItem: function (ul, item) {
 
             return $("<li></li>")
@@ -30,17 +29,21 @@ require('webpack-jquery-ui/autocomplete');
                     .appendTo(ul);
 
         },
+        
         _resizeMenu: function () {
             var ul = this.menu.element;
             ul.outerWidth(this.element.outerWidth());
-        }
+        },
+        
     });
 
     var birdSearch = function (element, callback) {
         var _this = this;
         this.cache = [];
-        console.log(element);
+        this.container = $("<div class='autocomplete_menu'>");
+        $("body").append(this.container);
         element.autocomplete({
+            appendTo: _this.container,
             "source": function (request, response) {
                 _this.ajaxSearch(request.term, response)
             },
@@ -50,7 +53,25 @@ require('webpack-jquery-ui/autocomplete');
                 return false;
             },
             focus: function () {
-                return false;
+                return false; 
+            },
+            open: function( event, ui ) {
+                console.log($(this).autocomplete( "instance" ));
+                var menu = $(this).autocomplete( "instance" ).menu.element;
+                var bounding = $(this)[0].getBoundingClientRect();
+                console.log(bounding);
+                var style = {
+                    top: bounding.top + bounding.height+2+window.pageYOffset ,
+                    left: bounding.left,
+                    width: bounding.width,
+                    display: "block"
+                    
+                }
+                _this.container.css(style);
+                menu.removeAttr("style");
+            },
+            close: function(event, ui){
+                _this.container.css("display", "none");
             }
         });
     }
@@ -81,7 +102,7 @@ require('webpack-jquery-ui/autocomplete');
     }
     birdSearch.prototype.filterResults = function (term, data) {
         var termR = RegExp(term, "i");
-        return data.filter(item => termR.test(item.birdName) || termR.test(item.birdLatinName));
+        return data.filter(item => termR.test(item.birdName) || termR.test(item.birdLatinName) || termR.test(item.birdName+" "+item.birdLatinName));
     }
 
     $.fn.birdSearch = function (callback) {
