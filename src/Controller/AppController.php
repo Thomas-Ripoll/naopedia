@@ -12,13 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
-use App\Entity\Observation;
-use App\Entity\Image;
-use App\Entity\Bird;
-use App\Form\ObservationType;
-use App\Form\ImageType;
-use Knp\Component\Pager\Paginator;
 
 class AppController extends Controller {
 
@@ -79,7 +72,7 @@ class AppController extends Controller {
      /**
      * @Route("/oiseaux", name="birds")
      */
-    public function birdsPage( /*Paginator $paginator, */ Request $request) {
+    public function birdsPage( Request $request) {
 
         $em = $this->getDoctrine()->getManager();
         $birds = $em->getRepository(Bird::class)->findAll();
@@ -146,7 +139,7 @@ class AppController extends Controller {
                                 "date"=> $obs->getDate()->format("d/m/Y")
                             ];
         }
-        if($request->query->has("dates")){
+        if(count($parameters["query"]["dates"])>0){
             foreach($parameters["query"]["dates"] as $date){
                 if(!key_exists($date, $datesArray)){
                     $datesArray[$date] = [];
