@@ -30,19 +30,25 @@ easy_admin:
                 actions: 
                     - { name: 'show', label: "Voir l'observation", icon: 'user' }
             templates:
-                show: 'checkObservation.html.twig'
+                show: 'admin/checkObservation.html.twig'
 
 
 
         Bird:
+            disabled_actions: ['new','edit']
             class: App\Entity\Bird
             label: 'Contribution'
             list:
-                dql_filter: 'entity.description = false'
+                dql_filter: 'entity.description = false' #description non nul
                 fields:
                   - name
                   - contributor
                   - description
+                  - { property: 'descriptionValid', label: 'validée'}
+                actions: 
+                    - { name: 'show', label: "Voir la contribution", icon: 'user' }
+            templates:
+                show: 'admin/checkContribution.html.twig'
 
         Article:
             class: App\Entity\Article

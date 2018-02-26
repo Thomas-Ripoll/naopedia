@@ -17,7 +17,7 @@
         Ajouter une description
       </button>
     {% else %}
-      {% if bird.descriptionValid is null %}
+      {% if bird.descriptionValid == FALSE %}
         <p> Une description de cet oiseau est en cours de validation</p>
       {% else %}
         <p> {{bird.description}}</p>

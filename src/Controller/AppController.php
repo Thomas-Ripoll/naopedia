@@ -56,7 +56,7 @@ class AppController extends Controller {
     $description= $request->request->get('description');
     $bird->setDescription($description);
     $bird->setDescriptionValid(false);
-    $bird->setContributor($this->get('security.context')->getToken()->getUser()->getUsername());
+    $bird->setContributor($this->getUser()->getUsername());
 
     $em->persist($bird);
     $em->flush();
