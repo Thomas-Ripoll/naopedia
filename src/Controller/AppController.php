@@ -96,7 +96,7 @@ class AppController extends Controller {
     }
 
     /**
-     * @Route("/bird/{slug}", name="birdpage")
+     * @Route("/oiseau/{slug}", name="birdpage")
      */
     public function birdPage($slug) {
         $em = $this->getDoctrine()->getManager();
