@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
 use App\Form\UserType;
 
+use App\Services\Mailer;
+
 class SecurityController extends Controller
 {
      /**
@@ -41,7 +43,7 @@ class SecurityController extends Controller
     /**
     * @Route("/signin", name="signin")
     */
-      public function signinAction (Request $request, UserPasswordEncoderInterface $encoder) {
+      public function signinAction ( Request $request, UserPasswordEncoderInterface $encoder, Mailer $mailer) {
 
       $user = new User();
       $form = $this->createForm(UserType::class, $user);
@@ -72,6 +74,8 @@ class SecurityController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        $mailer->sendNewUser($user);
 
         $this->addFlash(
           'notice',
