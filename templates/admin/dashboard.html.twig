@@ -1,0 +1,53 @@
+{% extends 'admin/layout.html.twig' %}
+{% set _content_title = 'Admin dashboard' %}
+{% block page_title -%}
+    {{ _content_title }}
+    {%- endblock %}
+    {% block content_header %}
+        <h1 class="title">Bienvenue {{ app.user.username }}</h1>
+    {% endblock %}
+    {% block main %}
+        <div class="row">
+            <div class="jumbotron">
+            {% for key, entitySet in dashEntities %}
+                {% set _entity_config = easyadmin_entity(key) %}
+
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ _entity_config.label }}</h3>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    {% for fieldName in _entity_config.dashboard %} 
+                                        <th>{{ _entity_config.list.fields[fieldName].label ?: fieldName|humanize }}</th>
+                                        {% endfor %}
+                                    <th></th>
+                                </tr>
+                            </thead>        
+                            <tbody>
+                                {% for entity in entitySet %}
+
+                                    <tr>
+                                        {% for fieldName in _entity_config.dashboard %} 
+                                            <td>{{ easyadmin_render_field_for_list_view(_entity_config.name, entity, _entity_config.list.fields[fieldName]) }}</td>
+                                        {% endfor %}
+                                        <td>
+                                            {% set action_href = path('easyadmin', { entity: _entity_config.name, action: "show", id: entity.id }) %}
+                                            <a href="{{ action_href }}" class="btn btn-xs">voir</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %} 
+                            </tbody>
+                        </table>
+                        <div class="panel-footer">
+                            {% set action_href = path('easyadmin', { entity: _entity_config.name, action: "list" }) %}
+                            <a href="{{ action_href }}" class="btn btn-lg btn-block">Voir tous</a>
+                        </div>
+                    </div>
+                </div>  
+            {% endfor %}  
+            </div>
+        </div>
+    {% endblock %}
