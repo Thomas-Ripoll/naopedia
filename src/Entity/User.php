@@ -69,7 +69,7 @@ class User  implements UserInterface
   */
   protected $images;
 
-  protected static $rolesParameter = ['ROLE_ADMIN' =>'Administrateur','ROLE_NATURALISTE' =>'Naturaliste','ROLE_REDACTEUR' =>'Redacteur', 'ROLE_USER' =>'Observateur'];
+  protected static $rolesParameter = ['ROLE_ADMIN_SUPER' =>'Super Administrateur','ROLE_ADMIN' =>'Administrateur','ROLE_NATURALISTE' =>'Naturaliste','ROLE_REDACTEUR' =>'Redacteur', 'ROLE_USER' =>'Observateur'];
 
   /**
   * Get the value of Id

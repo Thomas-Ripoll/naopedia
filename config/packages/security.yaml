@@ -9,9 +9,13 @@ security:
             cost: 12
     providers:
         our_db_provider:
-            entity:
-                class: App\Entity\User
-                property: username
+            chain:
+                providers: [ database_users, database_email ]
+        database_users:
+            entity: { class: App\Entity\User, property: username }
+        database_email:
+            entity: { class: App\Entity\User, property: email }
+
     firewalls:
 
         dev:
@@ -37,3 +41,8 @@ security:
 
             # form_login: ~
             # https://symfony.com/doc/current/security/form_login_setup.html
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_REDACTEUR: ROLE_ADMIN
+        ROLE_NATURALISTE: ROLE_ADMIN
+        ROLE_ADMIN_SUPER: [ROLE_ADMIN, ROLE_REDACTEUR, ROLE_NATURALISTE]        
