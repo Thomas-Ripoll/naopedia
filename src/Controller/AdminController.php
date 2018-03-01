@@ -12,6 +12,8 @@ use App\Entity\Observation;
 use App\Entity\User;
 use App\Entity\Bird;
 
+use App\Services\Mailer;
+
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 
 
@@ -34,12 +36,14 @@ class AdminController extends BaseAdminController
       /**
        * @Route("/admin/valid{observationId}", name="valid")
        */
-      public function observationAction($observationId)
+      public function observationAction($observationId, Mailer $mailer )
       {
          $em = $this->getDoctrine()->getManager();
          $observation = $em->getRepository(Observation::Class)->find($observationId);
 
          $observation->setValid(True);
+
+         $mailer->sendObservatioValid($observation);
          $em->persist($observation);
          $em->flush();
           return $this->redirectToRoute('admin');

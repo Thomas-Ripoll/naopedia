@@ -22,7 +22,7 @@ class Mailer {
   public function sendNewUser($user)
   {
 
-    $message = (new \Swift_Message('Hello Email'))
+    $message = (new \Swift_Message('Bienvenue'))
         ->setFrom('naopegia@gmail.com')
         ->setTo($user->getEmail())
         ->setBody(
@@ -32,18 +32,23 @@ class Mailer {
                 array('user' => $user)
             ),
             'text/html'
-        )
-        /*
-         * If you also want to include a plaintext version of the message
-        ->addPart(
-            $this->renderView(
-                'emails/registration.txt.twig',
-                array('name' => $name)
+        );
+    $this->mailer->send($message);
+  }
+
+  public function  sendObservatioValid($observation)
+  {
+
+    $message = (new \Swift_Message('Observation validée')) //???
+        ->setFrom('naopegia@gmail.com')
+        ->setTo($user->getEmail())
+        ->setBody(
+             $this->templating->render(
+                'emails/observationValid.html.twig',
+                array('observation' => $observation)
             ),
-            'text/plain'
-        )
-        */
-    ;
+            'text/html'
+        );
     $this->mailer->send($message);
   }
 
