@@ -35,14 +35,13 @@ class Observation
   * @ORM\Column(type="datetime")
   */
   private $date;
-  
+
   /**
   * @ORM\Column(type="integer", nullable=true)
   */
   private $searchDate;
 
-  
-  
+
   /**
   *@ORM\OneToOne(targetEntity="App\Entity\Image",cascade={"persist"})
   */
@@ -147,14 +146,14 @@ class Observation
   */
   public function getGeoloc($value = null)
   {
-    if(is_null($value))  
+    if(is_null($value))
         return $this->geoloc;
     if($value=="lat")
         return $this->geoloc[0];
     if($value=="lng")
         return $this->geoloc[1];
     return null;
-        
+
   }
 
   /**
@@ -196,14 +195,14 @@ class Observation
   }
 
   /**
-   * 
+   *
    * @return type
    */
   public function getSearchDate() {
       return $this->searchDate;
   }
-  
-  
+
+
 
     /**
   * Get the value of Image
@@ -228,7 +227,7 @@ class Observation
 
     return $this;
   }
-  
+
 
   /**
   * Get the value of Valid
@@ -279,7 +278,7 @@ class Observation
 
         return $this;
     }
-    
+
     public function getDescription() {
         return $this->description;
     }
