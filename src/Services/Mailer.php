@@ -23,7 +23,7 @@ class Mailer {
   {
 
     $message = (new \Swift_Message('Bienvenue'))
-        ->setFrom('naopegia@gmail.com')
+        ->setFrom('naopedia@gmail.com')
         ->setTo($user->getEmail())
         ->setBody(
              $this->templating->render(
