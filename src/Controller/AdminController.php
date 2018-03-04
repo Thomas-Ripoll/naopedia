@@ -200,7 +200,7 @@ class AdminController extends BaseAdminController
 
     /**
      * @Route("/admin/changeRole{userId}", name="changeRole")
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_ADMIN_SUPER')")
      */
     public function changeRoleAction($userId, Request $request) {
 
@@ -219,7 +219,7 @@ class AdminController extends BaseAdminController
 
     /**
      * @Route("/admin/checkProfil{id}", name="checkProfil")
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_ADMIN_SUPER')")
      */
     public function checkProfilAction() {
         $id = $this->request->query->get('id');

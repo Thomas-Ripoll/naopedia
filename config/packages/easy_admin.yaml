@@ -75,6 +75,12 @@ easy_admin:
         templates:
             layout: "admin/layout.html.twig"
             menu: "admin/menu.html.twig"
+        assets:    
+            js:
+                - '/dist/js/ckeditor5/ckeditor.js.map'
+                - '/dist/js/ckeditor5/ckeditor.js'
+                - '/dist/js/ckeditor5/ckeditorInit.js'
+
         menu:
             - { label: 'Dashboard', route: 'admin_dashboard', default: true }
             #- { label: 'Accueil', route: 'homepage', icon: 'home' }

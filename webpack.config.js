@@ -16,6 +16,7 @@ Encore
      .addEntry('js/app.min', './assets/js/app.js')
      .addEntry('js/autocomplete.min', './assets/js/autocomplete.js')
      .addEntry('js/datepicker.min', './assets/js/datepicker.js')
+     .addEntry('js/naoajax.min', './assets/js/naoajax.js')
      .addStyleEntry('css/app.min', './assets/scss/app.scss')
      
     // uncomment if you use Sass/SCSS files

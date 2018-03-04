@@ -32,7 +32,7 @@ class UserType extends AbstractType
     ->add('avatar', FileType::class)
     ->add('submit', SubmitType::class, [
       'label' => 'Create',
-      'attr' => ['class' => 'btn btn-default pull-right'],
+      'attr' => ['class' => 'btn btn-primary btn-lg'],
     ])
     ;
 

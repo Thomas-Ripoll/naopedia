@@ -1,17 +1,17 @@
-{{ form_errors(form) }} 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Bienvenue sur Naopedia{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body style="text-align: center">
 
-      {{ form_start(form, {attr: {class: 'my-form-class'} }) }}
+      
+{% extends ajaxLogin is defined ? "ajaxmodal.html.twig" : "layout.html.twig"  %}
+    
+{% block title %}
+            <h2>Inscrivez vous</h2>
+        {% endblock %}
+{% block content %}
+    {% if ajaxLogin is defined %}
+        <div class="alert alert-info" >
+        <a href="/login" class="btn btn-link"><i class="fas fa-chevron-left"></i> Retour au formulaire de conexion</a>
+        </div>
+    {% endif %} 
+    {{ form_start(form, {attr: {class: 'my-form-class'} }) }}
           {{ form_widget(form) }}
       {{ form_end(form) }}
-
-    </body>
-</html>
+{% endblock %}    

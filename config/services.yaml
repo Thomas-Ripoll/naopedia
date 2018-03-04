@@ -47,3 +47,8 @@ services:
     data_faker:
         class: 'App\Services\DataFaker'
         public: true
+        
+    ajaxSecurityListener:
+        class: App\Listeners\AjaxSecurityListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: 256 }

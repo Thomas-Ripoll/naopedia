@@ -29,7 +29,7 @@
     }
 }
 .ui-menu.ui-widget.ui-widget-content.ui-autocomplete{
-    
+
     max-height: 250px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -240,11 +240,49 @@ body{
 }
 .filter-item{
     background-color: #fafafa;
-    padding: 0.2em;
+    padding: 0.2em; 
     margin: 0.2em;
     border-radius:5px;
     border:1px solid lightgray;
 }
 .filter-column{
     padding-top: 2em;
+}
+
+#NaoModal.loading{
+    min-height: 100px;
+    background-image: url('../images/load.gif')
+}
+.image-loading{
+    height:100px;
+    background-image: url('../images/load.gif');
+    background-repeat: no-repeat;
+    background-position: top center;
+    text-align: center;
+    padding-top: 90px;
+
+}
+.image-container{
+    .image {
+        position:relative;
+
+        .likes{
+            position:absolute;
+            bottom:0px;
+            width:100%;
+            text-align: right;
+            padding:0.5em;
+            font-size:1.5em;
+            svg{
+                cursor:pointer;
+                margin-left:5px;
+                &[data-prefix="fas"]{
+                    color:#d6105b;
+                }
+            }
+        }
+    }
+}
+.image-loading:before{
+    content: "chargement...."
 }

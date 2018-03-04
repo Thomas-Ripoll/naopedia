@@ -10,8 +10,10 @@ use App\Form\ObservationType;
 use App\Services\QueryStringDecoder;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class AppController extends Controller {
 
@@ -114,47 +116,6 @@ class AppController extends Controller {
         }
     }
 
-    /**
-     * @Route("/carte", name="map")
-     */
-    public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
-        $parameters = $qsd->decodeUrl($request->query);
-        
-        $observations = $em->getRepository(Observation::class)->findByFilters($parameters["query"]);
-        
-        $datesArray = [];
-        foreach($observations as $obs){
-            $img = $obs->getImage();
-            if(!key_exists($obs->getSearchDate(), $datesArray)){
-                $datesArray[$obs->getSearchDate()] = [];
-            }
-            $datesArray[$obs->getSearchDate()][] = [
-                                "lat" => $obs->getGeoloc("lat"),
-                                "lng" => $obs->getGeoloc("lng"),
-                                "thumbnail" => (!is_null($img))?$img->getUrl():"",
-                                "url" => (!is_null($img))?$img->getUrl():"",
-                                "caption" => $obs->getDescription(),
-                                "author" => $obs->getUser()->getUsername(),
-                                "day" => $obs->getDate()->format("j"),
-                                "date"=> $obs->getDate()->format("d/m/Y")
-                            ];
-        }
-        if(count($parameters["query"]["dates"])>0){
-            foreach($parameters["query"]["dates"] as $date){
-                if(!key_exists($date, $datesArray)){
-                    $datesArray[$date] = [];
-                }
-            }
-        }
-        $bird = ($request->query->has("bird"))?$parameters["query"]["bird"]:"all";
-        $dataArray = [];
-        $dataArray=[
-            "data"=>[$bird=>$datesArray],
-            "filters"=>$parameters["filters"]
-        ];
-                
-        return $this->render("map.html.twig",["birdsloaded"=> $dataArray]);
-    }
 
     /**
      * @Route("/get-bird-list", name="bird-search")
@@ -176,7 +137,59 @@ class AppController extends Controller {
         return $this->json($birdJson);
         
     }
-
+    
+    
+    /**
+     * @Route("/carte", name="map")
+     */
+    public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
+        $parameters = $qsd->decodeUrl($request->query);
+        
+        $observations = $em->getRepository(Observation::class)->findByFilters($parameters["query"]);
+        
+        $datesArray = [];
+        $user = $this->getUser();
+        $user_id = $user? $user->getId(): null;
+        
+        foreach($observations as $obs){
+            $img = $obs->getImage();
+            if(!key_exists($obs->getSearchDate(), $datesArray)){
+                $datesArray[$obs->getSearchDate()] = [];
+            }
+            $datesArray[$obs->getSearchDate()][] = [
+                                "id"        =>  $obs->getId(),
+                                "lat"       =>  $obs->getGeoloc("lat"),
+                                "lng"       =>  $obs->getGeoloc("lng"),
+                                "url"       =>  (!is_null($img))?$img->getUrl():"",
+                                "caption"   =>  $obs->getDescription(),
+                                "author"    =>  $obs->getUser()->getUsername(),
+                                "day"       =>  $obs->getDate()->format("j"),
+                                "date"      =>  $obs->getDate()->format("d/m/Y"),
+                                 "img"       =>  (!is_null($img))? [
+                                        "id"    =>  $img->getId(),
+                                        "url"   =>  $img->getUrl(),
+                                        "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
+                                        "countLikes" => count($img->getLikes())   
+                                    ]:null
+                            ];
+        }
+        if(key_exists("dates", $parameters["query"]) && count($parameters["query"]["dates"])>0){
+            foreach($parameters["query"]["dates"] as $date){
+                if(!key_exists($date, $datesArray)){
+                    $datesArray[$date] = [];
+                }
+            }
+        }
+        $bird = ($request->query->has("bird"))?$parameters["query"]["bird"]:"all";
+        $dataArray = [];
+        $dataArray=[
+            "data"=>[$bird=>$datesArray],
+            "filters"=>$parameters["filters"]
+        ];
+                
+        return $this->render("map.html.twig",["birdsloaded"=> $dataArray]);
+    }
+    
     /**
      * 
      * @Route("/get-observations", name="getObservations")
@@ -200,20 +213,28 @@ class AppController extends Controller {
          }
          $em->flush();*/
         $datesArray = [];
+        $user = $this->getUser();
+        $user_id = $user? $user->getId(): null;
         foreach($observations as $obs){
             $img = $obs->getImage();
             if(!key_exists($obs->getSearchDate(), $datesArray)){
                 $datesArray[$obs->getSearchDate()] = [];
             }
             $datesArray[$obs->getSearchDate()][] = [
-                                "lat" => $obs->getGeoloc("lat"),
-                                "lng" => $obs->getGeoloc("lng"),
-                                "thumbnail" => (!is_null($img))?$img->getUrl():"",
-                                "url" => (!is_null($img))?$img->getUrl():"",
-                                "caption" => $obs->getDescription(),
-                                "author" => $obs->getUser()->getUsername(),
-                                "day" => $obs->getDate()->format("j"),
-                                "date"=> $obs->getDate()->format("d/m/Y")
+                                "id"        =>  $obs->getId(),
+                                "lat"       =>  $obs->getGeoloc("lat"),
+                                "lng"       =>  $obs->getGeoloc("lng"),
+                                "url"       =>  (!is_null($img))?$img->getUrl():"",
+                                "caption"   =>  $obs->getDescription(),
+                                "author"    =>  $obs->getUser()->getUsername(),
+                                "day"       =>  $obs->getDate()->format("j"),
+                                "date"      =>  $obs->getDate()->format("d/m/Y"),
+                                "img"       =>  (!is_null($img))? [
+                                        "id"    =>  $img->getId(),
+                                        "url"   =>  $img->getUrl(),
+                                        "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
+                                        "countLikes" => count($img->getLikes())   
+                                    ]:null
                             ];
         }
         if($request->query->has("dates")){
@@ -226,7 +247,52 @@ class AppController extends Controller {
         
         return $this->json($datesArray);
     }
-
+    
+    /**
+     * @Route("/get-observation-image/{obs}")
+     */
+    public function getImage(Observation $obs){
+        
+        $img = $obs->getImage();
+        
+        $user = $this->getUser();
+        
+        return $this->json([
+                "id"    =>  $img->getId(),
+                "url"   =>  $img->getUrl(),
+                "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
+                "countLikes" => count($img->getLikes())   
+            ]);
+    }
+    
+    /**
+     * @Security("has_role('ROLE_USER')")
+     * @Route("/like-image/{image}")
+     * 
+     * @param Request $request
+     */
+    public function likeImage(Request $request, \App\Entity\Image $image, EntityManagerInterface $em){
+       
+        
+        $likes = $image->getLikes();
+        $user_id = $this->getUser()->getId();
+        $isLiked = in_array($user_id,$likes);
+        
+        if($isLiked){
+            $image->removeLike($user_id);
+        }
+        else{
+            $image->addLike($user_id);
+        }
+        $em->persist($image);
+        $em->flush();
+        return $this->json([
+            "like"=>!$isLiked,
+            "countLikes" => count($image->getLikes())
+        ]);
+        
+    }
+    
     /**
      * @Route("/post", name="post")
      */

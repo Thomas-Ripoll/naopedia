@@ -18,14 +18,28 @@ class SecurityController extends Controller
      /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request, AuthenticationUtils $authUtils)
+    public function loginAction(Request $request, AuthenticationUtils $authUtils, $ajax = false)
     {
         // get the login error if there is one
         $error = $authUtils->getLastAuthenticationError();
 
         // last username entered by the user
         $lastUsername = $authUtils->getLastUsername();
-
+        
+        if($request->isXmlHttpRequest())
+        {
+            return $this->json(
+                [
+                    "state" => false,
+                    "view" => $this->renderView('security/login.html.twig', array(
+                                    'last_username' => $lastUsername,
+                                    'error'         => $error,
+                                    'ajaxLogin'     => true,
+                                        )
+                            )]);   
+        }
+            
+        
         return $this->render('security/login.html.twig', array(
             'last_username' => $lastUsername,
             'error'         => $error,
@@ -81,14 +95,43 @@ class SecurityController extends Controller
           'notice',
           'un utilisateur a été ajouté '
         );
-
+        if($request->isXmlHttpRequest())
+        {
+          return $this->json(
+                [
+                    "state" => true
+                ]
+                );
+        }
         return $this->redirect('/');
       }
-
+      if($request->isXmlHttpRequest())
+        {
+          return $this->json([
+              "state"=>false,
+              "view" => $this->renderView('security/signin.html.twig',[
+                    'form' => $form->createView(),
+                    'ajaxLogin'     => true
+                  ])
+          ]);
+        }
       return $this->render('security/signin.html.twig',[
         'form' => $form->createView()
       ]);
-
-
+    }
+    /**
+     * @Route("/ajax-login-success", name="ajaxLoginSuccess")
+     * @param Request $request
+     * @param AuthenticationUtils $authUtils
+     */
+    public function ajaxLoginSuccess(Request $request){
+        
+        return $this->json(
+                [
+                    "state" => true,
+                    "view" => $this->renderView("security/loginSuccessModal.html.twig"), 
+                    "profil" => $this->renderView("security/profil.html.twig"), 
+                ]
+                );
     }
 }

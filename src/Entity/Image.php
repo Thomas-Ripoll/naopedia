@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,11 +28,19 @@ class Image
   private $alt;
 
   /**
-  * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="images")
+  * @ORM\ManyToOne(targetEntity="User", inversedBy="images")
   * @ORM\JoinColumn(nullable=true)
   */
   private $author;
+  
+  /**
+  * @ORM\Column(type="simple_array", nullable=true)
+  */
+  private $likes;
 
+  public function __construct() {
+      $this->likes = [];
+  }
   public function __toString()
   {
       return $this->getAlt();
@@ -132,6 +141,20 @@ class Image
 
     return $this;
   }
-
+  public function addLike($user_id){
+      if(!in_array($user_id, $this->likes)){
+          $this->likes[] =$user_id;
+      }
+      return $this;
+  }
+  public function removeLike($user_id){
+      if(in_array($user_id, $this->likes)){
+          array_splice( $this->likes, array_search($user_id, $this->likes), 1);
+      }
+      return $this;
+  }
+  public function getLikes(){
+      return $this->likes;
+  }
 
 }

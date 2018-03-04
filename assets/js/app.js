@@ -30,7 +30,7 @@ var leafletPhotos = require('leaflet.markercluster');
         createMarker: function (photo) {
             var marker = L.marker(photo, {
                 icon: L.divIcon(L.extend({
-                    html: '<div style="background-image: url(' + photo.thumbnail + ');"></div>​',
+                    html: '<div style="background-image: url(' + (photo.img? photo.img.url : "") + ');"></div>​',
                     className: 'leaflet-marker-photo'
                 }, photo, this.options.icon)),
                 title: photo.caption || ''
@@ -222,7 +222,7 @@ var leafletPhotos = require('leaflet.markercluster');
                     
                     this.data = data.map(function(date){
                         if(date instanceof Date){
-                            return date
+                            return date;
                         }
                         var splitDate = date.split("-");
                         
@@ -260,10 +260,26 @@ var leafletPhotos = require('leaflet.markercluster');
 
         });
         this.birdMarkersLayer = L.photo.cluster().on('click', function (evt) {
-            var photo = evt.layer.photo,
-                    template = '<img src="{url}"/></a><p>{caption}</p><p="extra"><span>par {author} </span><span>le {date}</span><p>';
+            
+            var photo = evt.layer.photo;
+            
+            var liked = evt.layer.photo.img.liked ? "fas":"far"
+            
+            var template = '<div class="image-container"><div class="image"><img src="'+photo.img.url+'"/><div class="likes"><span class="badge badge-light likes-count">'+photo.img.countLikes+'</span><i class="'+liked+' fa-heart"></i></div></div><p>{caption}</p><p="extra"><span>par {author} </span><span>le {date}</span><p></div>';
+            
+            var template = $(L.Util.template(template, photo));
+            
+           
+            $(template).find(".likes").click(function(){
+                $.postConnect("/like-image/"+photo.img.id,{}, function(e){
 
-            evt.layer.bindPopup(L.Util.template(template, photo), {
+                    template.find(".likes svg[data-fa-i2svg] ")
+                            .toggleClass( "fas", e.like )
+                            .toggleClass( "far", !e.like );
+                    template.find(".likes .likes-count").html(e.countLikes);
+                });
+            })
+            evt.layer.bindPopup(template[0], {
                 className: 'leaflet-popup-photo',
                 minWidth: 400
             }).openPopup();

@@ -42,7 +42,7 @@ class AppFixtures extends Fixture {
         $user->setAvatar('82fbfc3a2bbfd1062dddc0ae8d5d1630.jpeg');
         $user->setEmail('ripoll@gmail.com');
         $user->setSalt('HIb1ru28S4UA5FWerfI6F3C');
-        $user->setRoles(["ROLE_ADMIN"]);
+        $user->setRoles(["ROLE_ADMIN_SUPER"]);
         $manager->persist($user);
         $birdNum = 1;
         foreach ($data as $birdData) {
@@ -103,7 +103,25 @@ class AppFixtures extends Fixture {
         $user->setAvatar('36abf0cbd6b9d4ddfbfa0aafadf65caa.png');
         $user->setEmail('solario@outlook.fr');
         $user->setSalt('3LoBzJeXGH6EoBXOXxXQ+6K');
-        $user->setRoles(["ROLE_ADMIN"]);
+        $user->setRoles(["ROLE_ADMIN_SUPER"]);
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setUsername("GentilMentor");
+        $user->setPassword('$2y$12$dpmg.KgIm2Z.TDHW0ISceu05Jw6axamaXUsbTrb.AYWr6CCOw8qZa');
+        $user->setAvatar('66effa34cc40445880f6fe66afdc5454.gif');
+        $user->setEmail('juliensos10@gmail.com');
+        $user->setSalt('18pWKXbQg3Q2sS8RkW4X8Mu');
+        $user->setRoles(["ROLE_ADMIN_SUPER"]);
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setUsername("goodies75");
+        $user->setPassword('$2y$12$y0j95/9kib8FoN/PucURKeY65SRYAr6k3NsRw5c0BWggBClN7qFBS');
+        $user->setAvatar('51f29dc39f1fb24070e63eba42e875d4.jpeg');
+        $user->setEmail('goodies75@hotmail.com');
+        $user->setSalt('Igo/OD7OXAsQFV5ZMeHoL3o');
+        $user->setRoles(["ROLE_ADMIN_SUPER"]);
         $manager->persist($user);
 
 
