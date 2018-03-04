@@ -47,7 +47,9 @@ easy_admin:
             list:
                 fields:
                   - title
+                  - { property: 'content', css_class: 'awesome-ckeditor', type: 'textarea' }
                   - author
+                  
                   - date
                   - image
         User:
@@ -74,7 +76,7 @@ easy_admin:
         brand_color: '#1e5d93'
         templates:
             layout: "admin/layout.html.twig"
-            menu: "admin/menu.html.twig"
+            menu:   "admin/menu.html.twig"
         assets:    
             js:
                 - '/dist/js/ckeditor5/ckeditor.js.map'

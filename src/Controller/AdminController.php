@@ -10,12 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Observation;
 use App\Entity\User;
 use App\Entity\Bird;
-<<<<<<< HEAD
-=======
-
 use App\Services\Mailer;
-
->>>>>>> feature/mailing
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 
 class AdminController extends BaseAdminController {
@@ -112,81 +107,11 @@ class AdminController extends BaseAdminController {
         return $this->redirectToRoute('admin');
     }
 
-<<<<<<< HEAD
     /**
      * @Route("/admin/refuse{observationId}", name="refuse")
      */
     public function RefuseAction($observationId, Request $request) {
-=======
-class AdminController extends BaseAdminController
-{
-  public function checkAction()
-     {
-       // controllers extending the base AdminController get access to the
-       // following variables:
-       //   $this->request, stores the current request
-       //   $this->em, stores the Entity Manager for this Doctrine entity
 
-       $id = $this->request->query->get('id');
-       $observation = $this->em->getRepository(Observation::Class)->find($id);
-
-       return $this->render("checkObservation.html.twig", array(
-          'observation' => $observation ));
-      }
-
-      /**
-       * @Route("/admin/valid{observationId}", name="valid")
-       */
-      public function observationAction($observationId, Mailer $mailer )
-      {
-         $em = $this->getDoctrine()->getManager();
-         $observation = $em->getRepository(Observation::Class)->find($observationId);
-
-         $observation->setValid(True);
-
-         $mailer->sendObservatioValid($observation);
-         $em->persist($observation);
-         $em->flush();
-          return $this->redirectToRoute('admin');
-      }
-
-      /**
-       * @Route("/admin/valid/contribution{birdId}", name="validContribution")
-       */
-      public function contributionAction($birdId)
-      {
-         $em = $this->getDoctrine()->getManager();
-         $bird = $em->getRepository(bird::Class)->find($birdId);
-
-         $bird->setDescriptionValid(True);
-         $em->persist($bird);
-         $em->flush();
-          return $this->redirectToRoute('admin');
-      }
-
-      /**
-       * @Route("/admin/refuse/contribution{birdId}", name="refuseContribution")
-       */
-      public function refuseContributionAction($birdId)
-      {
-         $em = $this->getDoctrine()->getManager();
-         $bird = $em->getRepository(bird::Class)->find($birdId);
-
-         $bird->setDescriptionValid(false);
-         $bird->setDescription(null);
-         $bird->setContributor(null);
-
-         $em->persist($bird);
-         $em->flush();
-          return $this->redirectToRoute('admin');
-      }
-
-      /**
-       * @Route("/admin/refuse{observationId}", name="refuse")
-       */
-      public function RefuseAction($observationId, Request $request)
-      {
->>>>>>> feature/mailing
         $refuseMessage = $request->request->get('refuseMessage');
         $em = $this->getDoctrine()->getManager();
         $observation = $em->getRepository(Observation::Class)->find($observationId);
