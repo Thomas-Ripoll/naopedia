@@ -39,7 +39,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" action="{{ path('birdDescription', {'birdId': bird.id }) }}">
+        <form id="form" method="post" action="{{ path('birdDescription', {'birdId': bird.id }) }}">
           <input type="textarea" name="description" value=""> description<br>
           <button type="submit" class="btn btn-primary">Valider</button>
         </form>
@@ -51,4 +51,22 @@
   </div>
 </div>
 
+
+{% endblock %}
+
+{% block javascript%}
+{{ parent() }}
+<script>
+  $(function(){
+    $('#form').on('submit', function(e){
+      e.preventDefault();
+      $.postConnect($(this).attr('action'),$(this).serialize(), function(e){
+        if(e.state == 'success'){
+          $('#birdChange').modal('hide')
+          location.reload();
+        }
+      });
+    })
+  })
+</script>
 {% endblock %}

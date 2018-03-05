@@ -7,12 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 
 
 /**
 * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+* @UniqueEntity(fields="username", message="Un utilisateur existe déjà avec ce nom")
+* @UniqueEntity(fields="email", message="Un utilisateur existe déjà avec cet email")
 */
 class User  implements UserInterface
 {
@@ -364,5 +367,5 @@ public function getFormatedRoles()
 
         return $this;
     }
-   
+
 }

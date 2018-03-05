@@ -46,6 +46,7 @@ class AppController extends Controller {
 
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/bird/change/{birdId}", name="birdDescription")
      */
     public function birdDescriptionAction($birdId, Request $request)
@@ -53,7 +54,7 @@ class AppController extends Controller {
     $em = $this->getDoctrine()->getManager();
     $bird = $em->getRepository(Bird::class)->find($birdId);
 
-    
+
     $description= $request->request->get('description');
     $bird->setDescription($description);
     $bird->setDescriptionValid(false);
@@ -62,11 +63,9 @@ class AppController extends Controller {
     $em->persist($bird);
     $em->flush();
 
-    $this->get('session')->getFlashBag()->add('success', 'La description a été soumise');
 
-        return $this->redirectToRoute("birdpage", array(
-            'slug'=> $bird->getSlug(),
-            'bird'=> $bird
+        return $this->json(array(
+          'state'=>'success'
         ));
 
     }
@@ -121,7 +120,7 @@ class AppController extends Controller {
      * @Route("/get-bird-list", name="bird-search")
      */
     public function birdSearch(Request $request) {
-        
+
         $query = $request->query->get("term");
         $em = $this->getDoctrine()->getManager();
         $birdsList = $em->getRepository(Bird::class)->search($query);
@@ -135,22 +134,22 @@ class AppController extends Controller {
             ];
         }
         return $this->json($birdJson);
-        
+
     }
-    
-    
+
+
     /**
      * @Route("/carte", name="map")
      */
     public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
         $parameters = $qsd->decodeUrl($request->query);
-        
+
         $observations = $em->getRepository(Observation::class)->findByFilters($parameters["query"]);
-        
+
         $datesArray = [];
         $user = $this->getUser();
         $user_id = $user? $user->getId(): null;
-        
+
         foreach($observations as $obs){
             $img = $obs->getImage();
             if(!key_exists($obs->getSearchDate(), $datesArray)){
@@ -169,7 +168,7 @@ class AppController extends Controller {
                                         "id"    =>  $img->getId(),
                                         "url"   =>  $img->getUrl(),
                                         "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
-                                        "countLikes" => count($img->getLikes())   
+                                        "countLikes" => count($img->getLikes())
                                     ]:null
                             ];
         }
@@ -186,12 +185,12 @@ class AppController extends Controller {
             "data"=>[$bird=>$datesArray],
             "filters"=>$parameters["filters"]
         ];
-                
+
         return $this->render("map.html.twig",["birdsloaded"=> $dataArray]);
     }
-    
+
     /**
-     * 
+     *
      * @Route("/get-observations", name="getObservations")
      */
     public function getObservations(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
@@ -199,12 +198,12 @@ class AppController extends Controller {
         $query = $qsd->decode($request->query);
         //dump($query);
         $observations = $em->getRepository(Observation::class)->findByFilters($query);
-        
+
         if(count($observations)<=0 && $this->getParameter('fake_data') && $request->query->has("bird")){
-            
+
             $this->get("data_faker")->getfakeObservations($request->query->get("bird"));
             $observations = $em->getRepository(Observation::class)->findByFilters($query);
-          
+
         }
         //$observations = [];
         /* foreach($em->getRepository(Observation::class)->findAll() as $obs){
@@ -233,7 +232,7 @@ class AppController extends Controller {
                                         "id"    =>  $img->getId(),
                                         "url"   =>  $img->getUrl(),
                                         "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
-                                        "countLikes" => count($img->getLikes())   
+                                        "countLikes" => count($img->getLikes())
                                     ]:null
                             ];
         }
@@ -244,40 +243,40 @@ class AppController extends Controller {
                 }
             }
         }
-        
+
         return $this->json($datesArray);
     }
-    
+
     /**
      * @Route("/get-observation-image/{obs}")
      */
     public function getImage(Observation $obs){
-        
+
         $img = $obs->getImage();
-        
+
         $user = $this->getUser();
-        
+
         return $this->json([
                 "id"    =>  $img->getId(),
                 "url"   =>  $img->getUrl(),
                 "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
-                "countLikes" => count($img->getLikes())   
+                "countLikes" => count($img->getLikes())
             ]);
     }
-    
+
     /**
      * @Security("has_role('ROLE_USER')")
      * @Route("/like-image/{image}")
-     * 
+     *
      * @param Request $request
      */
     public function likeImage(Request $request, \App\Entity\Image $image, EntityManagerInterface $em){
-       
-        
+
+
         $likes = $image->getLikes();
         $user_id = $this->getUser()->getId();
         $isLiked = in_array($user_id,$likes);
-        
+
         if($isLiked){
             $image->removeLike($user_id);
         }
@@ -290,9 +289,9 @@ class AppController extends Controller {
             "like"=>!$isLiked,
             "countLikes" => count($image->getLikes())
         ]);
-        
+
     }
-    
+
     /**
      * @Route("/post", name="post")
      */
@@ -322,7 +321,7 @@ class AppController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($observation);
             $em->flush();
-            
+
             // IMAGE Entity creation
 
             $img = new Image();
@@ -350,5 +349,5 @@ class AppController extends Controller {
         ]);
     }
 
- 
+
 }
