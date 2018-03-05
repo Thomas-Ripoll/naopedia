@@ -41,6 +41,11 @@ class Article
   * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist"})
   */
   private $images;
+  
+  /**
+  * @ORM\Column(type="simple_array", nullable=true)
+  */
+  private $category;
 
 
   public function __construct() {
@@ -190,5 +195,16 @@ class Article
 
     return $this;
   }
+  
+  
+  public function getCategory() {
+      return $this->category;
+  }
+
+  public function setCategory($category) {
+      $this->category = $category;
+      return $this;
+  }
+
 
 }
