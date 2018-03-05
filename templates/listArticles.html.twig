@@ -1,0 +1,26 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+
+{# total items count #}
+<div class="count">
+    {{ articleslist.getTotalItemCount }} résultat(s)
+</div>
+
+<div class="container" style="text-align:center; display:flex; flex-wrap: wrap">
+
+
+
+    {% for article in articleslist %}
+    <div class="card col-lg-3" style="margin:20px;">
+        <div class="card-block">
+            <h4 class="card-title">{{article.title}}</h4>
+            <p class="card-text">Auteur : <a href="{{ path('userpage', {'username': article.author})  }}"> {{article.author}}</a> </br></p>
+            <a href="{{ path('article', {'id': article.id }) }}" class="btn btn-primary">Voir la page</a>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="text-center">{{ knp_pagination_render(articleslist) }}</div>
+</div>
+
+
+{% endblock %}
