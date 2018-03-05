@@ -36,6 +36,23 @@ class Mailer {
     $this->mailer->send($message);
   }
 
+  public function sendResetPassword($user)
+  {
+
+    $message = (new \Swift_Message('Reset de mot de passe'))
+        ->setFrom('naopedia@gmail.com')
+        ->setTo($user->getEmail())
+        ->setBody(
+             $this->templating->render(
+                // templates/emails/registration.html.twig
+                'emails/resetPassword.html.twig',
+                array('user' => $user)
+            ),
+            'text/html'
+        );
+    $this->mailer->send($message);
+  }
+
   public function  sendObservatioValid($observation)
   {
 

@@ -1,17 +1,17 @@
 
-      
+
 {% extends ajaxLogin is defined ? "ajaxmodal.html.twig" : "layout.html.twig"  %}
-    
+
 {% block title %}
-            <h2>Inscrivez vous</h2>
+            Inscrivez vous
         {% endblock %}
 {% block content %}
     {% if ajaxLogin is defined %}
         <div class="alert alert-info" >
         <a href="/login" class="btn btn-link"><i class="fas fa-chevron-left"></i> Retour au formulaire de conexion</a>
         </div>
-    {% endif %} 
+    {% endif %}
     {{ form_start(form, {attr: {class: 'my-form-class'} }) }}
           {{ form_widget(form) }}
       {{ form_end(form) }}
-{% endblock %}    
+{% endblock %}
