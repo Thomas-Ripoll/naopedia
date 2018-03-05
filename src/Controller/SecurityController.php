@@ -211,16 +211,21 @@ class SecurityController extends Controller
       public function settingsAction ( Request $request, UserPasswordEncoderInterface $encoder, Mailer $mailer) {
 
       $user= $this->getUser();
-      $form = $this->createForm(SettingsType::class, $user);
+      $routeName=$request->get('_route');
+      $url = $this->get('router')->generate($routeName, array(), true);
+      $form = $this->createForm(SettingsType::class, $user, array("action"=>$url));
 
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
 
-
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        return $this->json([
+          "state"=>"sucess",
+        ]);
         }
 
         return $this->json([

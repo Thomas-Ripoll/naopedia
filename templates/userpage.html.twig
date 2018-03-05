@@ -2,6 +2,7 @@
 {% block content %}
 <h2>Bonjour <strong>{{user.username}}</strong> </h2>
 <sm>vous êtes {{user.formatedRoles}}</sm>
+<p>email : {{user.email}}
 {% if is_granted('ROLE_ADMIN')%}
   <form method="post" action="{{ path('changeRole', {'userId': user.id }) }}">
     <input type="checkbox" name="ROLE[]" value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %} checked {% endif %} > Admin<br>
@@ -60,14 +61,34 @@
 <script>
   $(function(){
     $('#settings').on('click',function(e){
-      e.preventDefault;
+      e.preventDefault();
       $.getJSON("/settings", function(result){
         var content = $(result.view);
         $('.modal-body').html(content);
         $('#settings').modal("show");
+        $("#settingsForm").on('submit',function(e){
+          e.preventDefault();
+          var formData = new FormData(this);
+          var url = $(this).attr('action');
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            success: function(e){
+              if (e.state = 'success'){
+                location.reload();
+              }
+            },
+            dataType: 'json',
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false, // NEEDED, DON'T OMIT THIS
+          });
+        })
       })
     })
-
   })
+
+
+
 </script>
 {% endblock %}

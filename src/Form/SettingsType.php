@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class SettingsType extends AbstractType
 {
@@ -23,15 +24,14 @@ class SettingsType extends AbstractType
     ->add('email', TextType::class, array(
         'required' => false)
     )
-    ->add('avatar', FileType::class, array(
-        'required' => false)
-    )
+    ->add('avatarFile', VichFileType::class,
+            ['required' => false,
+            'allow_delete' => false,
+            'download_link' => false,])
     ->add('submit', SubmitType::class, [
-      'label' => 'Create',
-      'attr' => ['class' => 'btn btn-primary btn-lg'],
-    ])
-    ;
-
+      'label' => 'Modifier',
+      'attr' => ['class' => 'btn btn-primary btn-lg']
+    ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)
