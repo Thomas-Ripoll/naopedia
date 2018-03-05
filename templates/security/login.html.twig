@@ -1,6 +1,6 @@
 
 {% extends ajaxLogin is defined ? "ajaxmodal.html.twig" : "layout.html.twig"  %}
-    
+
 {% block title %}
             <h2>Connectez vous</h2>
         {% endblock %}
@@ -10,7 +10,7 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
     <form action="{{ path('login') }}" method="post">
-        
+
         <div>
             <label for="username">Username:</label>
             <input type="text" id="username" name="_username" value="{{ last_username }}" />
@@ -32,6 +32,10 @@
         <div class="alert alert-info" >
             ou <a href="/signin" >inscrivez vous</a>
         </div>
-        
+        <hr>
+        <div class="alert alert-info" >
+            <a href="/resetPassword" >Mot de passe oublié</a>
+        </div>
+
     </div>
-{% endblock %}    
+{% endblock %}

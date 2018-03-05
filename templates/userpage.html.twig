@@ -2,6 +2,7 @@
 {% block content %}
 <h2>Bonjour <strong>{{user.username}}</strong> </h2>
 <sm>vous êtes {{user.formatedRoles}}</sm>
+<p>email : {{user.email}}
 {% if is_granted('ROLE_ADMIN')%}
   <form method="post" action="{{ path('changeRole', {'userId': user.id }) }}">
     <input type="checkbox" name="ROLE[]" value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %} checked {% endif %} > Admin<br>
@@ -11,6 +12,36 @@
     <button type="submit" class="btn btn-primary">Valider</button>
   </form>
  {% endif %}
+
+ {% if app.user == user %}
+
+
+ <!-- Modal -->
+   <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="exampleModalLabel">Paramètres</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body">
+
+
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+
+    <button type="button" id="settings" class="btn btn-primary col-lg-3 " data-toggle="modal" data-target="#settingsModal">
+      <i class="fas fa-wrench"></i> Paramètres
+    </button>
+
+  {% endif %}
 <h3> Mes observation : </h3>
 
 {% for observation in observations %}
@@ -22,4 +53,42 @@
 </div>
 
 {% endfor %}
+
+{% endblock %}
+
+{% block javascript%}
+{{ parent() }}
+<script>
+  $(function(){
+    $('#settings').on('click',function(e){
+      e.preventDefault();
+      $.getJSON("/settings", function(result){
+        var content = $(result.view);
+        $('.modal-body').html(content);
+        $('#settings').modal("show");
+        $("#settingsForm").on('submit',function(e){
+          e.preventDefault();
+          var formData = new FormData(this);
+          var url = $(this).attr('action');
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            success: function(e){
+              if (e.state = 'success'){
+                location.reload();
+              }
+            },
+            dataType: 'json',
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false, // NEEDED, DON'T OMIT THIS
+          });
+        })
+      })
+    })
+  })
+
+
+
+</script>
 {% endblock %}
