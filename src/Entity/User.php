@@ -364,5 +364,5 @@ public function getFormatedRoles()
 
         return $this;
     }
-
+   
 }
