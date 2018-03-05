@@ -55,6 +55,8 @@ easy_admin:
                     - title
                     - { property: 'content', css_class: 'awesome-ckeditor', type: 'textarea' }
                     - { property: 'images', type: 'collection', type_options: { entry_type: 'App\Form\ImageType' }}
+                    - { property: 'category', type: 'choice', type_options: {expanded: true, multiple: true, choices: { 'Mise en avant':'trend', 'Description Asso':'documentation'  }}}
+
         User:
             class: App\Entity\User
             label: 'Utilisateurs'

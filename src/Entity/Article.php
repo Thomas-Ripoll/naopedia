@@ -42,6 +42,13 @@ class Article
   */
   private $images;
 
+  
+  /**
+  * @ORM\Column(type="simple_array", nullable=true)
+  */
+  private $category;
+
+
 
   public function __construct() {
       $this->date = new \DateTime();
@@ -190,5 +197,16 @@ class Article
 
     return $this;
   }
+  
+  
+  public function getCategory() {
+      return $this->category;
+  }
+
+  public function setCategory($category) {
+      $this->category = $category;
+      return $this;
+  }
+
 
 }
