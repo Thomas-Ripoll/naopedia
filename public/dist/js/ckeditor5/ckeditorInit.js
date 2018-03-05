@@ -11,7 +11,10 @@
              .forEach(function(el){
                  el.removeAttribute('required');
                  ClassicEditor
-                     .create( el )
+                     .create( el ,{
+                         removePlugins: [ 'Heading', 'Link' ],
+                        toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ]
+                    })
                      .then( function (editor) {
                          console.log( editor );
                          var div = el.parentNode.querySelector('.ck-editor__editable');

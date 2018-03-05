@@ -3,22 +3,35 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/naopedia/templates/security/profil.html.twig</file>
-            <file>file:/var/www/html/naopedia/src/Listeners/AjaxSecurityListener.php</file>
-            <file>file:/var/www/html/naopedia/templates/security/loginSuccessModal.html.twig</file>
             <file>file:/var/www/html/naopedia/config/services.yaml</file>
             <file>file:/var/www/html/naopedia/src/Controller/AdminController.php</file>
-            <file>file:/var/www/html/naopedia/src/Controller/SecurityController.php</file>
-            <file>file:/var/www/html/naopedia/templates/map.html.twig</file>
-            <file>file:/var/www/html/naopedia/src/Controller/AppController.php</file>
+            <file>file:/var/www/html/naopedia/config/routes.yaml</file>
+            <file>file:/var/www/html/naopedia/src/Form/ImageType.php</file>
+            <file>file:/var/www/html/naopedia/.env</file>
+            <file>file:/var/www/html/naopedia/public/dist/js/ckeditor5/ckeditorInit.js</file>
             <file>file:/var/www/html/naopedia/src/Entity/Image.php</file>
-            <file>file:/var/www/html/naopedia/templates/security/signin.html.twig</file>
+            <file>file:/var/www/html/naopedia/config/packages/vich_uploader.yaml</file>
+            <file>file:/var/www/html/naopedia/src/Form/UserType.php</file>
+            <file>file:/var/www/html/naopedia/config/packages/framework.yaml</file>
             <file>file:/var/www/html/naopedia/assets/js/app.js</file>
-            <file>file:/var/www/html/naopedia/templates/security/login.html.twig</file>
+            <file>file:/var/www/html/naopedia/config/packages/swiftmailer.yaml</file>
             <file>file:/var/www/html/naopedia/templates/layout.html.twig</file>
             <file>file:/var/www/html/naopedia/templates/ajaxmodal.html.twig</file>
             <file>file:/var/www/html/naopedia/assets/js/naoajax.js</file>
+            <file>file:/var/www/html/naopedia/templates/security/profil.html.twig</file>
+            <file>file:/var/www/html/naopedia/src/Listeners/AjaxSecurityListener.php</file>
+            <file>file:/var/www/html/naopedia/templates/security/loginSuccessModal.html.twig</file>
+            <file>file:/var/www/html/naopedia/assets/scss/app.scss</file>
+            <file>file:/var/www/html/naopedia/src/Entity/Article.php</file>
+            <file>file:/var/www/html/naopedia/src/Controller/SecurityController.php</file>
+            <file>file:/var/www/html/naopedia/templates/map.html.twig</file>
+            <file>file:/var/www/html/naopedia/src/Controller/AppController.php</file>
+            <file>file:/var/www/html/naopedia/templates/security/signin.html.twig</file>
+            <file>file:/var/www/html/naopedia/templates/security/login.html.twig</file>
+            <file>file:/var/www/html/naopedia/src/Entity/User.php</file>
+            <file>file:/var/www/html/naopedia/src/Listeners/PrePersistArticleListener.php</file>
             <file>file:/var/www/html/naopedia/config/packages/security.yaml</file>
+            <file>file:/var/www/html/naopedia/config/packages/easy_admin.yaml</file>
         </group>
     </open-files>
 </project-private>

@@ -46,12 +46,15 @@ easy_admin:
             dashboard: ["title", "author"]
             list:
                 fields:
-                  - title
-                  - { property: 'content', css_class: 'awesome-ckeditor', type: 'textarea' }
-                  - author
+                    - title
                   
-                  - date
-                  - image
+                    - author
+                    - date
+            form: 
+                fields:
+                    - title
+                    - { property: 'content', css_class: 'awesome-ckeditor', type: 'textarea' }
+                    - { property: 'images', type: 'collection', type_options: { entry_type: 'App\Form\ImageType' }}
         User:
             class: App\Entity\User
             label: 'Utilisateurs'

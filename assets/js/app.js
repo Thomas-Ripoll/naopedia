@@ -272,7 +272,8 @@ var leafletPhotos = require('leaflet.markercluster');
            
             $(template).find(".likes").click(function(){
                 $.postConnect("/like-image/"+photo.img.id,{}, function(e){
-
+                    photo.img.liked = e.like;
+                    photo.img.countLikes = e.countLikes;
                     template.find(".likes svg[data-fa-i2svg] ")
                             .toggleClass( "fas", e.like )
                             .toggleClass( "far", !e.like );
