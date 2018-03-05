@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 
@@ -17,6 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
 * @UniqueEntity(fields="username", message="Un utilisateur existe déjà avec ce nom")
 * @UniqueEntity(fields="email", message="Un utilisateur existe déjà avec cet email")
+ * @Vich\Uploadable
 */
 class User  implements UserInterface
 {
@@ -41,6 +43,12 @@ class User  implements UserInterface
   * @ORM\Column(type="string")
   */
   private $avatar;
+
+  /**
+   * @Vich\UploadableField(mapping="images", fileNameProperty="avatar")
+   * @var File
+   */
+  private $avatarFile;
 
   /**
   * @ORM\Column(type="string", unique=true)
@@ -73,6 +81,19 @@ class User  implements UserInterface
   */
   protected $images;
 
+  /**
+   *
+   * @ORM\Column(type="datetime", nullable=true)
+   */
+  private $createdAt;
+
+  /**
+   *
+   * @ORM\Column(type="datetime", nullable=true)
+   */
+  private $updatedAt;
+
+
   protected static $rolesParameter = ['ROLE_ADMIN_SUPER' =>'Super Administrateur','ROLE_ADMIN' =>'Administrateur','ROLE_NATURALISTE' =>'Naturaliste','ROLE_REDACTEUR' =>'Redacteur', 'ROLE_USER' =>'Observateur'];
 
   /**
@@ -104,6 +125,14 @@ public function getFormatedRoles()
   $formatedRoles = substr($formatedRoles, 0, -2);
   return $formatedRoles;
 }
+
+  public function setAvatarFile(File $avatarFile = null) {
+      $this->avatarFile = $avatarFile;
+      if ($avatarFile) {
+          $this->updatedAt = new \DateTime('now');
+      }
+      return $this;
+  }
 
   /**
   * Set the value of Id
@@ -310,7 +339,7 @@ public function getFormatedRoles()
      *
      * @return self
      */
-    public function setAvatar($avatar)
+    public function tar($avatar)
     {
         $this->avatar = $avatar;
 
@@ -365,6 +394,107 @@ public function getFormatedRoles()
     public function setRoles($roles)
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Avatar File
+     *
+     * @return File
+     */
+    public function getAvatarFile()
+    {
+        return $this->avatarFile;
+    }
+
+
+    /**
+     * Get the value of Roles Parameter
+     *
+     * @return mixed
+     */
+    public function getRolesParameter()
+    {
+        return $this->rolesParameter;
+    }
+
+    /**
+     * Set the value of Roles Parameter
+     *
+     * @param mixed rolesParameter
+     *
+     * @return self
+     */
+    public function setRolesParameter($rolesParameter)
+    {
+        $this->rolesParameter = $rolesParameter;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of Created At
+     *
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set the value of Created At
+     *
+     * @param mixed createdAt
+     *
+     * @return self
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Updated At
+     *
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of Updated At
+     *
+     * @param mixed updatedAt
+     *
+     * @return self
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+
+    /**
+     * Set the value of Avatar
+     *
+     * @param mixed avatar
+     *
+     * @return self
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

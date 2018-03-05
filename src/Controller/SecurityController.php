@@ -6,11 +6,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\ResetPasswordType;
+use App\Form\SettingsType;
 
 use App\Services\Mailer;
 
@@ -154,18 +155,6 @@ class SecurityController extends Controller
 
         $user->setPassword($encoded);
 
-        $img = $user->getAvatar();
-        // Generate a unique name for the file before saving it
-        $imgName = md5(uniqid()).'.'.$img->guessExtension();
-        // Move the file to the directory where brochures are stored
-        $img->move(
-          $this->getParameter('avatar_directory'),$imgName
-        );
-        // Update the 'brochure' property to store the PDF file name
-        // instead of its contents
-        $user->setAvatar($imgName);
-
-
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
@@ -215,4 +204,30 @@ class SecurityController extends Controller
                 ]
                 );
     }
+
+    /**
+    * @Route("/settings", name="settings")
+    */
+      public function settingsAction ( Request $request, UserPasswordEncoderInterface $encoder, Mailer $mailer) {
+
+      $user= $this->getUser();
+      $form = $this->createForm(SettingsType::class, $user);
+
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        }
+
+        return $this->json([
+            "state"=>false,
+            "view" => $this->renderView('security/settings.html.twig',[
+                  'form' => $form->createView()
+                ])
+              ]);
+      }
 }
