@@ -48,7 +48,6 @@ easy_admin:
             list:
                 fields:
                     - title
-                  
                     - author
                     - date
             form: 
