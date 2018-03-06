@@ -1,8 +1,446 @@
 
 {% extends "layout.html.twig" %}
 {% block content %}
+    <nav id="myScrollspy" >
+        <ul class="nav" >
+            <li>
+                <a href="#section1" class="page-anchor">
+                    <p>
+                        <img src="images/home.svg" class="picto" alt=""/>
+                        <span>Home</span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#section2" class="page-anchor" >
+                    <p>
+                        <img src="images/observations.svg" class="picto " alt=""/>
+                        <span>Observations</span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#section3" class="page-anchor">
+                    <p>
+                        <img src="images/carte.svg" class="picto" alt=""/>
+                        <span>La carte</span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#section4" class="page-anchor">
+                    <p>
+                        <img src="images/nao.svg" class="picto" alt=""/>
+                        <span>La NAO</span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#section5" class="page-anchor">
+                    <p>
+                        <img src="images/blog.svg" class="picto" alt=""/>
+                        <span>Le Blog</span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#section6" class="page-anchor">
+                    <p>
+                        <img src="images/partner.svg" class="picto" alt=""/>
+                        <span>Partenaires</span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#section7" class="page-anchor">
+                    <p>
+                        <img src="images/mail.svg" class="picto" alt=""/>
+                        <span>Contactez-nous</span>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid main-content">
+        <div id="section1" class="section row justify-content-center screen-height">
+            <div class="col-9 col-md-6 center-element">      
+                <div class="jumbotron">
+                    <div class="text-center">
+                        <img src="images/nao-carre.svg" alt="Naopédia" class="logo"/>
+                    </div>
+                    <h1 class="text-center">Bienvenue sur le site ornithologique de comptage 
+                        des différentes espèces d’oiseaux en France..</h1>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                            <a  href="#" role="button" class="btn btn-danger btn-lg bt-dble"><img src="images/carte.svg" class="picto3" alt=" "/><p>Découvrez la carte</p></a> 
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                            <a  href="#" role="button" class="btn btn-danger btn-lg bt-dble"><img src="images/ajouter.svg" class="picto3" alt=" "/><p>Ajouter une observation</p></a>
+                        </div>
+                    </div>
 
-<img style="max-width:300px;width:100%" src="{{ asset("images/blue.png") }}" alt=""><br>
-Bienvenue sur Naopedia.com<br>Site en construction
+                </div>
+            </div>
+        </div>
+        <div id="section2" class="section row justify-content-center screen-height"> 
+            <div class="col-8 center-element">      
+                <div class="jumbotron">
+                    <h2 class="text-center">Les dernières observations</h2>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="thumbnail"> <h3>Le rouge gorge</h3> <h4>rogum bordum</h4>
+                                <div class="img-ok"><img src="images/bird-3.jpg" alt="contenu dynamique" class="img-responsive"></div>
+                                <div class="txt-bird">
+
+                                    <p>Aperçu dans un jardin en cette fin d'hiver</p>
+
+                                    <div class="text-center"> <a href="#" class=" btn " role="button"><img src="images/loupe-bird.svg" class="picto4" alt=""/></a></div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="thumbnail"><h3>Le bidule</h3> <h4>bidoulum</h4> 
+                                <div class="img-ok"><img src="images/bird-2.jpg" alt="contenu dynamique" class="img-responsive"></div>
+                                <div class="txt-bird">
+
+                                    <p>Aperçu dans un jardin en cette fin d'hiver</p>
+
+                                    <div class="text-center"> <a href="#" class=" btn " role="button"><img src="images/loupe-bird.svg" class="picto4" alt=""/></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-none d-lg-block col-lg-4">
+                            <div class="thumbnail">
+                                <h3>Le pinson</h3> 
+                                <h4>Pindum bonum</h4> 
+                                <div class="img-ok">
+                                    <img src="images/bird-1.jpg" alt="contenu dynamique" class="img-responsive">
+                                </div> 
+                                <div class="txt-bird">
+                                    <p>Aperçu dans un jardin en cette fin d'hiver</p>
+                                    <div class="text-center"> 
+                                        <a href="#" class=" btn " role="button">
+                                            <img src="images/loupe-bird.svg" class="picto4" alt=""/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div >
+                        <a  href="#" role="button" class="btn btn-danger btn-lg">J'accède à la carte d'observations</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section3"  class="section row justify-content-center screen-height">         
+            <div class="col-8">      
+                <div class="jumbotron  center-element">
+                    <h2 >Votre carte d'observations</h2>
+                    <div class="row">
+                        <div class="col-12 col-lg-4 d-none d-lg-block">
+                            <div class="phone "> <img src="images/phone.png" alt=" Naopedia sur mobile" class="phone2 "></div>
+                        </div>
+                        <div class="col-12 col-lg-8 col-md-12 col-sm-12 ">
+                            <div class="row">
+                                <div class="col-4 ">
+                                    <img src="images/bird-2.png" alt="" class="img-width"/>
+                                </div>
+                                <div class="col-8 ">
+                                    <div class="caption ublue">
+                                        <ul class="blue">
+                                            <p> La carte vous permet :</p> <li>d’<b>ajouter</b> vos observations
+                                            </li>
+                                            <li>de <b>découvrir</b> les oiseaux ajoutés 
+                                            </li>
+                                            <li>de <b>visualiser</b> par date
+                                            </li>
+                                            <li>de <b>sélectionner</b> par espèce
+                                            </li>
+                                            <li>de <b>trier</b> par observateur
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <div class="col-12"><div >
+                                        <a  href="#" role="button" class="btn btn-danger btn-lg bt-dble"><p>Je découvre la carte</p></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section4"  class="section row justify-content-center ">  
+            <div class="col-12 col-md-6 center-element screen-height" style="background-image: url(images/base-mob-1.png);background-position:bottom; background-size: contain ; ">
+                <div class="row justify-content-center">
+                    <div class="jumbotron">
+                        <h2 class="text-center "  >La NAO, c'est quoi?</h2> 
+                        <div class="owl-carousel owl-theme articles">
+                        {% for article in artDoc %}
+                            <article >  
+                                <div class="thumbnail"><h3>{{ article.title }}</h3> 
+                                    <div class="img-ok"><img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive img-width"></div>
+                                    <div class="caption">
+                                        <p>{{ article.content|raw }}</p>
+                                        <div >
+                                            <a  href="{{ path("article",{"id":article.id}) }}" role="button" class="btn btn-danger btn-blog"><p>Lire la suite</p></a>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </article>
+                        {% endfor %}
+                        </div>
+                    </div>   
+                </div>
+            </div> 
+            <div class="col-12 col-md-6 center-element screen-height">
+                <div class="jumbotron" >
+                    <h2 style="color: #fff" class="text-center" >
+                        Besoin de conseils? <br>
+                        D’un ouvrage de référence?
+                    </h2> 
+                    <div class="book">
+                        <p>Nous vous offrons ce livre sur les bonnes pratiques d’observation</p> <img src="images/bird-1.png" alt="Thumbnail Image 1" >
+                        <a  href="#"  class="btn-lg btn-danger bt-dble" role="button">J'en profite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section5"  class="section row justify-content-center screen-height">
+            <div class="col-8 center-element">      
+                <div class="jumbotron">
+                    <h2 class="text-center">Le blog de la NAO</h2>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 ">
+                            <article>
+                                <div class="thumbnail">
+                                    <div class="img-ok">
+                                        <img src="images/bird-1.jpg" alt="contenu dynamique" class="img-responsive">
+                                    </div> 
+                                    <div class="caption"> 
+                                        <h3>Les oiseaux disparaissent de nos paysages</h3>
+                                        <p>Nous publions en exclusivité les résultats alarmants de la toute première mesure de l’hécatombe...</p>
+                                        <div >
+                                            <a  href="#" role="button" class="btn btn-danger btn-blog"><p>Lire la suite</p></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <article>
+                                <div class="thumbnail">
+                                    <div class="img-ok">
+                                        <img src="images/bird-1.jpg" alt="Thumbnail Image 1" class="img-responsive">
+                                    </div>
+                                    <div class="caption">
+                                        <h3>Le printemps arrive et certaines espèces sont à reconnaître!</h3> 
+                                        <p>Découvrez et observez les espèces migratoires de retour sur notre territoire. Astuces, détails,...</p>
+                                        <div >
+                                            <a  href="#" role="button" class="btn btn-danger btn-blog"><p>Lire la suite</p></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>		
+                    <div >
+                        <a  href="#" role="button" class="btn btn-danger btn-lg bt-dble"><p>J'accède aux autres articles</p></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section6"  class="section row justify-content-center ">       
+            <div class="col-8">      
+                <div class="jumbotron">
+                    <h2 class="text-center">Les partenaires de la NAO</h2>
+                    <div class="carousel-wrap" style="height:100px">
+                        <div id="carousel" class="owl-carousel owl-theme partenaires" style="display:block;height:100%;">
+                            <div>
+                                <a href="" target="_blank"><img src="images/depositphotos_125857850-stock-illustration-the-logo-for-the-protection.jpg" alt=""/></a>
+                            </div>
+                            <div>
+                                <a href="" target="_blank"><img src="images/logo.png" alt=""/></a>
+                            </div>
+                            <div>
+                                <a href="" target="_blank"><img src="images/logo_vierpfoten_fr.png" alt=""/></a>
+                            </div>
+                            <div >
+                                <a href="" target="_blank"><img src="images/LPO-1024x452_site.png"  alt=""/></a>
+                            </div>
+                            <div >
+                                <a href="" target="_blank"><img src="images/World_Animal_Protection_logo.svg.png"  alt=""/></a>
+                            </div>
+
+                        </div>
+
+                    </div>   
+                </div>
+            </div>
+        </div>
+        <div id="section7"   class="section row justify-content-center screen-height center-element">    
+            <div class="col-10 col-lg-8 ">      
+                <div class="jumbotron ">
+
+                    <h2 >Contactez-nous !</h2> <div class="form-area">  
+                        <form role="form"> 
+                            <br style="clear:both">
+                            <div class="row" style="display:flex">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Nom*" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="surname" name="surname" placeholder="Prénom*" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Votre adresse mail*" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Votre numéro de téléphone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Sujet de votre message*" required>
+                                    </div></div>
+                                <div class="col-12 col-md-6"> 
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="message" placeholder="Message" maxlength="140" rows="7"></textarea>
+                                        <span class="help-block">
+                                            * mentions obligatoires
+                                        </span>                    
+                                    </div>
+                                    <div class="text-right"><button type="button" id="submit" name="submit" class="btn-lg btn-danger bt-dble">Envoyer</button><br></div></div></div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer id="section8" class="section row justify-content-center">
+            <div class="col-12 col-md-10 center-element">      
+
+
+                <hr style="color:#fff">
+                <div class="row">
+                    <div class=" col-7 col-xs-12 "><img src="images/naopedia-long.svg" alt=""/>
+                        <p>129 rue des chasseurs 
+                            75 827 PARIS cedex</p><p>Le site naopedia.tk est un site web édité par l'association NAO (Nos amis les Oiseaux) et publié sous la direction d'Yvon Relou (Directeur Général). L'ensemble du site Naopedia.tk, pages et contenus, est la propriété de la NAO.</p>
+
+                        <p>NAO (Nos Amis les Oiseaux)<br>
+
+                            Association sous le numéro SIREN 784263287</p><br></div>
+                    <div class=" col-12 col-xs-12 ">
+                        <a type="button" data-toggle="modal" data-target="#exampleModalLong" style="background-color: none!important; color:#ffffff; text-decoration: underline"><p >Conditions d'utilisation</p></a><br>
+
+
+
+                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Mentions légales</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h3>Hébergeur</h3>
+                                        <p>Le site naopedia.tk est hébergé par la SAS OVH. Pour plus d'informations, reportez-vous au site : <a href="https://www.ovh.com/">https://www.ovh.com/</a>.</p>
+                                        <p>La NAO décline toute responsabilité quant aux éventuelles interruptions du site naopedia.tk et de ses services.</p>
+                                        <p>OVH<br>SAS au capital de 10 000 000 € enregistrée auprès de la RCS Roubaix – Tourcoing 424 761 419 00045 sous le numéro SIREN 424761419<br>N° T.V.A. Intracommunautaire FR 22 424761419</p>
+                                        <p>Directeur de la publication : Octave KLABA<br>Siège : 2 rue Kellermann - 59100 Roubaix - France</p>
+                                        <h3>Concepteur / Créateur</h3>
+                                        <p>Le site naopedia.tk a été créé par l'éditeur.</p>
+                                        <h3>Fonctionnement du site</h3>
+                                        <p>Les pages et le contenu de ce site sont générés par le logiciel libre Symfony, distribué sous licence GNU / GPL (Licence Publique Générale). Vous pouvez l'utiliser librement pour réaliser votre propre site web. Pour plus d'informations, reportez-vous au site : <a href="https://symfony.com/">https://symfony.com/</a>.</p>
+                                        <p>Joomla!<br>Copyright © Open Source Matters, Inc. All rights reserved.</p>
+                                        <h3>Contenus et droits de reproduction</h3>
+                                        <p>En application des articles L. 111-1 et L. 123-1 du Code de la Propriété Intellectuelle, l'ensemble des contenus de ce site (textes, images, vidéos et tout média en général), sauf mention contraire explicite, est protégé par le droit d'auteur. La reproduction, même partielle, des contenus des pages de ce site sans accord préalable de la NAO (Ligue pour la Protection des Oiseaux) est strictement interdite.<br>© Copyright 2017 NAO (Ligue pour la Protection des Oiseaux) | Tous droits réservés.</p>
+                                        <h3>Conditions d'utilisation</h3>
+                                        <h4>Acceptation de fait</h4>
+                                        <p>En utilisant le site naopedia.tk, l'internaute prend note et accepte les conditions ici énumérées.</p>
+                                        <h4>Abus</h4>
+                                        <p>En application de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, pour signaler un contenu litigieux ou si vous êtes victime d'une utilisation frauduleuse du site naopedia.tk, merci de contacter l'administrateur du site à l'adresse courriel : <a href="mailto:webmaster@naopedia.tk">webmaster@naopedia.tk</a>.</p>
+                                        <h4>Collecte et traitement de données personnelles</h4>
+                                        <p>Les informations éventuellement recueillies par le site naopedia.tk ne sont jamais communiquées à des tiers. Sauf cas particulier, ces informations proviennent de l'enregistrement volontaire d'une adresse courriel fournie par l'internaute, lui permettant de recevoir une documentation ou une newsletter, de demander son inscription dans le comité rédactionnel du site ou de se renseigner sur un point quelconque.</p>
+                                        <p>En application de la loi n° 78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés, l'internaute dispose d'un droit d'accès, de rectification et de suppression des informations personnelles le concernant stockées par le site naopedia.tk, qu'il peut exercer à tout moment auprès de l'administrateur du site naopedia.tk. Pour une demande de ce type, veuillez adresser un courrier à la NAO ou contacter l'adresse courriel : <a href="mailto:naopedia@gmail.com">naopedia@gmail.com</a>.</p>
+                                        <h4>Cookies</h4>
+                                        <p>Certaines informations nominatives et certains marqueurs témoins peuvent être enregistrées par le site naopedia.tk sur l'ordinateur personnel de l'internaute sans expression de la volonté de ce dernier («&nbsp;cookies »). Sauf indication contraire explicite*, ces procédés techniques ne sont pas indispensables au bon fonctionnement de le site naopedia.tk et leur utilisation peut bien entendu être désactivée dans le navigateur utilisé par l'internaute sans que sa navigation en soit affectée. Aucune de ces informations n'est conservée par le site après déconnexion de l'internaute.</p>
+                                        <p>* Il est utile de préciser ici que les accès aux différents espaces privés du site peuvent nécessiter l'acceptation par l'internaute du dépôt d'un cookie sur son ordinateur personnel pour une question de sécurité.</p>
+                                        <h4>Limitation de responsabilité</h4>
+                                        <p>Le site naopedia.tk comporte des informations mises à disposition par des sociétés externes ou des liens hypertextes vers d'autres sites ou d'autres sources externes qui n'ont pas été développés par la NAO. Les comportements des sites cibles, éventuellement malveillants, ne sauraient être rattachés à la responsabilité du site naopedia.tk. Plus généralement, le contenu mis à disposition sur ce site est fourni à titre informatif. Il appartient à l'internaute d'utiliser ces informations avec discernement. La responsabilité de la NAO ne saurait être engagée de fait quant aux informations, opinions et recommandations formulées par des tiers.</p>
+                                        <p>Dans la mesure où la NAO ne peut contrôler ces sites ou sources externes, elle ne peut être tenu pour responsable de la mise à disposition de ces sites ou sources externes et ne peut supporter aucune responsabilité quant aux contenus, publicités, produits, services ou tout autre matériel disponible sur ou à partir de ces sites ou sources externes. De plus, la NAO ne pourra être tenu responsable de tous dommages ou pertes avérés ou allégués consécutifs ou en relation avec l'utilisation ou le fait d'avoir fait confiance au contenu, à des biens ou des services disponibles sur ces sites ou sources externes.</p> 	</div>
+
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>						
+                </div>
+            </div>
+
+        </footer>
+    </div>
+{% endblock %}
+{% block javascript %}
+        {{ parent() }}
+        
+        <script type="text/javascript" charset="utf-8">
+            $(function () {
+                /**
+                 * Smooth scrolling to page anchor on click
+                 **/
+                 $('body').scrollspy({ target: '#myScrollspy' });
+                 
+                $("a.page-anchor[href*='#']:not([href='#'])").click(function (e) {
+                    e.preventDefault();
+                    if (
+                            location.hostname == this.hostname
+                            && this.pathname.replace(/^\//, "") == location.pathname.replace(/^\//, "")
+                            ) {
+                        var anchor = $(this.hash);
+                        anchor = anchor.length ? anchor : $("[name=" + this.hash.slice(1) + "]");
+                        if (anchor.length) {
+                            $("html, body").animate({scrollTop: anchor.offset().top-60}, 750);
+                        }
+                    }
+                });
+                $(".owl-carousel.partenaires").owlCarousel({
+                    center: true,
+                    items:3,
+                    loop:true,
+                    margin:100,
+                    nav:true,
+                    navText:['<i class="fa fa-chevron-left"></i>','<i class="fa fa-chevron-right"></i>'],
+                    responsive:{
+                        0:{
+                            items:2,
+                            margin:10
+                        },
+                        576:{
+                            items:3
+                        },
+                    }
+                });
+                $(".owl-carousel.articles").owlCarousel({
+                    items:1,
+                    nav:true,
+                    dots:true,
+                    navText:['<i class="fa fa-chevron-left"></i>','<i class="fa fa-chevron-right"></i>'],
+                    
+                });
+            });
+        </script>
 
 {% endblock %}

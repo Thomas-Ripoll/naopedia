@@ -5,53 +5,56 @@
         <title>{% block title %}Bienvenue sur Naopedia{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}
+              <link rel="stylesheet" href="{{ asset("build/css/owl.carousel.min.css") }}">
+            
             <link href="{{ asset("build/css/app.min.css") }}" rel="stylesheet" type="text/css">
             <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
         {% endblock %}
     </head>
     <body style="text-align: center; background-color: #1E5D93;">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="{{path('homepage')}}">
-                <img style="max-width:60px;width:100%" src="{{ asset("images/NAOlogobleu.svg") }}" alt="">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-light"> 
+            <button class="navbar-toggler" type="button" data-toggle="fold" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span> 
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{path('map')}}">La carte</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{path('birds')}}">Les oiseaux</a>
-                    </li>
-                    <li class="nav-item">
+            <a class="navbar-brand" href="{{path('homepage')}}"> 
+                <img src="images/naopedia-long.svg" height="25" alt=""> 
+            </a>  
+            <ul class="navbar-nav">  
+                <li class="nav-item"> 
+                    <a class="nav-link red" href="{{path('map')}}">NaoMap</a> 
+                </li>  
+                <li class="nav-item">
+                    <a class="nav-link" href="{{path('birds')}}">Les oiseaux</a>
+                </li>
+                <li class="nav-item"> 
+                    <a class="nav-link" href="{{path('articles')}}">Le Blog</a> 
+                </li>
 
-                        <a class="nav-link" href="{{path('articles')}}">Le blog</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <label class="nav-link" for="quick-obs">Observationrapide</label>
-                        <input type="file" name="" id="quick-obs" style="display:none">
-                    </li>
-                </ul>
-                {% include "security/profil.html.twig" %}
-                <ul class="navbar-social">
-                    <li>f</li>
-                    <li>t</li>
-                    <li>p</li>
-                </ul>
-            </div>
+            </ul> 
+            <div class="nav-item obs-button">
+                <label class="nav-link red" for="quick-obs"><i class="fas fa-camera-retro"></i> Observation rapide</label>
+                <input type="file" name="" id="quick-obs" accept="image/*" capture="camera" style="display:none">
+            </div>   
+            {% include "security/profil.html.twig" %}    
+            
         </nav>
+        <div class="rezo hide">
+            <ul>
+                <li><a class="" href="https://www.facebook.com/naopedia/" target="_blank" role="button"><img src="images/facebook.svg" class="picto2" alt="facebook"/></a></li>
+                <li><a class="" href="https://twitter.com/Naopedia" target="_blank" role="button"><img src="images/twitter.svg" class="picto2" alt="twitter"/></a></li>
+                <li><a class="" href="https://www.pinterest.fr/naopedia/" target="_blank" role="button"><img src="images/pinterest.svg" class="picto2" alt="pinterest"/></a></li>
+            </ul>
+        </div>
 
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="flash-{{ label }}">
-                    {{ message }}
-                </div>
+
+        <div id="main-content">  
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-        <div id="main-content">    
         {% block content %}{% endblock %}
     </div>
     <div class="loading-screen">
@@ -59,24 +62,27 @@
     </div>
     {% block javascript %}
 
-        <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
         <script src="{{ asset("build/js/naoajax.min.js") }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="{{ asset("build/js/autocomplete.min.js") }}"></script>
-        <script >
+        <script src="{{ asset("build/js/owl.carousel.min.js") }}"></script>
+        <script>
             $(function () {
+                var navbar = $(".navbar");
+                 $(".navbar-toggler").click(function(e){
+                     navbar.toggleClass("open");
+                 });
                 $.ajaxSetup({
                     cache: true
                 });
-                var quickObsCalled = false;
                 $("#quick-obs").on("change", function () {
                     $.ajax({
                         "url": "/carte",
                         "success": function (html) {
-                            quickObsCalled=true;
                             var h = $.parseHTML(html);
                             var data = $('<div></div>').html(h);
                             $("#main-content").replaceWith($(data).find("#main-content"));
@@ -94,8 +100,8 @@
                     })
                 });
                 window.addEventListener('popstate', function (e) {
-                
-                        window.location.reload();
+
+                    window.location.reload();
                 });
             });
         </script>  

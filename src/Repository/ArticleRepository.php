@@ -25,4 +25,13 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByCategory($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.category LIKE :value')->setParameter('value', $value)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
