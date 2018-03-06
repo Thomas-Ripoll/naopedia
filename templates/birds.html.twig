@@ -3,10 +3,10 @@
 
 {# total items count #}
 <div class="count">
-    {{ birdslist.getTotalItemCount }}
+    {{ birdslist.getTotalItemCount }} résultat(s)
 </div>
-<form> Vous recherchez un oiseau ? 
-    <input type="text" class='birdSearch'> 
+<form> Vous recherchez un oiseau ?
+    <input type="text" class='birdSearch'>
 </form>
 <div class="container" style="text-align:center; display:flex; flex-wrap: wrap">
 
@@ -14,7 +14,7 @@
 
     {% for bird in birdslist %}
     <div class="card col-lg-3" style="margin:20px;">
-        <img class="card-img-top" src="" alt="image">
+        <img class="card-img-top" src="{{asset("images/bird.png")}}" alt="image">
         <div class="card-block">
             <h4 class="card-title">{{bird.name}}</h4>
             <p class="card-text">{{bird.latinName}} </br> {{bird.description}}</p>

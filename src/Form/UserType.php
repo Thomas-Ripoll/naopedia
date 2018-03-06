@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class UserType extends AbstractType
 {
@@ -29,10 +30,13 @@ class UserType extends AbstractType
          'first_options'   => array('label' => 'Password'),
          'second_options'  => array('label' => 'Repeat password'),
      ))
-    ->add('avatar', FileType::class)
+    ->add('avatarFile', VichFileType::class,
+            ['required' => false,
+            'allow_delete' => true,
+            'download_link' => true,])
     ->add('submit', SubmitType::class, [
       'label' => 'Create',
-      'attr' => ['class' => 'btn btn-default pull-right'],
+      'attr' => ['class' => 'btn btn-primary btn-lg'],
     ])
     ;
 

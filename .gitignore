@@ -2,6 +2,7 @@
 ###> symfony/framework-bundle ###
 .env
 /public/bundles/
+/public/images/uploads/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
@@ -10,3 +11,5 @@
 /node_modules/
 /public/build/
 ###< symfony/webpack-encore-pack ###
+
+/sas/

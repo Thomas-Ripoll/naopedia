@@ -2,7 +2,13 @@
 //import L from "leaflet";
 
 var leafletPhotos = require('leaflet.markercluster');
+delete L.Icon.Default.prototype._getIconUrl;
 
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 (function ($) {
 
@@ -30,7 +36,7 @@ var leafletPhotos = require('leaflet.markercluster');
         createMarker: function (photo) {
             var marker = L.marker(photo, {
                 icon: L.divIcon(L.extend({
-                    html: '<div style="background-image: url(' + photo.thumbnail + ');"></div>​',
+                    html: '<div style="background-image: url(' + (photo.img ? photo.img.url : "") + ');"></div>​',
                     className: 'leaflet-marker-photo'
                 }, photo, this.options.icon)),
                 title: photo.caption || ''
@@ -91,7 +97,7 @@ var leafletPhotos = require('leaflet.markercluster');
         var _this = this;
         this.birdId = null;
         this.container = element;
-        
+
         this.observeMode = false;
         this.modal = null;
         this.L = L;
@@ -113,15 +119,16 @@ var leafletPhotos = require('leaflet.markercluster');
         });
         $("#addObservation").on("click", function (e) {
             e.preventDefault();
+
             _this.toggleObserveMode(!_this.observeMode);
         });
-        $('#exampleModal').modal({show: false});
-        
+
+
         this.cache = {
             "all": []
         };
-        
-        
+
+
         this.filters = {
             bird: {
                 data: null,
@@ -219,21 +226,21 @@ var leafletPhotos = require('leaflet.markercluster');
                     return this.getUrlString().replace(/to/, '<span class="sep"> au </span>')
                 },
                 setData: function (data) {
-                    
-                    this.data = data.map(function(date){
-                        if(date instanceof Date){
-                            return date
+
+                    this.data = data.map(function (date) {
+                        if (date instanceof Date) {
+                            return date;
                         }
                         var splitDate = date.split("-");
-                        
-                        return new Date(splitDate[2],splitDate[1]-1,splitDate[0]); 
+
+                        return new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
                     });
                     console.log(this.data);
                 }
             },
 
         };
-        
+
         this.mapNode = this.container.find(".map");
         var franceBounds = [
             [51.39920565355378, -5.537109375000001],
@@ -260,72 +267,199 @@ var leafletPhotos = require('leaflet.markercluster');
 
         });
         this.birdMarkersLayer = L.photo.cluster().on('click', function (evt) {
-            var photo = evt.layer.photo,
-                    template = '<img src="{url}"/></a><p>{caption}</p><p="extra"><span>par {author} </span><span>le {date}</span><p>';
 
-            evt.layer.bindPopup(L.Util.template(template, photo), {
+            var photo = evt.layer.photo;
+
+            var liked = evt.layer.photo.img.liked ? "fas" : "far"
+
+            var template = '<div class="image-container">\n\
+                                <div class="image">\n\
+                                    <img src="' + photo.img.url + '"/>\n\
+                                    <div class="likes">\n\
+                                        <span class="badge badge-light likes-count">' + photo.img.countLikes + '</span>\n\
+                                        <i class="' + liked + ' fa-heart"></i>\n\
+                                    </div>\n\
+                                </div>\n\
+                                <p>{caption}</p>\n\
+                                <p><a href="/oiseau/{birdSlug}">{birdName}</a></p>\n\
+                                <p class="extra"><span>par <a href="/user/{author}">{author}</a> </span><span>le {date}</span><p>\n\
+                            </div>';
+
+            var template = $(L.Util.template(template, photo));
+
+
+            $(template).find(".likes").click(function () {
+                $.postConnect("/like-image/" + photo.img.id, {}, function (e) {
+                    photo.img.liked = e.like;
+                    photo.img.countLikes = e.countLikes;
+                    template.find(".likes svg[data-fa-i2svg] ")
+                            .toggleClass("fas", e.like)
+                            .toggleClass("far", !e.like);
+                    template.find(".likes .likes-count").html(e.countLikes);
+                });
+            })
+            evt.layer.bindPopup(template[0], {
                 className: 'leaflet-popup-photo',
                 minWidth: 400
             }).openPopup();
         });
-        if(this.container.data("birdsloaded")){
-            
-            $.extend(true,this.cache, this.container.data("birdsloaded").data);
+        this.initPostForm();
+        
+        if (this.container.data("birdsloaded")) {
+
+            $.extend(true, this.cache, this.container.data("birdsloaded").data);
+            console.log(this.cache);
             var onloadfilters = this.container.data("birdsloaded").filters;
-            for(var filter  in onloadfilters){
+            for (var filter  in onloadfilters) {
                 this.filters[filter].setData(onloadfilters[filter]);
             }
-            
+
         }
+        
         this.renderFilters();
         this.renderBirds();
+        if($("#quick-obs").val()){
+            _this.toggleObserveMode(true);
+            var inputToRepl = this.sightModal.find("#"+$("#file-upload-btn").attr("for"));
+            console.log(inputToRepl);
+            var $clone = $("#quick-obs").clone();
+            $($clone).attr("id",inputToRepl.attr("id"))
+                    .attr("name",inputToRepl.attr("name"));  
+            inputToRepl.replaceWith($clone);
+             var reader = new FileReader();
+            reader.onload = function (e) {
+                // get loaded data and render thumbnail.
+                $("#image-preview").css("display", "inline-block").attr("src", e.target.result);
+                $("#image-before-preview").css("display", "none");
+            };
+
+            // read the image file as a data URL.
+            reader.readAsDataURL($clone[0].files[0]);
+            $("#quick-obs").val(null);
+        }
         return this;
     }
-
-    birdApp.prototype.toggleObserveMode = function (on) {
-        this.observeMode = on;
-        if (on) {
-            this.container.addClass("onObserve");
-        } else {
-
-            this.container.removeClass("onObserve");
-        }
+    birdApp.prototype.buildModalMiniMap = function (latlng) {
+        var _this = this;
+        this.sightModal.find(".minimapContainer input").val(latlng.lat + "/" + latlng.lng);
+        window.setTimeout(function () {
+            if (!_this.sightModal.minimap) {
+                _this.sightModal.minimap = this.L.map(_this.sightModal.find(".minimap")[0], {
+                    zoomControl: false,
+                    scrollWheelZoom: false,
+                    touchZoom: false,
+                    keyboard: false,
+                    dragging: false,
+                    tap: false,
+                    doubleClickZoom: false,
+                    boxZoom: false
+                }).setView(latlng, 13);
+                L.tileLayer('https://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
+                    maxZoom: 20,
+                    attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(_this.sightModal.minimap);
+                _this.sightModal.singleMarker = L.marker(latlng).addTo(_this.sightModal.minimap);
+            } else {
+                _this.sightModal.minimap.setView(latlng, _this.sightModal.minimap.getZoom());
+                _this.sightModal.singleMarker.setLatLng(latlng);
+            }
+        }, 100);
     }
-
-    birdApp.prototype.openSightingModal = function () {
+    birdApp.prototype.initPostForm = function () {
+        var _this = this;
         this.sightModal = this.container.find(".sightModal");
         this.sightModal.modal({show: false});
-        this.sightModal.on('shown.bs.modal', function () {
-            var latlng = $(this).data("latlng")
-            window.setTimeout(function () {
-                if (!this.sightModal.minimap) {
-                    this.sightModal.minimap = this.L.map(this.sightModal.find(".minimap")[0], {
-                        zoomControl: false,
-                        scrollWheelZoom: false,
-                        touchZoom: false,
-                        keyboard: false,
-                        dragging: false,
-                        tap: false,
-                        doubleClickZoom: false,
-                        boxZoom: false
-                    }).setView(latlng, 13);
-                    var OpenMapSurfer_Roads = L.tileLayer('https://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
-                        maxZoom: 20,
-                        attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    }).addTo(this.sightModal.minimap);
-                    this.sightModal.singleMarker = L.marker(latlng).addTo(this.sightModal.minimap);
-                } else {
-                    this.sightModal.setView(latlng, this.sightModal.minimap.getZoom());
-                    this.sightModal.singleMarker.setLatLng(latlng);
-                }
-            }, 100);
-        });
-    }
-    birdApp.prototype.openSightModal = function (latLng) {
-        if (!this.sightModal) {
 
-        }
+        this.sightModal.on('shown.bs.modal', function () {
+            _this.buildModalMiniMap($(this).data("latlng"));
+        });
+        this.sightModal.on("change", "#" + $("#file-upload-btn").attr("for"), function () {
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                // get loaded data and render thumbnail.
+                $("#image-preview").css("display", "inline-block").attr("src", e.target.result);
+                $("#image-before-preview").css("display", "none");
+            };
+
+            // read the image file as a data URL.
+            reader.readAsDataURL(this.files[0]);
+
+        });
+        
+        this.sightModal.find("#recipient-name").birdSearch(function (item) {
+
+            var selectContainer = $(".birdAppContainer .selected-bird").html(selected);
+            $("#" + $(this).attr("data-target")).val(item.birdId);
+            var selected = $('<div class="alert alert-primary alert-dismissible fade show" role="alert">\n\
+                        ' + ((item.birdName != "")
+                    ? '<div><span class="main">' + item.birdName + '</span><span class="latin">' + item.birdLatinName + '</span></div>'
+                    : '<div><span class="main">' + item.birdLatinName + '</span></div>') + '\n\
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n\
+                            <span aria-hidden="true">&times;</span>\n\
+                        </button>\n\
+                    </div>');
+            selectContainer.html(selected);
+            selected.on('closed.bs.alert', function () {
+                selectContainer.html("");
+            })
+
+        });
+        this.sightModal.on("submit", "#post-observation-form", function (e) {
+            e.preventDefault();
+            $.postConnect(
+                    $(this).attr("action"),
+                    new FormData(this),
+                    function (data) {
+
+                        $(".birdAppContainer #recipient-name").data("birdSearch").destroy();
+                        _this.sightModal.find("form").replaceWith($(data.view));
+                        if ($.trim(_this.sightModal.find(".minimapContainer input").val()) != "") {
+                            var latlng = _this.sightModal.find(".minimapContainer input").val().split("/");
+                            _this.buildModalMiniMap({
+                                lat: latlng[0],
+                                lng: latlng[1],
+
+                            })
+                        }
+                        if (data.state == "success") {
+                            _this.sightModal.modal("hide");
+                            _this.toggleObserveMode(false);
+                            var thxalert =$('<div class="thx-alert alert alert-success alert-dismissible fade show">\n\
+                                        Merci pour votre contribution<br>\n\
+                                        Vous recevrez un email votre observation sera validée\n\
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n\
+                                        <span aria-hidden="true">&times;</span>\n\
+                                      </button>\n\
+                                    </div>');
+                            $("body").append(thxalert);
+                            window.setTimeout(function(){
+                                thxalert.find(".close").trigger("click");
+                            },2000);
+                        }
+                         _this.initPostForm();
+                       
+                    },
+                    {
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                    }
+            )
+        });
+
     }
+    birdApp.prototype.toggleObserveMode = function (on) {
+        this.observeMode = on;
+        this.container.toggleClass("onObserve", on);
+    }
+
+    birdApp.prototype.openSightingModal = function (latlng) {
+
+        this.sightModal.data("latlng", latlng).modal("show");
+
+    }
+
     birdApp.prototype.updateAddress = function () {
         if (history.pushState) {
             var queryString = [];
@@ -355,7 +489,7 @@ var leafletPhotos = require('leaflet.markercluster');
 
         this.filters[filterName].setData(data);
         this.renderFilters();
-        
+
         $(this).trigger(
                 {
                     type: "updateFiltersEvent",
@@ -363,7 +497,7 @@ var leafletPhotos = require('leaflet.markercluster');
                 });
 
     }
-    birdApp.prototype.renderFilters = function(){
+    birdApp.prototype.renderFilters = function () {
         $(".filters").html("");
         for (var filter in this.filters) {
             if (this.filters[filter].data) {
@@ -389,7 +523,7 @@ var leafletPhotos = require('leaflet.markercluster');
             _this.isLoading = false;
             _this.container.removeClass("loading");
         } else {
-            $.getJSON("/get-observations",
+            $.postConnect("/get-observations",
                     parameters,
                     function (data) {
                         $.extend(true, _this.cache[parameters.bird ? parameters.bird : "all"], data);
@@ -397,6 +531,8 @@ var leafletPhotos = require('leaflet.markercluster');
                         _this.renderBirds();
                         _this.isLoading = false;
                         _this.container.removeClass("loading");
+                    },{
+                        method:"GET"
                     });
         }
     }
@@ -411,30 +547,34 @@ var leafletPhotos = require('leaflet.markercluster');
             var endDay = endDate.getDate();
             var endDateInt = endDate.getFullYear() + (" 00" + (parseInt(endDate.getMonth()) + 1)).substr(-2);
             var bird = (this.filters.bird.data) ? this.filters.bird.data.birdId : "all";
-
+            //console.log(bird)
             var rotationDateInt = 0;
             do {
                 rotationDateInt = rotationDate.getFullYear() + (" 00" + (parseInt(rotationDate.getMonth()) + 1)).substr(-2)
-              
+                //console.log(rotationDateInt);
+
                 var newArray = this.cache[bird][rotationDateInt].filter(function (ob) {
 
                     if (startDateInt === rotationDateInt) {
-                        return startDay < ob.day;
+                        return startDay <= ob.day;
                     }
                     if (endDateInt === rotationDateInt) {
-                        return endDay > ob.day;
+                        return endDay >= ob.day;
                     }
                     return true;
                 })
                 data = data.concat(newArray);
                 rotationDate.setMonth(rotationDate.getMonth() + 1);
             } while (rotationDateInt < endDateInt);
+
+
         } else {
             var bird = (this.filters.bird.data) ? this.filters.bird.data.birdId : "all";
             for (var month in this.cache[bird]) {
                 data = data.concat(this.cache[bird][month]);
             }
         }
+
         this.birdMarkersLayer.clear();
         this.birdMarkersLayer.add(data).addTo(this.map);
     }
@@ -448,9 +588,9 @@ var leafletPhotos = require('leaflet.markercluster');
 
 window.birdApp = $(".birdAppContainer").birdApp();
 
-$(".birdAppContainer .search").birdSearch(function (item) {
+$(".birdAppContainer .search ").birdSearch(function (item) {
     $(this).val("");
     birdApp.birdApp.updateFilters("bird", item);
-    
+
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,12 +38,19 @@ class Article
   private $date;
 
   /**
-  * @ORM\ManyToOne(targetEntity="App\Entity\Image")
+  * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist"})
   */
-  private $image;
+  private $images;
+  
+  /**
+  * @ORM\Column(type="simple_array", nullable=true)
+  */
+  private $category;
 
 
-
+  public function __construct() {
+      $this->date = new \DateTime();
+  }
   /**
   * Get the value of Id
   *
@@ -169,9 +177,9 @@ class Article
   *
   * @return mixed
   */
-  public function getImage()
+  public function getImages()
   {
-    return $this->image;
+    return $this->images;
   }
 
   /**
@@ -181,11 +189,22 @@ class Article
   *
   * @return self
   */
-  public function setImage($image)
+  public function setImages($images)
   {
-    $this->image = $image;
+    $this->images = $images;
 
     return $this;
   }
+  
+  
+  public function getCategory() {
+      return $this->category;
+  }
+
+  public function setCategory($category) {
+      $this->category = $category;
+      return $this;
+  }
+
 
 }

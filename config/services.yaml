@@ -2,8 +2,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     avatar_directory: '%kernel.project_dir%/public/images/avatar'
-    locale: 'en'
     post_directory: '%kernel.project_dir%/public/images/post'
+    app.path.images: /images/uploads
+    locale: 'en'
     fake_data: '%env(FAKE_DATA)%'
     
 knp_paginator:
@@ -16,6 +17,11 @@ knp_paginator:
     template:
         pagination: paginator/twitter_bootstrap_v4_pagination.html.twig    # sliding pagination controls template
         sortable: paginator/sortable_link.html.twig                         # sort link template
+        
+web_profiler:
+    toolbar:              true
+    intercept_redirects:  false
+    
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -43,7 +49,19 @@ services:
 
     App\Form\ObservationType:
         arguments: ['@doctrine.orm.entity_manager']
+        
 
     data_faker:
         class: 'App\Services\DataFaker'
+        public: true
+        
+    App\Listeners\AjaxSecurityListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: 256 }
+     
+    App\Listeners\PrePersistArticleListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist } 
+    
+    Vich\UploaderBundle\Naming\UniqidNamer:
         public: true

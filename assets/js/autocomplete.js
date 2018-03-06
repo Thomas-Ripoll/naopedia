@@ -41,8 +41,9 @@ require('webpack-jquery-ui/autocomplete');
         var _this = this;
         this.cache = [];
         this.container = $("<div class='autocomplete_menu'>");
+        this.element = element;
         $("body").append(this.container);
-        element.autocomplete({
+        this.element.autocomplete({
             appendTo: _this.container,
             "source": function (request, response) {
                 _this.ajaxSearch(request.term, response)
@@ -104,10 +105,13 @@ require('webpack-jquery-ui/autocomplete');
         var termR = RegExp(term, "i");
         return data.filter(item => termR.test(item.birdName) || termR.test(item.birdLatinName) || termR.test(item.birdName+" "+item.birdLatinName));
     }
-
+    birdSearch.prototype.destroy = function(){
+       this.element.autocomplete( "destroy" );
+       this.container.remove();
+    }
     $.fn.birdSearch = function (callback) {
 
-        new birdSearch($(this), callback);
+        $(this).data("birdSearch",new birdSearch($(this), callback));
         return this;
     };
 

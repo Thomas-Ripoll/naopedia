@@ -1,26 +1,11 @@
 
 easy_admin:
     entities:
-        User:
-            class: App\Entity\User
-            label: 'Utilisateurs'
-            disabled_actions: ['new', 'edit']
-            list:
-                fields:
-                  - { property: 'avatar', type: 'image', base_path: '/images/avatar' }
-                  - { property: 'username', label: 'Pseudo' }
-                  - email
-                  - { property: 'formatedRoles', label: 'Roles' }
-                actions:
-                  - { name: 'checkProfil', label: 'Voir le profil', icon: 'user' }
-                  - { name: 'delete', icon: 'remove' }
-            edit:
-                fields:
-                    - roles
         Observation:
             disabled_actions: ['new','edit']
             class: App\Entity\Observation
             label: 'Observations'
+            roles: ['ROLE_NATURALISTE']
             list:
                 fields:
                   - { property: 'user', label: 'Pseudo' }
@@ -29,8 +14,11 @@ easy_admin:
                   - { property: 'valid', label: 'validée'}
                 actions: 
                     - { name: 'show', label: "Voir l'observation", icon: 'user' }
+                sort: ['date', 'DESC']    
             templates:
                 show: 'admin/checkObservation.html.twig'
+            dashboard: ["bird", "user", "date"]
+                
 
 
 
@@ -38,6 +26,8 @@ easy_admin:
             disabled_actions: ['new','edit','delete']
             class: App\Entity\Bird
             label: 'Contribution'
+            roles: ['ROLE_NATURALISTE']
+            dashboard: ["name", "contributor"]
             list:
                 dql_filter: 'entity.description = false' #description non nul
                 fields:
@@ -53,18 +43,54 @@ easy_admin:
         Article:
             class: App\Entity\Article
             label: 'Articles'
+            roles: ['ROLE_REDACTEUR']
+            dashboard: ["title", "author"]
             list:
                 fields:
-                  - title
-                  - author
-                  - date
-                  - image
+                    - title
+                  
+                    - author
+                    - date
+            form: 
+                fields:
+                    - title
+                    - { property: 'content', css_class: 'awesome-ckeditor', type: 'textarea' }
+                    - { property: 'images', type: 'collection', type_options: { entry_type: 'App\Form\ImageType' }}
+                    - { property: 'category', type: 'choice', type_options: {expanded: true, multiple: true, choices: { 'Mise en avant':'trend', 'Description Asso':'documentation'  }}}
+        User:
+            class: App\Entity\User
+            label: 'Utilisateurs'
+            disabled_actions: ['new', 'edit']
+            roles: ['ROLE_ADMIN_SUPER']
+            dashboard: ["avatar","username"]
+            list:
+                fields:
+                  - { property: 'avatar', type: 'image', base_path: '/images/avatar' }
+                  - { property: 'username', label: 'Pseudo' }
+                  - email
+                  - { property: 'formatedRoles', label: 'Roles' }
+                actions:
+                  - { name: 'checkProfil', label: 'Voir le profil', icon: 'user' }
+                  - { name: 'delete', icon: 'remove' }
+            edit:
+                fields:
+                    - roles          
 
-
-
+           
     design:
+        brand_color: '#1e5d93'
+        templates:
+            layout: "admin/layout.html.twig"
+            menu:   "admin/menu.html.twig"
+        assets:    
+            js:
+                - '/dist/js/ckeditor5/ckeditor.js.map'
+                - '/dist/js/ckeditor5/ckeditor.js'
+                - '/dist/js/ckeditor5/ckeditorInit.js'
+
         menu:
-            - { label: 'Accueil', route: 'homepage', icon: 'home' }
+            - { label: 'Dashboard', route: 'admin_dashboard', default: true }
+            #- { label: 'Accueil', route: 'homepage', icon: 'home' }
             - { entity: 'User', icon: 'user' }
             - { entity: 'Observation', icon: 'camera' }
             - { entity: 'Article', icon: 'newspaper-o' }

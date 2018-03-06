@@ -10,7 +10,7 @@
     background-color:white;
     position:absolute;
     border-radius:5px;
-    z-index:1000;
+    z-index:100000;
     display:none;
     &:before{
         position: absolute;
@@ -29,7 +29,7 @@
     }
 }
 .ui-menu.ui-widget.ui-widget-content.ui-autocomplete{
-    
+
     max-height: 250px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -37,6 +37,7 @@
     border-radius:5px;
     position:relative;
     border:0px solid transparent;
+
     .ui-menu-item a{
         font-family: var(--font-family-sans-serif);
         padding:1em 0.2em; 
@@ -83,11 +84,7 @@
         background-color: rgba(black,0.5);
     }
 }
-body{
-    background-color: #fafafa;
-    display:flex;
-    flex-direction:column;
-    height:100vh;
+.birdAppContainer{
     &.onObserve #addObervation{
         @extend .btn-warning;
         &:before{
@@ -106,10 +103,9 @@ body{
             color:yellow;
         }
     }
-
-    #mapid { 
+    .map{ 
         flex:1;
-        @at-root body.onObserve #mapid{
+        @at-root .birdAppContainer.onObserve .map{
             cursor: crosshair;
             .ripple{
                 background-color:#333;
@@ -131,12 +127,10 @@ body{
             animation-fill-mode: both;
             animation-timing-function: ease-out
         }
-
-
     }
     .minimapContainer{
 
-        #minimap{
+        .minimap{
             height:300px;
             width:100%;
             max-width:300px;
@@ -144,7 +138,7 @@ body{
             margin: 0px auto;
         }
     }
-    #exampleModal{
+    .sightModal{
         #file-upload{
             display:none;
         }
@@ -152,7 +146,7 @@ body{
             height:100px;
             display:none;
         }
-    } 
+    }
 }
 
 
@@ -240,11 +234,157 @@ body{
 }
 .filter-item{
     background-color: #fafafa;
-    padding: 0.2em;
+    padding: 0.2em; 
     margin: 0.2em;
     border-radius:5px;
     border:1px solid lightgray;
 }
 .filter-column{
     padding-top: 2em;
+}
+
+#NaoModal.loading{
+    min-height: 100px;
+    background-image: url('../images/load.gif')
+}
+
+.image-container{
+    .image {
+        position:relative;
+
+        .likes{
+            position:absolute;
+            bottom:0px;
+            width:100%;
+            text-align: right;
+            padding:0.5em;
+            font-size:1.5em;
+            svg{
+                cursor:pointer;
+                margin-left:5px;
+                &[data-prefix="fas"]{
+                    color:#d6105b;
+                }
+            }
+        }
+    }
+}
+
+.selected-bird:not(:empty) ~ #recipient-name{
+    display:none; 
+}
+span.main{
+    font-weight:bold;
+}
+span.latin{
+    color:gray;
+    font-style: italic;
+}
+
+span.main, span.latin{
+    display:block;
+    text-align: left;
+}
+
+.has-error .help-block{
+    @extend .alert;
+    @extend .alert-danger;
+    display:block;
+}
+.birdAppContainer{
+    #addObservation{
+        &:before{
+            content: "Ajouter une observation";
+        }
+        position:relative;
+        z-index: 451;
+    }
+    .birdytip{
+        img{
+            float:left;
+            width: 80px;
+        }
+        margin-top:10px;
+        position: relative;
+        z-index:450;
+        box-shadow: 20px 0px 60px rgba(0,0,0,0.6);
+        display:none;
+        color:#333333;
+        &:after{
+            content:"";
+            position:absolute;
+            height:0px;
+            width: 0px;
+            right:0px; 
+            top:50%;
+            transform: translate(100%, -50%);
+            border-top: 60px solid transparent;
+            border-bottom: 60px solid transparent;
+            border-right: 0px solid black;
+            
+            border-left: 60px solid white;
+            z-index:450;
+            
+        }
+    }
+    &.onObserve {
+        #addObservation.btn.btn-success.btn-block{
+            @extend .btn-warning;
+            &:before{
+                content: "\00d7 Sortir de l'Observation";
+            }
+        } 
+        .birdytip{
+            display:block;
+        }
+    }
+    
+}
+.thx-alert{
+        position: fixed;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+         animation-name: opaque;
+         animation-duration: 0.2s;
+         z-index:400;
+    }
+    @keyframes opaque {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+    
+body{
+    .loading-screen{
+        position:fixed;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0,0,0,0.3);
+        display:none;
+        z-index:1000;
+        top:0px;
+        left:0px;
+        .loading-birdy{
+            position:absolute;
+            margin-left: -50px;
+            margin-top: -50px;
+            width:200px;
+            height:120px;
+            background-color: white;
+            border-radius:10px;
+            top:50%;
+            left:50%;
+            background-image: url('../images/load.gif');
+            background-repeat: no-repeat;
+            background-position: top center;
+            text-align: center;
+            padding-top: 90px;
+            &:before{
+                content: "chargement...."
+            }
+        }
+    }
+    &.naoloading .loading-screen{
+        display:block;
+    }
 }
