@@ -21,9 +21,17 @@ class AppController extends Controller {
     /**
      * @Route("/", name="homepage")
      */
-    public function index() {
-        // replace this line with your own code!
-        return $this->render("base.html.twig");
+    public function index(EntityManagerInterface $em) {
+        
+        $articlesRep = $em->getRepository(\App\Entity\Article::class);
+        
+        $artMisenAvant = $articlesRep->findByCategory('trend');
+        $artDoc = $articlesRep->findByCategory('documentation');
+        
+        return $this->render("base.html.twig",[
+            "artMisenAvant" => $artMisenAvant,
+            "artDoc" => $artDoc
+        ]);
     }
 
     /**

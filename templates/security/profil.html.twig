@@ -1,21 +1,16 @@
 <div id="profil">
      <ul class="navbar-nav">
 {% if app.user %}
-    <li class="nav-item">
-        <a class="nav-link" href="{{path('userpage',{'username':app.user.username}  )}}">Mon profil</a>
-    </li>
-    {% if is_granted('ROLE_ADMIN')%}
-        <li>
-            <a class="nav-link" href="{{path('admin')}}">Administration</a>
-        </li>
-    {% endif %}
-
-    <li class="nav-item">
-        <a class="nav-link" href="{{path('post')}}">Poster une observation</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{path('logout')}}">Se déconnecter</a>
-    </li>
+    <a class="nav-link dropdown-toggle profil-but" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/loupe_1.svg" height="30" alt=""></a> 
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
+        <a class="dropdown-item" href="{{path('userpage',{'username':app.user.username}  )}}">Mon profil</a> 
+        <a class="dropdown-item" href="{{path('logout')}}">Se déconnecter</a> 
+        {% if is_granted('ROLE_ADMIN')%}
+        <div class="dropdown-divider"></div> 
+        <a class="dropdown-item" href="{{path('admin')}}">Administration</a> 
+        {% endif %}
+    </div>
+  
 {% else %}
     <li class="nav-item">
         <a class="nav-link" href="{{path('login')}}">Se connecter</a>
