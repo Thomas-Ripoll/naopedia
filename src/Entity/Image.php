@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
@@ -27,6 +28,7 @@ class Image {
     private $url;
 
     /**
+     * @Assert\NotNull(message="Une image est obligatoire pour certifier l'observation.")
      * @Vich\UploadableField(mapping="images", fileNameProperty="url")
      * @var File
      */
@@ -103,7 +105,11 @@ class Image {
     }
 
     public function setUrl($image) {
+        
         $this->url = $image;
+        if(is_null($this->alt)){
+            $this->alt = $image;
+        }
         return $this;
     }
 

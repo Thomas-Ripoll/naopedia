@@ -3,7 +3,7 @@
 parameters:
     avatar_directory: '%kernel.project_dir%/public/images/avatar'
     post_directory: '%kernel.project_dir%/public/images/post'
-    app.path.images: /images
+    app.path.images: /images/uploads
     locale: 'en'
     fake_data: '%env(FAKE_DATA)%'
     

@@ -10,9 +10,10 @@ use App\Form\ObservationType;
 use App\Services\QueryStringDecoder;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 class AppController extends Controller {
@@ -141,15 +142,13 @@ class AppController extends Controller {
     /**
      * @Route("/carte", name="map")
      */
-    public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
+    public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd, UploaderHelper $vichHelper) {
         $parameters = $qsd->decodeUrl($request->query);
 
         $observations = $em->getRepository(Observation::class)->findByFilters($parameters["query"]);
 
         $datesArray = [];
         $user = $this->getUser();
-        $user_id = $user? $user->getId(): null;
-
         foreach($observations as $obs){
             $img = $obs->getImage();
             if(!key_exists($obs->getSearchDate(), $datesArray)){
@@ -164,9 +163,11 @@ class AppController extends Controller {
                                 "author"    =>  $obs->getUser()->getUsername(),
                                 "day"       =>  $obs->getDate()->format("j"),
                                 "date"      =>  $obs->getDate()->format("d/m/Y"),
+                                "birdName"  =>  $obs->getBird()->getLatinName(),
+                                "birdSlug"  =>  $obs->getBird()->getSlug(),
                                  "img"       =>  (!is_null($img))? [
                                         "id"    =>  $img->getId(),
-                                        "url"   =>  $img->getUrl(),
+                                        "url"   =>  (preg_match("/http/", $img->getUrl()))?$img->getUrl():$vichHelper->asset($img,"imageFile"),
                                         "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
                                         "countLikes" => count($img->getLikes())
                                     ]:null
@@ -186,14 +187,18 @@ class AppController extends Controller {
             "filters"=>$parameters["filters"]
         ];
 
-        return $this->render("map.html.twig",["birdsloaded"=> $dataArray]);
+        $observation = new Observation();
+        $form = $this->createForm(ObservationType::class,$observation,["action"=>$this->generateUrl("post")]);
+                
+        return $this->render("map.html.twig",["birdsloaded"=> $dataArray, "form"=>$form->createView()]);
+
     }
 
     /**
      *
      * @Route("/get-observations", name="getObservations")
      */
-    public function getObservations(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd) {
+    public function getObservations(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd, UploaderHelper $vichHelper) {
 
         $query = $qsd->decode($request->query);
         //dump($query);
@@ -213,7 +218,6 @@ class AppController extends Controller {
          $em->flush();*/
         $datesArray = [];
         $user = $this->getUser();
-        $user_id = $user? $user->getId(): null;
         foreach($observations as $obs){
             $img = $obs->getImage();
             if(!key_exists($obs->getSearchDate(), $datesArray)){
@@ -228,9 +232,11 @@ class AppController extends Controller {
                                 "author"    =>  $obs->getUser()->getUsername(),
                                 "day"       =>  $obs->getDate()->format("j"),
                                 "date"      =>  $obs->getDate()->format("d/m/Y"),
+                                "birdName"  =>  $obs->getBird()->getLatinName(),
+                                "birdSlug"  =>  $obs->getBird()->getSlug(),
                                 "img"       =>  (!is_null($img))? [
                                         "id"    =>  $img->getId(),
-                                        "url"   =>  $img->getUrl(),
+                                        "url"   =>  (preg_match("/http/", $img->getUrl()))?$img->getUrl():$vichHelper->asset($img,"imageFile"),
                                         "liked" =>  !is_null($user) && in_array($user->getId(), $img->getLikes()),
                                         "countLikes" => count($img->getLikes())
                                     ]:null
@@ -270,8 +276,9 @@ class AppController extends Controller {
      *
      * @param Request $request
      */
-    public function likeImage(Request $request, \App\Entity\Image $image, EntityManagerInterface $em){
 
+    public function likeImage(Request $request, Image $image, EntityManagerInterface $em){
+       
 
         $likes = $image->getLikes();
         $user_id = $this->getUser()->getId();
@@ -293,60 +300,40 @@ class AppController extends Controller {
     }
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/post", name="post")
      */
     public function postObservation(Request $request) {
 
         $observation = new Observation();
-        $form = $this->createForm(ObservationType::class, $observation);
-
-        $observation->setUser($this->getUser());
-        $observation->setValid(FALSE);
+        $form = $this->createForm(ObservationType::class, $observation,["action"=>$this->generateUrl("post")]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $img = $observation->getImage()->getUrl();
-            // Generate a unique name for the file before saving it
-            $imgName = md5(uniqid()) . '.' . $img->guessExtension();
-            $img->move(
-                    $this->getParameter('post_directory'), $imgName
-            );
-            $observation->getImage()->setUrl($imgName);
-            $observation->SetValid(FALSE);
-            $observation->setDescription($observation->getImage()->getAlt());
-
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($observation);
+            $bird = $observation->getBird();
+            if($bird){
+                $bird->addImage($observation->getImage());
+                $em->persist($bird);
+            }
             $em->flush();
 
-            // IMAGE Entity creation
-
-            $img = new Image();
-            $img->setUrl($imgName);
-            $img->setAlt($observation->getImage()->getAlt());
-            $img->setAuthor($this->getUser());
-
-            $bird = $em->getRepository(Bird::class)->findOneBy(['name' => $observation->getBird()->getName()]);
-            $bird->addImage($img);
-
-            // NEED DO UPLOAD IMG WITH AUTHOR HERE
-
-            $em->persist($bird);
-            $em->flush();
-
-            $this->addFlash(
-                    'notice', 'une observation a été ajouté '
-            );
-
-            return $this->redirect('/');
+            
+            $observation = new Observation();
+            $form = $this->createForm(ObservationType::class, $observation,["action"=>$this->generateUrl("post")]);
+            return $this->json([
+                "state"=>"success",
+                "view"=> $this->renderView("post-form.html.twig",["form"=>$form->createView()])
+            ]);
         }
 
-        return $this->render('post.html.twig', [
-                    'form' => $form->createView()
-        ]);
+        return $this->json([
+                "state"=>"failure",
+                "view"=> $this->renderView("post-form.html.twig",["form"=>$form->createView()])
+            ]);
     }
 
 

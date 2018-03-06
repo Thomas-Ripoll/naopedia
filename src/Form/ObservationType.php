@@ -1,25 +1,17 @@
 <?php
 
-namespace App\Form;
+namespace App\Form;                                                    
 
+use App\Entity\Bird;
 use App\Entity\Observation;
-use App\Entity\Image;
-
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\CallbackTransformer;
-
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Form\ImageType;
-use App\Entity\Bird;
-use Doctrine\ORM\EntityManager;                                                    
 
 
 class ObservationType extends AbstractType
@@ -34,20 +26,24 @@ class ObservationType extends AbstractType
   {
     
     $builder
+    ->add('geoloc', HiddenType::class)
     ->add('bird', HiddenType::class, array(
       'attr'=>['class'=>'birdId']
     ))
-    ->add('birdSearch', TextType::class, array(
-      'mapped'=>false,
-      'attr'=>['class'=>"birdSearch"]
-    ))
-
-    ->add('image', ImageType::class)
-    ->add('geoloc', TextType::class)
-    ->add('date', DateType::class)
+    ->add('description', TextareaType::class,[
+        "attr"=>[
+            "class"=>"form-control"
+        ]
+    ])
+    ->add('image', ImageNoAltType::class,[
+        
+        "attr"=>[
+            "id"=>"file-upload"
+        ]
+    ])
     ->add('submit', SubmitType::class, [
-      'label' => 'Create',
-      'attr' => ['class' => 'btn btn-default pull-right'],
+      'label' => 'Envoyer Observation',
+      'attr' => ['class' => 'btn btn-primary btn-block'],
     ])
     ;
 
@@ -79,7 +75,7 @@ class ObservationType extends AbstractType
 
             },
             function ($birdId) use ($em) {
-              return $em->getRepository(Bird::class)->find($birdId);
+              return $birdId ? $em->getRepository(Bird::class)->find($birdId):null;
             }
         ))
     ;
@@ -90,6 +86,7 @@ class ObservationType extends AbstractType
   {
     $resolver->setDefaults([
       'data_class' => Observation::class,
+      'attr' => ["id" => "post-observation-form" ] 
     ]);
   }
 }

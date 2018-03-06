@@ -26,7 +26,7 @@ class PrePersistArticleListener {
     public function prePersist(LifecycleEventArgs $args){
         $entity = $args->getEntity();
         
-        if (!$entity instanceof \App\Entity\Article && !$entity instanceof \App\Entity\Image ) {
+        if (!$entity instanceof \App\Entity\Article && !$entity instanceof \App\Entity\Image && !$entity instanceof \App\Entity\Observation ) {
             return;
         }
         

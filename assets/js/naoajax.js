@@ -5,30 +5,42 @@
         
         
     }
-    NaoAjax.prototype.postConnect = function (url, senddata, success,fail) {
+    NaoAjax.prototype.postConnect = function (url, senddata, success,extraData) {
+        $("body").addClass("naoloading");
         var _this = this;
-        $.post(url, senddata, function (data) {
-            success(data);
-        }).fail(function (data) {
+        var config = {
+                    "url":url,
+                    "data": senddata,
+                    "success":function (data) {
+                        success(data);
+                    },
+                    dataType:"json",
+                    method: "POST"
+                } 
+         $.extend(config,extraData);  
+         console.log(config);
+        $.ajax(config).fail(function (data) {
             if (data.responseJSON && data.responseJSON.state == "connect") {
                 
                 if (!_this.connectModal) _this.buildModal();
-                _this.saveLastAction(url, senddata, success,fail);
+                _this.saveLastAction(url, senddata, success,extraData);
                 _this.login();
             }
+        }).always(function(){
+            $("body").removeClass("naoloading");
         });
     }
-    NaoAjax.prototype.saveLastAction = function(url, data, success,fail){
+    NaoAjax.prototype.saveLastAction = function(url, data, success,extraData){
         this.lastAction = {
             url : url,
             data : data,
             success : success,
-            fail : fail,
+            extraData : extraData,
         };
     }
     NaoAjax.prototype.postLastAction = function(){
         var la = this.lastAction;
-        this.postConnect(la.url, la.data, la.success, la.fail);
+        this.postConnect(la.url, la.data, la.success, la.extraData);
     }
     NaoAjax.prototype.login = function (formData) {
         var _this = this;

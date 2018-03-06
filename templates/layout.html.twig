@@ -5,8 +5,8 @@
         <title>{% block title %}Bienvenue sur Naopedia{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}
-               <link href="{{ asset("build/css/app.min.css") }}" rel="stylesheet" type="text/css">
-               <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+            <link href="{{ asset("build/css/app.min.css") }}" rel="stylesheet" type="text/css">
+            <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
         {% endblock %}
     </head>
     <body style="text-align: center; background-color: #1E5D93;">
@@ -26,9 +26,14 @@
                         <a class="nav-link" href="{{path('birds')}}">Les oiseaux</a>
                     </li>
                     <li class="nav-item">
+
                         <a class="nav-link" href="{{path('articles')}}">Le blog</a>
                     </li>
 
+                    <li class="nav-item">
+                        <label class="nav-link" for="quick-obs">Observationrapide</label>
+                        <input type="file" name="" id="quick-obs" style="display:none">
+                    </li>
                 </ul>
                 {% include "security/profil.html.twig" %}
                 <ul class="navbar-social">
@@ -46,18 +51,54 @@
                 </div>
             {% endfor %}
         {% endfor %}
-
-    {% block content %}{% endblock %}
-
+        <div id="main-content">    
+        {% block content %}{% endblock %}
+    </div>
+    <div class="loading-screen">
+        <div class="loading-birdy"></div>
+    </div>
     {% block javascript %}
+
         <script src="http://code.jquery.com/jquery-3.3.1.min.js"
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
-         <script src="{{ asset("build/js/naoajax.min.js") }}"></script>
+        <script src="{{ asset("build/js/naoajax.min.js") }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
         <script src="{{ asset("build/js/autocomplete.min.js") }}"></script>
-    {% endblock %}
+        <script >
+            $(function () {
+                $.ajaxSetup({
+                    cache: true
+                });
+                var quickObsCalled = false;
+                $("#quick-obs").on("change", function () {
+                    $.ajax({
+                        "url": "/carte",
+                        "success": function (html) {
+                            quickObsCalled=true;
+                            var h = $.parseHTML(html);
+                            var data = $('<div></div>').html(h);
+                            $("#main-content").replaceWith($(data).find("#main-content"));
 
+                            history.pushState("custom-back", null, "/carte");
+                            $.getScript("https://unpkg.com/leaflet@1.3.1/dist/leaflet.js", function (data, textStatus, jqxhr) {
+                                $.getScript("{{ asset("build/js/app.min.js") }}", function (data, textStatus, jqxhr) {
+                                    $.getScript("{{ asset("build/js/datepicker.min.js") }}", function (data, textStatus, jqxhr) {
+
+                                    });
+                                });
+                            });
+                        },
+                        dataType: "html"
+                    })
+                });
+                window.addEventListener('popstate', function (e) {
+                
+                        window.location.reload();
+                });
+            });
+        </script>  
+    {% endblock %}
 </body>
 </html>

@@ -14,6 +14,7 @@ easy_admin:
                   - { property: 'valid', label: 'validée'}
                 actions: 
                     - { name: 'show', label: "Voir l'observation", icon: 'user' }
+                sort: ['date', 'DESC']    
             templates:
                 show: 'admin/checkObservation.html.twig'
             dashboard: ["bird", "user", "date"]
