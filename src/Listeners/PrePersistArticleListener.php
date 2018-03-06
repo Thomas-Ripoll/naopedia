@@ -33,6 +33,7 @@ class PrePersistArticleListener {
         $user = ($this->security_context->getToken() != null)?
                 $this->security_context->getToken()->getUser():
                 null;
-        $entity->setAuthor($user);
+        if(is_null($entity->getAuthor()))
+                    $entity->setAuthor($user);
     }
 }

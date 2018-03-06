@@ -24,13 +24,17 @@ class AppController extends Controller {
     public function index(EntityManagerInterface $em) {
         
         $articlesRep = $em->getRepository(\App\Entity\Article::class);
+        $lastObservations = $em->getRepository(\App\Entity\Observation::class)->findBy([],["date"=>"DESC"],3);
+        $lastArticles = $articlesRep->findBy([],["date"=>"DESC"],2);
         
         $artMisenAvant = $articlesRep->findByCategory('trend');
         $artDoc = $articlesRep->findByCategory('documentation');
         
         return $this->render("base.html.twig",[
             "artMisenAvant" => $artMisenAvant,
-            "artDoc" => $artDoc
+            "artDoc" => $artDoc,
+            "lastArticles"=> $lastArticles,
+            "lastObservations"=>$lastObservations
         ]);
     }
 
