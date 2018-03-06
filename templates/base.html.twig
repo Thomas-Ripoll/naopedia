@@ -176,26 +176,25 @@
         </div>
         <div id="section4"  class="section row justify-content-center ">  
             <div class="col-12 col-md-6 center-element screen-height" style="background-image: url(images/base-mob-1.png);background-position:bottom; background-size: contain ; ">
-                <div class="row justify-content-center">
-                    <div class="jumbotron">
-                        <h2 class="text-center "  >La NAO, c'est quoi?</h2> 
-                        <div class="owl-carousel owl-theme articles">
-                        {% for article in artDoc %}
-                            <article >  
-                                <div class="thumbnail"><h3>{{ article.title }}</h3> 
-                                    <div class="img-ok"><img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive img-width"></div>
-                                    <div class="caption">
-                                        <p>{{ article.content|raw }}</p>
-                                        <div >
-                                            <a  href="{{ path("article",{"id":article.id}) }}" role="button" class="btn btn-danger btn-blog"><p>Lire la suite</p></a>
-                                        </div>
+
+                <div class="jumbotron">
+                    <h2 class="text-center "  >La NAO, c'est quoi?</h2> 
+                    <div class="owl-carousel owl-theme articles">
+                    {% for article in artDoc %}
+                        <article >  
+                            <div class="thumbnail"><h3>{{ article.title }}</h3> 
+                                <div class="img-ok"><img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive img-width"></div>
+                                <div class="caption">
+                                    <p>{{ article.content|raw }}</p>
+                                    <div >
+                                        <a  href="{{ path("article",{"id":article.id}) }}" role="button" class="btn btn-danger btn-blog"><p>Lire la suite</p></a>
                                     </div>
-                                </div>  
-                            </article>
-                        {% endfor %}
-                        </div>
-                    </div>   
-                </div>
+                                </div>
+                            </div>  
+                        </article>
+                    {% endfor %}
+                    </div>
+                </div>   
             </div> 
             <div class="col-12 col-md-6 center-element screen-height">
                 <div class="jumbotron" >
