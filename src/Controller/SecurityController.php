@@ -204,6 +204,15 @@ class SecurityController extends Controller
                 ]
                 );
     }
+    /**
+     * @Route("/login-success", name="loginSuccess")
+     * @param Request $request
+     * @param AuthenticationUtils $authUtils
+     */
+    public function LoginSuccess(Request $request){
+
+        return $this->redirectToRoute("userpage",["username"=>$this->getUser()->getUsername()]);
+    }
 
     /**
     * @Route("/settings", name="settings")

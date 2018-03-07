@@ -237,6 +237,7 @@
 }
 .filter-column{
     padding-top: 2em;
+    background-color: #1E5D93;
     input{
         width:100%;
     }
@@ -358,7 +359,13 @@ span.main, span.latin{
 body{
     padding-top:60px;
     text-align: center; 
-    background-color: #1E5D93;
+    background-color: #8892AA;
+    display:flex;
+    flex-direction:column;
+    min-height: 100vh;
+    .main-content{
+        flex:1;
+    }
     .loading-screen{
         position:fixed;
         height: 100%;
@@ -578,11 +585,7 @@ footer img
     font-weight: normal;
     font-weight: 500;
 }
-.btn
-{
-    display: flex;
-    flex-direction: row;
-}
+
 
 
 .rezo li
@@ -1480,5 +1483,32 @@ ul.nav-pills
                 }
             }
         }
+    }
+}
+
+
+// login sign in
+.page-login, .page-signin{
+    .form-wrapper{
+        width:100%;
+        max-width:450px;
+        margin: 2em auto;
+        .form-div{
+            background-color:white;
+            border-radius:5px;
+            padding: 1em;
+        }
+        
+        h2{
+            margin-bottom:0.5em;
+        }
+
+    }
+}
+
+.modal-header{
+    h2{
+        color: #1e5d93;
+        margin-bottom: 0em;
     }
 }

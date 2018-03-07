@@ -35,7 +35,7 @@
                 <input type="file" name="" id="quick-obs" accept="image/*" capture="camera" style="display:none">
             </div>   
             {% include "security/profil.html.twig" %}    
-            
+
         </nav>
         <div class="rezo hide">
             <ul>
@@ -53,11 +53,12 @@
                 {% endfor %}
             {% endfor %}
         {% block content %}{% endblock %}
-
+    </div>
+    <div class="footer-container container-fluid">
         <footer id="section8" class="section row justify-content-center">
             <div class="col-12 col-md-10 center-element">      
                 <div class="row">
-                    <div class=" col-7 col-xs-12 " style="text-align: left;">
+                    <div class="  col-12 col-sm-7  " style="text-align: left;">
                         <p>
                             <img src="images/naopedia-long.svg" alt=""/>
                         </p>
@@ -141,9 +142,9 @@
         <script>
             $(function () {
                 var navbar = $(".navbar");
-                 $(".navbar-toggler").click(function(e){
-                     navbar.toggleClass("open");
-                 });
+                $(".navbar-toggler").click(function (e) {
+                    navbar.toggleClass("open");
+                });
                 $.ajaxSetup({
                     cache: true
                 });

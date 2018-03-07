@@ -2,16 +2,25 @@
 
 {% extends ajaxLogin is defined ? "ajaxmodal.html.twig" : "layout.html.twig"  %}
 
-{% block title %}
-            Inscrivez vous
-        {% endblock %}
+{% block Modaltitle %}
+    <h2>Inscrivez vous</h2>
+{% endblock %}
 {% block content %}
-    {% if ajaxLogin is defined %}
-        <div class="alert alert-info" >
-        <a href="/login" class="btn btn-link"><i class="fas fa-chevron-left"></i> Retour au formulaire de conexion</a>
+    <div class="container justify-content-center">
+        <div class="form-wrapper">
+            <div class="form-div">
+
+                {% if ajaxLogin is not defined %}
+                    <h2>Inscrivez vous</h2>
+                {% endif %}
+                {{ form_start(form, {attr: {class: 'form-wraper'} }) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+            <hr>
+            <div class="alert alert-info" >
+                Déjà un compte? <a href="/login" >Connectez vous</a>
+            </div>
         </div>
-    {% endif %}
-    {{ form_start(form, {attr: {class: 'my-form-class'} }) }}
-          {{ form_widget(form) }}
-      {{ form_end(form) }}
+    </div>
 {% endblock %}
