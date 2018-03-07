@@ -22,7 +22,7 @@ class AppController extends Controller {
      * @Route("/", name="homepage")
      */
     public function index(EntityManagerInterface $em) {
-<
+
 
         $articlesRep = $em->getRepository(\App\Entity\Article::class);
         $lastObservations = $em->getRepository(\App\Entity\Observation::class)->findBy([], ["date" => "DESC"], 3);
