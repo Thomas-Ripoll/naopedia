@@ -7,6 +7,26 @@ parameters:
     locale: 'en'
     fake_data: '%env(FAKE_DATA)%'
     
+    user_ranks:
+        0:  
+            statut: Oeuf
+            image: oeuf.png
+        15: 
+            statut: Oisillon
+            image: poussin1.png
+        45: 
+            statut: Oiseau Jeune
+            image: poussin2.png
+        75: 
+            statut: Oiseau
+            image: poussin3.png
+        150: 
+            statut: Oiseau Adulte
+            image: poussin4.png
+        200: 
+            statut: Phoenix
+            image: poussin6.png
+    
 knp_paginator:
     page_range:                 9          # default page range used in pagination control
     default_options:
@@ -65,3 +85,6 @@ services:
     
     Vich\UploaderBundle\Naming\UniqidNamer:
         public: true
+        
+    App\Services\UserRank:
+        arguments: ['%user_ranks%']

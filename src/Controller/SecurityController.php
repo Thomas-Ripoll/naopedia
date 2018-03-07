@@ -173,7 +173,7 @@ class SecurityController extends Controller
                 ]
                 );
         }
-        return $this->redirect('/');
+        return $this->redirectToRoute("login");
       }
       if($request->isXmlHttpRequest())
         {

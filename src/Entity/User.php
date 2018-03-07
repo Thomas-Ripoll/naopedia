@@ -45,6 +45,11 @@ class User  implements UserInterface
   private $avatar;
 
   /**
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $bio;
+          
+  /**
    * @Vich\UploadableField(mapping="images", fileNameProperty="avatar")
    * @var File
    */
@@ -87,6 +92,11 @@ class User  implements UserInterface
    */
   private $createdAt;
 
+  /**
+  * @ORM\OneToMany(targetEntity="App\Entity\Observation",mappedBy="user")
+  */
+  private $observations;
+  
   /**
    *
    * @ORM\Column(type="datetime", nullable=true)
@@ -498,5 +508,25 @@ public function getFormatedRoles()
 
         return $this;
     }
+    
+    public function getBio() {
+        return $this->bio;
+    }
+
+    public function setBio($bio) {
+        $this->bio = $bio;
+        return $this;
+    }
+
+    public function getObservations() {
+        return $this->observations;
+    }
+
+    public function setObservations($observations) {
+        $this->observations = $observations;
+        return $this;
+    }
+
+
 
 }

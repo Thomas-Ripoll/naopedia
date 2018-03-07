@@ -30,6 +30,7 @@ class UserType extends AbstractType
          'first_options'   => array('label' => 'Password'),
          'second_options'  => array('label' => 'Repeat password'),
      ))
+    ->add('bio', TextareaType::class)
     ->add('avatarFile', VichFileType::class,
             ['required' => false,
             'allow_delete' => true,
