@@ -164,6 +164,7 @@
         line-height: 40px;
         font-weight:bold;
         color:blue;
+        text-align: center;
 
     }
 } 
@@ -358,8 +359,13 @@ span.main, span.latin{
 
 body{
     padding-top:60px;
-    text-align: center; 
-    background-color: #8892AA;
+    
+        background-color: #d3fff1;
+    background: #d3fff1;
+background: -moz-linear-gradient(top, #d3fff1 0%, #f2eedc 100%);
+background: -webkit-linear-gradient(top, #d3fff1 0%,#f2eedc 100%);
+background: linear-gradient(to bottom, #d3fff1 0%,#f2eedc 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d3fff1', endColorstr='#f2eedc',GradientType=0 );
     display:flex;
     flex-direction:column;
     min-height: 100vh;
@@ -628,9 +634,9 @@ h2
     font-size: 1.8em!important;
     font-weight: 800;
 
-    margin-bottom: 2em;
+  
 
-    text-align: center;
+    
     text-transform: uppercase;
 
     color: #1e5d93;
@@ -641,9 +647,6 @@ h3
     font-family: 'Montserrat', sans-serif;
     font-size: 1.2em!important;
     font-weight: 800;
-
-    text-align: center;
-
     color: #fff;
 }
 h4
@@ -1486,7 +1489,18 @@ ul.nav-pills
     }
 }
 
-
+body.page-homepage{
+    text-align: center;
+    h2{
+        
+        text-align: center;
+          margin-bottom: 2em;
+    }
+    h3{
+        
+        text-align: center;
+    }
+}
 // login sign in
 .page-login, .page-signin{
     .form-wrapper{
@@ -1511,4 +1525,51 @@ ul.nav-pills
         color: #1e5d93;
         margin-bottom: 0em;
     }
+}
+.page-userpage{
+    .user-content{
+        
+        padding-top:1rem;
+        max-width:800px;
+        [data-toggle="tooltip"]{
+            margin-left:5px;
+        }
+       .avatar{
+            float:left;
+        }
+        
+    }
+    .owl-carousel{
+        width:100%;
+        height:250px;
+        margin-bottom: 30px;
+        .owl-dots{
+            margin-top:0px;
+        }
+        .observation{
+            padding:1em;
+            text-align: center;
+            background-color:#1A5282;
+            border-radius:5px;
+            color:white;
+            img{
+                display:inline-block;
+                height:150px;
+                object-fit:contain;
+                object-position: center;
+            }
+            
+        }
+    }
+    .usermap{
+        height: 500px;
+        .map{
+            height:100%;
+        }
+        margin-bottom: 2em;
+    }
+    .tooltip-inner{
+        max-width:300px; 
+    } 
+    
 }
