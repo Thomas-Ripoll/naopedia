@@ -166,6 +166,7 @@
                         "success": function (html) {
                             var h = $.parseHTML(html);
                             var data = $('<div></div>').html(h);
+                            $("body").attr("class","page-map");
                             $("#main-content").replaceWith($(data).find("#main-content"));
 
                             history.pushState("custom-back", null, "/carte");
