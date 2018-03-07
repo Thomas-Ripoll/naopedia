@@ -43,16 +43,16 @@
 
     .ui-menu-item a{
         font-family: var(--font-family-sans-serif);
-        padding:1em 0.2em; 
+        padding:1em 0.2em;
         &.ui-state-active{
             background-color: #4f99ff;
             border: 0px;
             span.latin{
-                color: lighten(#4f99ff,10%); 
+                color: lighten(#4f99ff,10%);
             }
         }
         &:hover{
-            text-decoration: none; 
+            text-decoration: none;
         }
         span.main{
             font-weight:bold;
@@ -98,7 +98,7 @@
             color:yellow;
         }
     }
-    .map{ 
+    .map{
         flex:1;
         @at-root .birdAppContainer.onObserve .map{
             cursor: crosshair;
@@ -160,14 +160,14 @@
     &>div{
         border-radius:100%;
         height:40px;
-        width:40px;   
+        width:40px;
         line-height: 40px;
         font-weight:bold;
         color:blue;
         text-align: center;
 
     }
-} 
+}
 .leaflet-popup-content img{
     width:100%;
 }
@@ -181,7 +181,7 @@
         background-color: #FFCE00;
 
     }
-} 
+}
 .heat-2{
     &>div{
         background-color: #FF9A00;
@@ -189,14 +189,14 @@
 }
 .heat-3{
     &>div{
-        background-color: #FF5A00;   
+        background-color: #FF5A00;
         color:white;
     }
 }
 .heat-4{
     &>div{
 
-        background-color: #FF0000;   
+        background-color: #FF0000;
         color:white;
     }
 }
@@ -222,7 +222,7 @@
     }
 }
 
-.flatpickr-warning{ 
+.flatpickr-warning{
     @extend .alert-danger;
     padding:0.5em 0em;
     font-size: 0.8em;
@@ -231,7 +231,7 @@
 
 .filter-item{
     background-color: #fafafa;
-    padding: 0.2em; 
+    padding: 0.2em;
     margin: 0.2em;
     border-radius:5px;
     border:1px solid lightgray;
@@ -272,7 +272,7 @@
 }
 
 .selected-bird:not(:empty) ~ #recipient-name{
-    display:none; 
+    display:none;
 }
 span.main{
     font-weight:bold;
@@ -318,7 +318,7 @@ span.main, span.latin{
             position:absolute;
             height:0px;
             width: 0px;
-            right:0px; 
+            right:0px;
             top:50%;
             transform: translate(100%, -50%);
             border-top: 60px solid transparent;
@@ -336,7 +336,7 @@ span.main, span.latin{
             &:before{
                 content: "\00d7 Sortir de l'Observation";
             }
-        } 
+        }
         .birdytip{
             display:block;
         }
@@ -359,7 +359,7 @@ span.main, span.latin{
 
 body{
     padding-top:60px;
-    
+
         background-color: #d3fff1;
     background: #d3fff1;
 background: -moz-linear-gradient(top, #d3fff1 0%, #f2eedc 100%);
@@ -418,11 +418,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d3fff1', end
 
 @import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,400i,800,800i|Montserrat:400,400i,800,800i');
 /*
-Main color : 1e5d93 
+Main color : 1e5d93
 2nd color : 56a3a6
 3rd color : e3ebeb
 Alert : e84855
-Black : 212227 
+Black : 212227
 */
 /** rajout thomas **/
 
@@ -558,7 +558,7 @@ Black : 212227
     background-color: #212227;
 }
 .modal{
-    margin-top:70px; 
+    margin-top:70px;
 }
 .modal-body p,.modal-body p h3{
     color: #000000;
@@ -634,9 +634,9 @@ h2
     font-size: 1.8em!important;
     font-weight: 800;
 
-  
 
-    
+
+
     text-transform: uppercase;
 
     color: #1e5d93;
@@ -829,15 +829,15 @@ p
 .navbar-dark
 {
     background-color: #1e5d93 !important;
-} 
+}
 .navbar-brand
 {
-    padding-left: .5em; 
+    padding-left: .5em;
 }
 .navbar-nav {
     .nav-link:hover, .nav-link.active{
         background-color: rgba(255,255,255,0.2)
-    }  
+    }
 }
 
 .navbar-nav a.nav-link,
@@ -1412,7 +1412,7 @@ ul.nav-pills
     .dropdown-menu{
         left:auto;
         right:0px;
-    } 
+    }
 }
 .page-map{
     .map{
@@ -1465,7 +1465,7 @@ ul.nav-pills
                 left:0px;
 
                 h2,hr{
-                    display:none; 
+                    display:none;
                 }
                 .birdytip{
                     position:absolute;
@@ -1492,12 +1492,12 @@ ul.nav-pills
 body.page-homepage{
     text-align: center;
     h2{
-        
+
         text-align: center;
           margin-bottom: 2em;
     }
     h3{
-        
+
         text-align: center;
     }
 }
@@ -1512,7 +1512,7 @@ body.page-homepage{
             border-radius:5px;
             padding: 1em;
         }
-        
+
         h2{
             margin-bottom:0.5em;
         }
@@ -1528,7 +1528,7 @@ body.page-homepage{
 }
 .page-userpage{
     .user-content{
-        
+
         padding-top:1rem;
         max-width:800px;
         [data-toggle="tooltip"]{
@@ -1537,7 +1537,7 @@ body.page-homepage{
        .avatar{
             float:left;
         }
-        
+
     }
     .owl-carousel{
         width:100%;
@@ -1558,7 +1558,7 @@ body.page-homepage{
                 object-fit:contain;
                 object-position: center;
             }
-            
+
         }
     }
     .usermap{
@@ -1569,7 +1569,37 @@ body.page-homepage{
         margin-bottom: 2em;
     }
     .tooltip-inner{
-        max-width:300px; 
-    } 
-    
+        max-width:300px;
+    }
+
+}
+
+.blog{
+  .jumbotron{
+    background-color: white;
+  }
+  .h1{
+    margin-top: 50px;
+
+  }
+  .container{
+      text-align:center;
+      display:flex;
+      flex-wrap: wrap
+    }
+
+    .card{
+      margin:30px;
+      padding:40px;
+    }
+
+    .card-title{
+      color:#1e5d93;
+    }
+    .linkAuthor{
+      font-style:italic;
+    }
+    .img-ok{
+      margin: 20px;
+    }
 }
