@@ -120,6 +120,18 @@ class Observation {
      *
      * @return self
      */
+    public function getAuthor() {
+
+        return $this->user;
+    }
+    
+    /**
+     * Set the value of User
+     *
+     * @param mixed user
+     *
+     * @return self
+     */
     public function setAuthor(User $user) {
         $this->user = $user;
 

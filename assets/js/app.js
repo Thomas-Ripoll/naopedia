@@ -531,6 +531,7 @@ L.Icon.Default.mergeOptions({
                         _this.renderBirds();
                         _this.isLoading = false;
                         _this.container.removeClass("loading");
+                        _this.container.find('.filter-column-inner .filters-box').removeClass("open");
                     },{
                         method:"GET"
                     });
@@ -593,4 +594,8 @@ $(".birdAppContainer .search ").birdSearch(function (item) {
     birdApp.birdApp.updateFilters("bird", item);
 
 });
+$(".filter-btn").on("click",function(e){
+    e.preventDefault();
+    $(this).parent().find('.filter-column-inner .filters-box').toggleClass("open");
+})
 

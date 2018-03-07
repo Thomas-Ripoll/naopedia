@@ -124,22 +124,19 @@ class AdminController extends BaseAdminController {
     }
 
     /**
-     * @Route("/admin/changeRole{userId}", name="changeRole")
+     * @Route("/admin/changeRole/{user}", name="changeRole")
      * @Security("has_role('ROLE_ADMIN_SUPER')")
      */
-    public function changeRoleAction($userId, Request $request) {
+    public function changeRoleAction(User $user, Request $request) {
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($userId);
-
-
-        $roles = $request->request->get('ROLE');
+        $roles = ($request->request->get('ROLE')) ? $request->request->get('ROLE') : ["ROLE_USER"];
         $user->setRoles($roles);
 
         $em->persist($user);
         $em->flush();
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('userpage',["username"=>$user->getUsername()]);
     }
 
     /**

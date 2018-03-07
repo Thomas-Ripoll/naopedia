@@ -173,7 +173,7 @@ class SecurityController extends Controller
                 ]
                 );
         }
-        return $this->redirect('/');
+        return $this->redirectToRoute("login");
       }
       if($request->isXmlHttpRequest())
         {
@@ -203,6 +203,15 @@ class SecurityController extends Controller
                     "profil" => $this->renderView("security/profil.html.twig"),
                 ]
                 );
+    }
+    /**
+     * @Route("/login-success", name="loginSuccess")
+     * @param Request $request
+     * @param AuthenticationUtils $authUtils
+     */
+    public function LoginSuccess(Request $request){
+
+        return $this->redirectToRoute("userpage",["username"=>$this->getUser()->getUsername()]);
     }
 
     /**
