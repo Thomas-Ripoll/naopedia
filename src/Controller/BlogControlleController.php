@@ -39,7 +39,12 @@ class BlogControlleController extends Controller
               $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'articles');
               return $this->redirectToRoute('homepage');
           } else {
+            foreach ($articles as $article) {
+              if ($article->getCategory()==['trend']) //category is an array
+                $trendArticle = $article;
+            }
               return $this->render("listArticles.html.twig", array(
+                          'trendArticle' => $trendArticle,
                           'articles' => $articles,
                           'articleslist' => $articleslist));
           }

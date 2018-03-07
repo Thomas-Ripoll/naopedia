@@ -1,25 +1,45 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-
-{# total items count #}
+{# total items count
 <div class="count">
     {{ articleslist.getTotalItemCount }} résultat(s)
 </div>
+#}
+<div class="blog ">
+  <h2 > LE BLOG </h2>
+{% if trendArticle is defined %}
+  <div id="mainArticle" class="section row justify-content-center ">
+      <div class="col-10 col-md-8 ">
+          <div class="jumbotron">
+              <h2 class="text-center">{{trendArticle.title}}</h2>
+              <div class="img-ok"><img src="{{ vich_uploader_asset(trendArticle.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ trendArticle.images[0].alt }}" class="img-responsive img-width"></div>
+              <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                      <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg ">
+                        <p>Lire l'article</p>
+                      </a>
+                  </div>
+              </div>
 
-<div class="container" style="text-align:center; display:flex; flex-wrap: wrap">
+          </div>
+      </div>
+  </div>
+  {% endif %}
+  <div class="container">
 
+      {% for article in articleslist %}
+      <div class="card col-lg-3">
+          <div class="card-block">
+              <h3 class="card-title">{{article.title}}</h3>
+              <div class="img-ok"><img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive img-width"></div>
+              <p class="card-text">Un article de  : <a class)"linkAuthor" href="{{ path('userpage', {'username': article.author})  }}">{{article.author}}</a> </br></p>
+              <a href="{{ path('article', {'id': article.id }) }}" class="btn btn-primary">Lire l'article</a>
+          </div>
+      </div>
+      {% endfor %}
+      <div class="text-center">{{ knp_pagination_render(articleslist) }}</div>
+  </div>
 
-
-    {% for article in articleslist %}
-    <div class="card col-lg-3" style="margin:20px;">
-        <div class="card-block">
-            <h4 class="card-title">{{article.title}}</h4>
-            <p class="card-text">Auteur : <a href="{{ path('userpage', {'username': article.author})  }}"> {{article.author}}</a> </br></p>
-            <a href="{{ path('article', {'id': article.id }) }}" class="btn btn-primary">Voir la page</a>
-        </div>
-    </div>
-    {% endfor %}
-    <div class="text-center">{{ knp_pagination_render(articleslist) }}</div>
 </div>
 
 

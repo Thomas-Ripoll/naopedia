@@ -63,16 +63,16 @@
     </nav>
     <div>
         <div id="section1" class="section row justify-content-center screen-height">
-            <div class="col-9 col-md-6 center-element">      
+            <div class="col-9 col-md-6 center-element">
                 <div class="jumbotron">
                     <div class="text-center">
                         <img src="images/nao-carre.svg" alt="Naopédia" class="logo"/>
                     </div>
-                    <h1 class="text-center">Bienvenue sur le site ornithologique de comptage 
+                    <h1 class="text-center">Bienvenue sur le site ornithologique de comptage
                         des différentes espèces d’oiseaux en France..</h1>
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                            <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble"><img src="images/carte.svg" class="picto3" alt=" "/><p>Découvrez la carte</p></a> 
+                            <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble"><img src="images/carte.svg" class="picto3" alt=" "/><p>Découvrez la carte</p></a>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                             <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble"><img src="images/ajouter.svg" class="picto3" alt=" "/><p>Ajouter une observation</p></a>
@@ -82,8 +82,8 @@
                 </div>
             </div>
         </div>
-        <div id="section2" class="section row justify-content-center screen-height"> 
-            <div class="col-8 center-element">      
+        <div id="section2" class="section row justify-content-center screen-height">
+            <div class="col-8 center-element">
                 <div class="jumbotron">
                     <h2 class="text-center">Les dernières observations</h2>
                     <div class="row">
@@ -95,25 +95,25 @@
 
                                         <p{{ obs.description }}></p>
 
-                                        <div class="text-center"> 
+                                        <div class="text-center">
                                             <a href="{{ '/carte?bird='~obs.bird.slug  }}" class=" btn " role="button">
                                                 <img src="images/loupe-bird.svg" class="picto4" alt=""/>
                                             </a>
                                         </div>
-                                            <p> par <a href="{{ path("userpage",{"username":obs.user.username})  }}">{{ obs.user.username }}</a> - le {{ obs.date|date("d/m/Y") }}</p>        
+                                            <p> par <a href="{{ path("userpage",{"username":obs.user.username})  }}">{{ obs.user.username }}</a> - le {{ obs.date|date("d/m/Y") }}</p>
                                     </div>
 
                                 </div>
                             </div>
-                        {% endfor %}    
-                        
+                        {% endfor %}
+
                     </div>
-                    
+
                 </div>
             </div>
         </div>
-        <div id="section3"  class="section row justify-content-center screen-height">         
-            <div class="col-8">      
+        <div id="section3"  class="section row justify-content-center screen-height">
+            <div class="col-8">
                 <div class="jumbotron  center-element">
                     <h2 >Votre carte d'observations</h2>
                     <div class="row">
@@ -130,7 +130,7 @@
                                         <ul class="blue">
                                             <p> La carte vous permet :</p> <li>d’<b>ajouter</b> vos observations
                                             </li>
-                                            <li>de <b>découvrir</b> les oiseaux ajoutés 
+                                            <li>de <b>découvrir</b> les oiseaux ajoutés
                                             </li>
                                             <li>de <b>visualiser</b> par date
                                             </li>
@@ -152,16 +152,15 @@
                 </div>
             </div>
         </div>
-        <div id="section4"  class="section row justify-content-center ">  
+        <div id="section4"  class="section row justify-content-center ">
             <div class="col-12 col-md-6 center-element screen-height" style="background-image: url(images/base-mob-1.png);background-position:bottom; background-size: contain ; ">
 
-
                 <div class="jumbotron documentation">
-                    <h2 class="text-center "  >La NAO, c'est quoi?</h2> 
+                    <h2 class="text-center "  >La NAO, c'est quoi?</h2>
                     <div class="owl-carousel owl-theme articles">
                     {% for article in artDoc %}
-                        <article >  
-                            <div class="thumbnail"><h3>{{ article.title }}</h3> 
+                        <article >
+                            <div class="thumbnail"><h3>{{ article.title }}</h3>
                                 <div class="img-ok"><img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive img-width"></div>
                                 <div class="caption">
                                     <p>{{ article.content[:150]|striptags ~ ' ...' }}</p>
@@ -169,18 +168,18 @@
                                         <a  href="{{ path("article",{"id":article.id}) }}" role="button" class="btn btn-danger btn-blog"><p>Lire la suite</p></a>
                                     </div>
                                 </div>
-                            </div>  
+                            </div>
                         </article>
                     {% endfor %}
                     </div>
-                </div>   
-            </div> 
+                </div>
+            </div>
             <div class="col-12 col-md-6 center-element screen-height">
                 <div class="jumbotron" >
                     <h2 class="text-center" >
                         Besoin de conseils? <br>
                         D’un ouvrage de référence?
-                    </h2> 
+                    </h2>
                     <div class="book">
                         <p>Nous vous offrons ce livre sur les bonnes pratiques d’observation</p> <img src="images/bird-1.png" alt="Thumbnail Image 1" >
                         <a  href="{{ app.user ? path("userpage", {"username":app.user.username }) : path("signin") }}"  class="btn-lg btn-danger bt-dble" role="button">J'en profite</a>
@@ -189,7 +188,7 @@
             </div>
         </div>
         <div id="section5"  class="section row justify-content-center screen-height">
-            <div class="col-8 center-element">      
+            <div class="col-8 center-element">
                 <div class="jumbotron">
                     <h2 class="text-center">Le blog de la NAO</h2>
                     <div class="row">
@@ -199,8 +198,8 @@
                                 <div class="thumbnail">
                                     <div class="img-ok">
                                         <img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive">
-                                    </div> 
-                                    <div class="caption"> 
+                                    </div>
+                                    <div class="caption">
                                         <h3>{{ article.title }}</h3>
                                         <p>{{ article.content[:150]|striptags ~ ' ...' }}</p>
                                         <div >
@@ -211,16 +210,16 @@
                             </article>
                         </div>
                         {% endfor %}
-                        
-                    </div>		
+
+                    </div>
                     <div >
                         <a  href="{{ path("articles") }}" role="button" class="btn btn-danger btn-lg bt-dble"><p>J'accède aux autres articles</p></a>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="section6"  class="section row justify-content-center ">       
-            <div class="col-8">      
+        <div id="section6"  class="section row justify-content-center ">
+            <div class="col-8">
                 <div class="jumbotron">
                     <h2 class="text-center">Les partenaires de la NAO</h2>
                     <div class="carousel-wrap" style="height:100px">
@@ -243,16 +242,16 @@
 
                         </div>
 
-                    </div>   
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="section7"   class="section row justify-content-center screen-height center-element">    
-            <div class="col-10 col-lg-8 ">      
+        <div id="section7"   class="section row justify-content-center screen-height center-element">
+            <div class="col-10 col-lg-8 ">
                 <div class="jumbotron ">
 
-                    <h2 >Contactez-nous !</h2> <div class="form-area">  
-                        <form role="form"> 
+                    <h2 >Contactez-nous !</h2> <div class="form-area">
+                        <form role="form">
                             <br style="clear:both">
                             <div class="row" style="display:flex">
                                 <div class="col-12 col-md-6">
@@ -271,12 +270,12 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control" id="subject" name="subject" placeholder="Sujet de votre message*" required>
                                     </div></div>
-                                <div class="col-12 col-md-6"> 
+                                <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <textarea class="form-control" id="message" placeholder="Message" maxlength="140" rows="7"></textarea>
                                         <span class="help-block">
                                             * mentions obligatoires
-                                        </span>                    
+                                        </span>
                                     </div>
                                     <div class="text-right"><button type="button" id="submit" name="submit" class="btn-lg btn-danger bt-dble">Envoyer</button><br></div></div></div>
 
@@ -286,19 +285,19 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 {% endblock %}
 {% block javascript %}
         {{ parent() }}
-        
+
         <script type="text/javascript" charset="utf-8">
             $(function () {
                 /**
                  * Smooth scrolling to page anchor on click
                  **/
                  $('body').scrollspy({ target: '#myScrollspy' });
-                 
+
                 $("a.page-anchor[href*='#']:not([href='#'])").click(function (e) {
                     e.preventDefault();
                     if (
@@ -334,7 +333,7 @@
                     nav:true,
                     dots:true,
                     navText:['<i class="fa fa-chevron-left"></i>','<i class="fa fa-chevron-right"></i>'],
-                    
+
                 });
             });
         </script>
