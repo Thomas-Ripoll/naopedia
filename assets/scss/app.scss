@@ -8,6 +8,8 @@
 @import './jqueryui/jquery-ui.min.css';
 @import './map/MarkerCluster.css';
 @import './map/Leaflet.Photo.css';
+@import './blog.scss';
+
 .autocomplete_menu{
     padding:0.5em;
     background-color:white;
@@ -1017,7 +1019,6 @@ ul.nav-pills
     padding: 16px;
     text-decoration: none !important;
     color: #1e5d93;
-    background-color: #fdedede;
     position:relative;
 }
 #myScrollspy .nav li
