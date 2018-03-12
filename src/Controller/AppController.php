@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Services\Mailer;
 
 class AppController extends Controller {
 
@@ -104,6 +105,25 @@ class AppController extends Controller {
         return $this->json(array(
                     'state' => 'success'
         ));
+    }
+
+     /**
+     * @Route("/bird/contact", name="contact")
+     */
+    public function contactAction( Request $request, Mailer $mailer ) {
+        $em = $this->getDoctrine()->getManager();
+
+        $name = ($request->request->get('name')); 
+        $surname = $request->request->get('surname');
+        $email = $request->request->get('email');
+        $mobile = $request->request->get('mobile');
+        $subject = $request->request->get('subject');
+        $message = $request->request->get('message');
+
+        $mailer->sendContact($name, $surname, $email, $mobile, $subject, $message);
+
+        $this->get('session')->getFlashBag()->add('sucess', 'Votre mail a bien été ajouté');
+            return $this->redirectToRoute('homepage');
     }
 
     /**

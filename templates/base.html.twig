@@ -253,7 +253,7 @@
                 <div class="jumbotron ">
 
                     <h2 >Contactez-nous !</h2> <div class="form-area">
-                        <form role="form">
+                        <form  method="post" action="{{ path('contact')}}" role="form">
                             <br style="clear:both">
                             <div class="row" style="display:flex">
                                 <div class="col-12 col-md-6">
@@ -279,7 +279,7 @@
                                             * mentions obligatoires
                                         </span>
                                     </div>
-                                    <div class="text-right"><button type="button" id="submit" name="submit" class="btn-lg btn-danger bt-dble">Envoyer</button><br></div></div></div>
+                                    <div class="text-right"><button type="submit" id="submit" name="submit" class="btn-lg btn-danger bt-dble">Envoyer</button><br></div></div></div>
 
 
                         </form>
