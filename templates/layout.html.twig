@@ -11,6 +11,13 @@
         {% endblock %}
     </head>
     <body class="{{ "page-"~app.request.attributes.get('_route') }}">
+    {% for type, flashes in app.session.flashbag.all %}
+         {% for flash in flashes %}
+            <div class="alert alert-{{ type }} fade in">
+                {{ flash }}
+            </div>
+        {% endfor %}
+    {% endfor %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-light"> 
             <button class="navbar-toggler" type="button" data-toggle="fold" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span> 

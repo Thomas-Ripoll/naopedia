@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Services\Mailer;
 
 class AppController extends Controller {
 
@@ -42,9 +43,16 @@ class AppController extends Controller {
      * @Route("/user/{username}", name="userpage")
      * @ParamConverter("user", options={"mapping": {"username": "username"}})
      */
-    public function userpage(User $user) {
+    public function userpage(User $user, UploaderHelper $vichHelper) {
         $datesArray = [];
-        foreach ($user->getObservations() as $obs) {
+        $obsValid = [];
+
+        foreach ($user->getObservations() as $obs){ // On affiche que les observation validées 
+            if($obs->getValid() == false){
+                $obsValid[] = $obs;
+            }
+        }
+        foreach ($obsValid as $obs) {
             $img = $obs->getImage();
             if (!key_exists($obs->getSearchDate(), $datesArray)) {
                 $datesArray[$obs->getSearchDate()] = [];
@@ -97,6 +105,25 @@ class AppController extends Controller {
         return $this->json(array(
                     'state' => 'success'
         ));
+    }
+
+     /**
+     * @Route("/bird/contact", name="contact")
+     */
+    public function contactAction( Request $request, Mailer $mailer ) {
+        $em = $this->getDoctrine()->getManager();
+
+        $name = ($request->request->get('name')); 
+        $surname = $request->request->get('surname');
+        $email = $request->request->get('email');
+        $mobile = $request->request->get('mobile');
+        $subject = $request->request->get('subject');
+        $message = $request->request->get('message');
+
+        $mailer->sendContact($name, $surname, $email, $mobile, $subject, $message);
+
+        $this->get('session')->getFlashBag()->add('sucess', 'Votre mail a bien été ajouté');
+            return $this->redirectToRoute('homepage');
     }
 
     /**

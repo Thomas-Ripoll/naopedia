@@ -18,11 +18,11 @@
             <form action="{{ path('login') }}" method="post">
 
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="_username" class="form-control" placeholder="Identifiant" value="{{ last_username }}" />
+                    <label for="username">Pseudo ou Email : </label>
+                    <input type="text" id="username" name="_username" class="form-control" placeholder="Pseudo ou Email" value="{{ last_username }}" />
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
+                    <label for="password">Mot de passe</label>
                     <input type="password" id="password" class="form-control" placeholder="Mot de passe" name="_password" />
                 </div>
                 {% if ajaxLogin is defined %}
@@ -34,14 +34,14 @@
                     <input type="hidden" name="_target_path" value="/account" />
                 #}
                 <div>
-                    <button class="btn btn-primary btn-lg btn-submit btn-block" type="submit">login</button>
-                    <a href="/resetPassword" class="btn btn-link" >Mot de passe oublié</a>
+                    <button class="btn btn-primary btn-lg btn-submit btn-block" type="submit">Se connecter</button>
+                    <a href="/resetPassword" class="btn btn-link" >Mot de passe oublié ? </a>
                 </div>
             </form>  
             </div>    
             <hr>
             <div class="alert alert-info" >
-                ou <a href="/signin" >inscrivez vous</a>
+                Ou <a href="/signin" >Inscrivez-vous</a>
             </div>
         </div>
 
