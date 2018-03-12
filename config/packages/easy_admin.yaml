@@ -53,6 +53,7 @@ easy_admin:
                     - { property: 'title', label: 'Titre'}
                     - { property: 'author', label: 'Auteur'}
                     - { property: 'date', label: 'Date'}
+                    - { property: 'formatedCategory', label: 'Categorie'}
                 actions: 
                     - { name: 'edit', label: "Editer l'article", icon: 'edit' }
                     - { name: 'delete', label: "Supprimer", icon: 'remove' }

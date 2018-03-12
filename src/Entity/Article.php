@@ -16,27 +16,27 @@ class Article
   * @ORM\Column(type="integer")
   */
   private $id;
-
+  
   /**
   * @ORM\Column(type="string")
   */
   private $title;
-
+  
   /**
   * @ORM\Column(type="text")
   */
   private $content;
-
+  
   /**
   * @ORM\ManyToOne(targetEntity="App\Entity\User")
   */
   private $author;
-
+  
   /**
   * @ORM\Column(type="datetime")
   */
   private $date;
-
+  
   /**
   * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist"})
   */
@@ -46,10 +46,22 @@ class Article
   * @ORM\Column(type="simple_array", nullable=true)
   */
   private $category;
-
-
+  
+  protected static $categoryParameter = ['documentation' => "Description de l'association", "trend"=>"Mis en avant"];
+  
+  public function getFormatedCategory()
+  {
+    $categorys = $this->getCategory();
+    $formatedCategory = '';
+    foreach($categorys as $category){
+      $formatedCategory.= self::$categoryParameter[$category].", ";
+    }
+    $formatedCategory = substr($formatedCategory, 0, -2);
+    return $formatedCategory;
+  }
+  
   public function __construct() {
-      $this->date = new \DateTime();
+    $this->date = new \DateTime();
   }
   /**
   * Get the value of Id
@@ -60,7 +72,7 @@ class Article
   {
     return $this->id;
   }
-
+  
   /**
   * Set the value of Id
   *
@@ -71,10 +83,10 @@ class Article
   public function setId($id)
   {
     $this->id = $id;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Title
   *
@@ -84,7 +96,7 @@ class Article
   {
     return $this->title;
   }
-
+  
   /**
   * Set the value of Title
   *
@@ -95,10 +107,10 @@ class Article
   public function setTitle($title)
   {
     $this->title = $title;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Content
   *
@@ -108,7 +120,7 @@ class Article
   {
     return $this->content;
   }
-
+  
   /**
   * Set the value of Content
   *
@@ -119,10 +131,10 @@ class Article
   public function setContent($content)
   {
     $this->content = $content;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Author
   *
@@ -132,7 +144,7 @@ class Article
   {
     return $this->author;
   }
-
+  
   /**
   * Set the value of Author
   *
@@ -143,10 +155,10 @@ class Article
   public function setAuthor($author)
   {
     $this->author = $author;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Date
   *
@@ -156,7 +168,7 @@ class Article
   {
     return $this->date;
   }
-
+  
   /**
   * Set the value of Date
   *
@@ -167,11 +179,11 @@ class Article
   public function setDate($date)
   {
     $this->date = $date;
-
+    
     return $this;
   }
-
-
+  
+  
   /**
   * Get the value of Image
   *
@@ -181,7 +193,7 @@ class Article
   {
     return $this->images;
   }
-
+  
   /**
   * Set the value of Image
   *
@@ -192,19 +204,19 @@ class Article
   public function setImages($images)
   {
     $this->images = $images;
-
+    
     return $this;
   }
   
   
   public function getCategory() {
-      return $this->category;
+    return $this->category;
   }
-
+  
   public function setCategory($category) {
-      $this->category = $category;
-      return $this;
+    $this->category = $category;
+    return $this;
   }
-
-
+  
+  
 }

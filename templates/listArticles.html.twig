@@ -31,7 +31,11 @@
       <div class="card col-lg-3">
           <div class="card-block">
               <h3 class="card-title">{{article.title}}</h3>
-              <div class="img-ok"><img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive img-width"></div>
+               {% if article.images[0] is defined %}
+                    <div class="img-ok"><img src="{{ vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ article.images[0].alt }}" class="img-responsive img-width"></div>
+               {% else %}
+                    <div class="img-ok"><img src="{{asset("images/bird.png")}}" alt="Image oiseau" class="img-responsive img-width"></div>
+               {% endif %}
               <p class="card-text">Un article de  : <a class)"linkAuthor" href="{{ path('userpage', {'username': article.author})  }}">{{article.author}}</a> </br></p>
               <a href="{{ path('article', {'id': article.id }) }}" class="btn btn-primary">Lire l'article</a>
           </div>
