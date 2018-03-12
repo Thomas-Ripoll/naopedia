@@ -42,9 +42,16 @@ class AppController extends Controller {
      * @Route("/user/{username}", name="userpage")
      * @ParamConverter("user", options={"mapping": {"username": "username"}})
      */
-    public function userpage(User $user) {
+    public function userpage(User $user, UploaderHelper $vichHelper) {
         $datesArray = [];
-        foreach ($user->getObservations() as $obs) {
+        $obsValid = [];
+
+        foreach ($user->getObservations() as $obs){ // On affiche que les observation validées 
+            if($obs->getValid() == false){
+                $obsValid[] = $obs;
+            }
+        }
+        foreach ($obsValid as $obs) {
             $img = $obs->getImage();
             if (!key_exists($obs->getSearchDate(), $datesArray)) {
                 $datesArray[$obs->getSearchDate()] = [];

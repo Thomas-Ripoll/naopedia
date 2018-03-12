@@ -2,7 +2,7 @@
 easy_admin:
     entities:
         Observation:
-            disabled_actions: ['new','edit']
+            disabled_actions: ['new','edit','view','search']
             class: App\Entity\Observation
             label: 'Observations'
             roles: ['ROLE_NATURALISTE']
@@ -11,9 +11,10 @@ easy_admin:
                   - { property: 'user', label: 'Pseudo' }
                   - { property: 'bird', label: 'Oiseau' }
                   - date
-                  - { property: 'valid', label: 'validée'}
+                  - { property: 'valid', label: 'Validée'}
                 actions: 
                     - { name: 'show', label: "Voir l'observation", icon: 'user' }
+                    - { name: 'delete', label: "Suprimer l'observation", icon: 'remove' }
                 sort: ['date', 'DESC']    
             templates:
                 show: 'admin/checkObservation.html.twig'
@@ -23,7 +24,7 @@ easy_admin:
 
 
         Bird:
-            disabled_actions: ['new','edit','delete']
+            disabled_actions: ['new','edit']
             class: App\Entity\Bird
             label: 'Contribution'
             roles: ['ROLE_NATURALISTE']
@@ -31,25 +32,30 @@ easy_admin:
             list:
                 dql_filter: 'entity.description = false' #description non nul
                 fields:
-                  - name
-                  - contributor
-                  - description
-                  - { property: 'descriptionValid', label: 'validée'}
+                    - { property: 'name', label: 'Oiseau'}
+                    - { property: 'contributor', label: 'Contributeur'}
+                    - { property: 'description', label: 'Description'}
+                    - { property: 'descriptionValid', label: 'Validée'}
                 actions: 
                     - { name: 'show', label: "Voir la contribution", icon: 'user' }
+                    - { name: 'delete', label: "Supprimer", icon: 'remove' }
             templates:
                 show: 'admin/checkContribution.html.twig'
 
         Article:
+            disabled_actions: ['search']
             class: App\Entity\Article
             label: 'Articles'
             roles: ['ROLE_REDACTEUR']
             dashboard: ["title", "author"]
             list:
                 fields:
-                    - title
-                    - author
-                    - date
+                    - { property: 'title', label: 'Titre'}
+                    - { property: 'author', label: 'Auteur'}
+                    - { property: 'date', label: 'Date'}
+                actions: 
+                    - { name: 'edit', label: "Editer l'article", icon: 'edit' }
+                    - { name: 'delete', label: "Supprimer", icon: 'remove' }
             form: 
                 fields:
                     - title
@@ -70,7 +76,7 @@ easy_admin:
                   - { property: 'formatedRoles', label: 'Roles' }
                 actions:
                   - { name: 'checkProfil', label: 'Voir le profil', icon: 'user' }
-                  - { name: 'delete', icon: 'remove' }
+                  - { name: 'delete', label: "Supprimer", icon: 'remove' }
             edit:
                 fields:
                     - roles          
