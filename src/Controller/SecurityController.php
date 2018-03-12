@@ -232,16 +232,12 @@ class SecurityController extends Controller
         $em->persist($user);
         $em->flush();
 
-        return $this->json([
-          "state"=>"sucess",
-        ]);
+        return $this->redirectToRoute('userpage',[
+        'username'=>$user]);
         }
 
-        return $this->json([
-            "state"=>false,
-            "view" => $this->renderView('security/settings.html.twig',[
-                  'form' => $form->createView()
-                ])
-              ]);
+        return $this->render('security/settings.html.twig',[
+          'form' => $form->createView()
+        ]);
       }
 }

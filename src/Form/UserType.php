@@ -33,8 +33,8 @@ class UserType extends AbstractType
     ->add('bio', TextareaType::class)
     ->add('avatarFile', VichFileType::class,
             ['required' => false,
-            'allow_delete' => true,
-            'download_link' => true,])
+            'allow_delete' => false,
+            'download_link' => false,])
     ->add('submit', SubmitType::class, [
       'label' => 'Create',
       'attr' => ['class' => 'btn btn-primary btn-lg'],

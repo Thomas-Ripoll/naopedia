@@ -24,10 +24,11 @@ class SettingsType extends AbstractType
     ->add('email', TextType::class, array(
         'required' => false)
     )
+    ->add('bio', TextareaType::class)
     ->add('avatarFile', VichFileType::class,
-            ['required' => false,
-            'allow_delete' => false,
-            'download_link' => false,])
+    ['required' => false,
+    'allow_delete' => false,
+    'download_link' => false,])
     ->add('submit', SubmitType::class, [
       'label' => 'Modifier',
       'attr' => ['class' => 'btn btn-primary btn-lg']
