@@ -16,10 +16,70 @@ namespace App\Services;
 class QueryStringDecoder {
     
     private $em;
-    public function __construct(\Doctrine\ORM\EntityManagerInterface $em) {
+    private $request;
+    public function __construct(\Doctrine\ORM\EntityManagerInterface $em, \Symfony\Component\HttpFoundation\RequestStack $request) {
         $this->em  = $em;
+        $this->request = $request->getMasterRequest();
     }
-     public function decodeUrl($qs){
+    
+    
+    private function buildDatesArray($date1, $date2){
+        $date1 = \DateTime::createFromFormat("d-m-Y", $date1);
+        $date2 = \DateTime::createFromFormat("d-m-Y", $date2);
+        $datesArray = [];
+        $date2Format = $date2->format("Ym");
+        $date1Format = "";
+        $i= 0;
+        do{
+            $date1Format = $date1->format("Ym");
+            $datesArray[] = $date1Format;
+            $date1->modify('first day of +1 month');
+            $i++;
+            if($i>20){
+                break;
+            }
+        }while($date1Format != $date2Format);
+        return $datesArray;
+    }
+    /**
+     * 
+     * Décode la queryString
+     * 
+     * @param type $qs
+     */
+    public function decode(){
+        return 
+            ($this->request->getMethod() == "POST")?
+                $this->decodePost($this->request->request):
+                $this->decodeUrl($this->request->query);
+        
+    }
+    private function decodePost($qs){
+        $parameter= ["query"=>[],"filters"=>[]];
+        if($qs->has("bird"))
+        {
+            $bird = $this->em->getRepository(\App\Entity\Bird::class)->find($qs->get("bird"));
+            $parameter["query"]["bird"] = $bird->getId();
+            $parameter["filters"]["bird"] = [
+                "birdId"=>$bird->getId(),
+                "birdSlug"=>$bird->getSlug(),
+                "birdName"=>$bird->getName(),
+                "birdLatinName"=>$bird->getLatinName(),
+                
+            ];
+        }
+        if($qs->has("dates"))
+        {
+            $parameter["query"]["dates"] = $this->decodeDates($qs->get("dates"));
+            dump($parameter["query"]);
+           
+        }
+        if(!$qs->has("bird") && (!$qs->has("dates") || ( $qs->has("dates") && count($parameter["query"]["dates"])>4 ))){
+            throw new \Exception("Le nombre de mois ne peut excéder 4 si aucun oiseau n'est sélectionné");
+        }
+        return $parameter;
+    }
+    private function decodeUrl($qs){
          $parameter= ["query"=>[],"filters"=>[]];
         if($qs->has("bird"))
         {
@@ -48,48 +108,6 @@ class QueryStringDecoder {
         }
         return $parameter;
     }
-    
-    private function buildDatesArray($date1, $date2){
-        $date1 = \DateTime::createFromFormat("d-m-Y", $date1);
-        $date2 = \DateTime::createFromFormat("d-m-Y", $date2);
-        $datesArray = [];
-        $date2Format = $date2->format("Ym");
-        $date1Format = "";
-        $i= 0;
-        do{
-            $date1Format = $date1->format("Ym");
-            $datesArray[] = $date1Format;
-            $date1->modify('first day of +1 month');
-            $i++;
-            if($i>20){
-                break;
-            }
-        }while($date1Format != $date2Format);
-        return $datesArray;
-    }
-    /**
-     * 
-     * Décode la queryString
-     * 
-     * @param type $qs
-     */
-    public function decode($qs){
-        
-        $query = [];
-        if($qs->has("bird"))
-        {
-            $query["bird"] = $qs->get("bird");
-        }
-        if($qs->has("dates"))
-        {
-            $query["dates"] = $this->decodeDates($qs->get("dates"));
-        }
-        if(!$qs->has("bird") && (!$qs->has("dates") || ( $qs->has("dates") && count($query["dates"])>4 ))){
-            throw new \Exception("Le nombre de mois ne peut excéder 4 si aucun oiseau n'est sélectionné");
-        }
-        return $query;
-    }
-   
     private function decodeDates($dates){
         
         $monthsArray = [];
