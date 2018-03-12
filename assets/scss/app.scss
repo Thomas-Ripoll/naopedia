@@ -361,11 +361,6 @@ span.main, span.latin{
 
 body{
     padding-top:60px;
-<<<<<<< HEAD
-
-=======
-
->>>>>>> feature/design
         background-color: #d3fff1;
     background: #d3fff1;
 background: -moz-linear-gradient(top, #d3fff1 0%, #f2eedc 100%);
@@ -424,19 +419,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d3fff1', end
 
 @import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,400i,800,800i|Montserrat:400,400i,800,800i');
 /*
-<<<<<<< HEAD
 Main color : 1e5d93
 2nd color : 56a3a6
 3rd color : e3ebeb
 Alert : e84855
 Black : 212227
-=======
-Main color : 1e5d93
-2nd color : 56a3a6
-3rd color : e3ebeb
-Alert : e84855
-Black : 212227
->>>>>>> feature/design
 */
 /** rajout thomas **/
 
@@ -572,11 +559,7 @@ Black : 212227
     background-color: #212227;
 }
 .modal{
-<<<<<<< HEAD
     margin-top:70px;
-=======
-    margin-top:70px;
->>>>>>> feature/design
 }
 .modal-body p,.modal-body p h3{
     color: #000000;
@@ -652,15 +635,9 @@ h2
     font-size: 1.8em!important;
     font-weight: 800;
 
-<<<<<<< HEAD
 
 
 
-=======
-
-
-
->>>>>>> feature/design
     text-transform: uppercase;
 
     color: #1e5d93;
@@ -853,26 +830,15 @@ p
 .navbar-dark
 {
     background-color: #1e5d93 !important;
-<<<<<<< HEAD
 }
 .navbar-brand
 {
     padding-left: .5em;
-=======
-}
-.navbar-brand
-{
-    padding-left: .5em;
->>>>>>> feature/design
 }
 .navbar-nav {
     .nav-link:hover, .nav-link.active{
         background-color: rgba(255,255,255,0.2)
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> feature/design
 }
 
 .navbar-nav a.nav-link,
@@ -1446,11 +1412,7 @@ ul.nav-pills
     .dropdown-menu{
         left:auto;
         right:0px;
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> feature/design
 }
 .page-map{
     .map{
@@ -1503,11 +1465,7 @@ ul.nav-pills
                 left:0px;
 
                 h2,hr{
-<<<<<<< HEAD
                     display:none;
-=======
-                    display:none;
->>>>>>> feature/design
                 }
                 .birdytip{
                     position:absolute;
@@ -1614,36 +1572,4 @@ body.page-homepage{
         max-width:300px;
     }
 
-}
-
-.blog{
-  .jumbotron{
-    background-color: white;
-  }
-  h2{
-    margin-top: 50px;
-    text-align: center;
-
-
-  }
-  .container{
-      text-align:center;
-      display:flex;
-      flex-wrap: wrap
-    }
-
-    .card{
-      margin:30px;
-      padding:40px;
-    }
-
-    .card-title{
-      color:#1e5d93;
-    }
-    .linkAuthor{
-      font-style:italic;
-    }
-    .img-ok{
-      margin: 20px;
-    }
 }
