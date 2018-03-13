@@ -137,5 +137,15 @@ class Mailer {
     $this->mailer->send($message);
   }
 
+  public function  sendGoldenbook($user)
+  {
+    $message = (new \Swift_Message("Le livre d'or"))
+        ->setFrom('naopegia@gmail.com')
+        ->setTo($user->getEmail())
+        ->setBody(
+            $this->templating->render('emails/email-livre-nao.html.twig'),'text/html');
+    $this->mailer->send($message);
+  }
+
 
 }

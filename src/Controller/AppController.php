@@ -43,6 +43,17 @@ class AppController extends Controller {
     }
 
     /**
+     * @Route("/goldenbook", name="goldenbook")
+     */
+
+    public function goldenbook(Mailer $mailer) {
+        $user = $this->getUser();
+        $mailer->sendGoldenbook($user);
+        $this->get('session')->getFlashBag()->add('sucess', "Le livre d'or vous a été envoyé");
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
      * @Route("/user/{username}", name="userpage")
      * @ParamConverter("user", options={"mapping": {"username": "username"}})
      */
