@@ -33,11 +33,12 @@ class GetObservations{
     public function generateObservations($observations,$qs){
         
         
-        
         $datesArray = [];
         $user = ($this->securityContext->getToken()->getUser() != "anon.")?
                 $this->securityContext->getToken()->getUser():
                 null;
+        
+        
         
         foreach ($observations as $obs) {
             $img = $obs->getImage();
@@ -56,11 +57,11 @@ class GetObservations{
                 "birdName" => $obs->getBird()->getLatinName(),
                 "birdSlug" => $obs->getBird()->getSlug(),
                 "img" => (!is_null($img)) ? [
-            "id" => $img->getId(),
-            "url" => (preg_match("/http/", $img->getUrl())) ? $img->getUrl() : $this->vichHelper->asset($img, "imageFile"),
-            "liked" => !is_null($user) && in_array($user->getId(), $img->getLikes()),
-            "countLikes" => count($img->getLikes())
-                ] : null
+                    "id" => $img->getId(),
+                    "url" => (preg_match("/http/", $img->getUrl())) ? $img->getUrl() : $this->vichHelper->asset($img, "imageFile"),
+                    "liked" => !is_null($user) && in_array($user->getId(), $img->getLikes()),
+                    "countLikes" => count($img->getLikes())
+                    ] : null
             ];
         }
         if (key_exists("dates", $qs["filters"])) {

@@ -28,15 +28,10 @@
                             </thead>        
                             <tbody>
                                 {% for entity in entitySet %}
-
                                     <tr>
                                         {% for fieldName in _entity_config.dashboard %} 
                                             <td>{{ easyadmin_render_field_for_list_view(_entity_config.name, entity, _entity_config.list.fields[fieldName]) }}</td>
                                         {% endfor %}
-                                        <td>
-                                            {% set action_href = path('easyadmin', { entity: _entity_config.name, action: "show", id: entity.id }) %}
-                                            <a href="{{ action_href }}" class="btn btn-xs">voir</a>
-                                        </td>
                                     </tr>
                                 {% endfor %} 
                             </tbody>

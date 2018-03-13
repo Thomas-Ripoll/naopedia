@@ -4,6 +4,13 @@
     <link href="{{ asset("build/css/app.min.css") }}" rel="stylesheet" type="text/css">
 {% endblock %}
 
+{% block opengraph %}
+    <meta property="og:title" content="NAOpédia, le site dédié à l'observation des oiseaux en France." />
+    <meta property="og:type" content="siteweb" />
+    <meta property="og:url" content="{{- absolute_url(app.request.uri) -}}" />
+    <meta property="og:image" content="{{- absolute_url(asset("images/og-default.jpg")) -}}" />
+    <meta property="og:image:alt" content="La Noamap permet de visualiser, partager et liker des observations." />
+{% endblock %}
 {% block content %}
     <div class="birdAppContainer" data-birdsloaded="{{ birdsloaded|json_encode|e('html_attr') }}">
         <div class="row">
