@@ -17,57 +17,57 @@ class Bird
   * @ORM\Column(type="integer")
   */
   private $id;
-
+  
   /**
   * @ORM\Column(type="string")
   */
   private $name;
-
+  
   /**
   * @ORM\Column(type="string", nullable=true)
   */
   private $latinName;
-
+  
   /**
   * @ORM\Column(type="string")
   */
   private $ordre;
-
+  
   /**
   * @ORM\Column(type="string")
   */
   private $famille;
-
+  
   /**
-  * @ORM\ManyToMany(targetEntity="App\Entity\Image",cascade={"persist"})
+  * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="bird", cascade={"persist"})
   */
   private $images;
-
+  
   /**
   * @ORM\Column(type="string", nullable=true)
 
   */
   private $description;
-
-    /**
+  
+  /**
   * @ORM\Column(type="boolean", nullable=true)
   */
   private $descriptionValid;
-
+  
   /**
   * @ORM\ManyToOne(targetEntity="App\Entity\User")
   */
   private $contributor;
-
-
+  
+  
   
   /**
-   * @Gedmo\Slug(fields={"name", "latinName"})
-   * @ORM\Column(length=128, unique=true)
-   */
-   private $slug;
-
-
+  * @Gedmo\Slug(fields={"name", "latinName"})
+  * @ORM\Column(length=128, unique=true)
+  */
+  private $slug;
+  
+  
   /**
   * Get the value of Id
   *
@@ -77,12 +77,12 @@ class Bird
   {
     return $this->id;
   }
-
+  
   public function __toString()
   {
-      return $this->getName();
+    return $this->getName();
   }
-
+  
   /**
   * Set the value of Id
   *
@@ -93,10 +93,10 @@ class Bird
   public function setId($id)
   {
     $this->id = $id;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Name
   *
@@ -106,7 +106,7 @@ class Bird
   {
     return $this->name;
   }
-
+  
   /**
   * Set the value of Name
   *
@@ -117,10 +117,10 @@ class Bird
   public function setName($name)
   {
     $this->name = $name;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Latin Name
   *
@@ -130,7 +130,7 @@ class Bird
   {
     return $this->latinName;
   }
-
+  
   /**
   * Set the value of Latin Name
   *
@@ -141,10 +141,10 @@ class Bird
   public function setLatinName($latinName)
   {
     $this->latinName = $latinName;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Ordre
   *
@@ -154,7 +154,7 @@ class Bird
   {
     return $this->ordre;
   }
-
+  
   /**
   * Set the value of Ordre
   *
@@ -165,10 +165,10 @@ class Bird
   public function setOrdre($ordre)
   {
     $this->ordre = $ordre;
-
+    
     return $this;
   }
-
+  
   /**
   * Get the value of Famille
   *
@@ -178,7 +178,7 @@ class Bird
   {
     return $this->famille;
   }
-
+  
   /**
   * Set the value of Famille
   *
@@ -189,11 +189,11 @@ class Bird
   public function setFamille($famille)
   {
     $this->famille = $famille;
-
+    
     return $this;
   }
-
-
+  
+  
   /**
   * Get the value of Images
   *
@@ -203,7 +203,7 @@ class Bird
   {
     return $this->images;
   }
-
+  
   /**
   * Set the value of Images
   *
@@ -214,109 +214,109 @@ class Bird
   public function setImages($images)
   {
     $this->images = $images;
-
+    
     return $this;
   }
-
+  
   public function addImage(Image $image)
-    {
-        $this->images[] = $image;
-
-        return $this;
-    }
-
-
-    /**
-     * Get the value of Description
-     *
-     * @return mixed
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set the value of Description
-     *
-     * @param mixed description
-     *
-     * @return self
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of Contributor
-     *
-     * @return mixed
-     */
-    public function getContributor()
-    {
-        return $this->contributor;
-    }
-
-    /**
-     * Set the value of Contributor
-     *
-     * @param mixed contributor
-     *
-     * @return self
-     */
-    public function setContributor($contributor)
-    {
-        $this->contributor = $contributor;
-
-        return $this;
-    }
-
-
-    /**
-     * Get the value of Slug
-     *
-     * @return mixed
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set the value of Slug
-     *
-     * @param mixed slug
-     *
-     * @return self
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-
+  {
+    $this->images[] = $image;
+    $image->setBird($this);
+    return $this;
+  }
+  
+  
   /**
-   * Get the value of descriptionValid
-   */ 
+  * Get the value of Description
+  *
+  * @return mixed
+  */
+  public function getDescription()
+  {
+    return $this->description;
+  }
+  
+  /**
+  * Set the value of Description
+  *
+  * @param mixed description
+  *
+  * @return self
+  */
+  public function setDescription($description)
+  {
+    $this->description = $description;
+    
+    return $this;
+  }
+  
+  /**
+  * Get the value of Contributor
+  *
+  * @return mixed
+  */
+  public function getContributor()
+  {
+    return $this->contributor;
+  }
+  
+  /**
+  * Set the value of Contributor
+  *
+  * @param mixed contributor
+  *
+  * @return self
+  */
+  public function setContributor($contributor)
+  {
+    $this->contributor = $contributor;
+    
+    return $this;
+  }
+  
+  
+  /**
+  * Get the value of Slug
+  *
+  * @return mixed
+  */
+  public function getSlug()
+  {
+    return $this->slug;
+  }
+  
+  /**
+  * Set the value of Slug
+  *
+  * @param mixed slug
+  *
+  * @return self
+  */
+  public function setSlug($slug)
+  {
+    $this->slug = $slug;
+    
+    return $this;
+  }
+  
+  
+  /**
+  * Get the value of descriptionValid
+  */ 
   public function getDescriptionValid()
   {
     return $this->descriptionValid;
   }
-
+  
   /**
-   * Set the value of descriptionValid
-   *
-   * @return  self
-   */ 
+  * Set the value of descriptionValid
+  *
+  * @return  self
+  */ 
   public function setDescriptionValid($descriptionValid)
   {
     $this->descriptionValid = $descriptionValid;
-
+    
     return $this;
   }
 }

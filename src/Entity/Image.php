@@ -9,61 +9,72 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
- * @Vich\Uploadable
- */
+* @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
+* @Vich\Uploadable
+*/
 class Image {
 
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    * @ORM\Id
+    * @ORM\GeneratedValue
+    * @ORM\Column(type="integer")
+    */
     private $id;
 
     /**
-     * @ORM\Column(type="string")
-     * 
-     */
+    * @ORM\Column(type="string")
+    *
+    */
     private $url;
 
     /**
-     * @Assert\NotNull(message="Une image est obligatoire pour certifier l'observation.")
-     * @Vich\UploadableField(mapping="images", fileNameProperty="url")
-     * @var File
-     */
+    * @Assert\NotNull(message="Une image est obligatoire pour certifier l'observation.")
+    * @Vich\UploadableField(mapping="images", fileNameProperty="url")
+    * @var File
+    */
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string")
-     */
+    * @ORM\Column(type="string")
+    */
     private $alt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="images")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    * @ORM\ManyToOne(targetEntity="User", inversedBy="images")
+    * @ORM\JoinColumn(nullable=true)
+    */
     private $author;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    * @ORM\ManyToOne(targetEntity="App\Entity\Bird",cascade={"persist"}, inversedBy="images")
+    */
+    private $bird;
+
+
+    /**
+    * @ORM\Column(type="simple_array", nullable=true)
+    */
     private $likes;
-    
+
     /**
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    * @ORM\Column(type="integer", nullable=true)
+    */
+    private $likesNumber;
+    /**
+    *
+    * @ORM\Column(type="datetime", nullable=true)
+    */
     private $createdAt;
-    
+
     /**
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    *
+    * @ORM\Column(type="datetime", nullable=true)
+    */
     private $updatedAt;
 
     public function __construct() {
         $this->likes = [];
+        $this->likesNumber = 0 ;
         $this->createdAt = $this->updatedAt = new \DateTime();
     }
 
@@ -72,30 +83,30 @@ class Image {
     }
 
     /**
-     * Get the value of Id
-     *
-     * @return mixed
-     */
+    * Get the value of Id
+    *
+    * @return mixed
+    */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * Set the value of Id
-     *
-     * @param mixed id
-     *
-     * @return self
-     */
+    * Set the value of Id
+    *
+    * @param mixed id
+    *
+    * @return self
+    */
     public function setId($id) {
         $this->id = $id;
 
         return $this;
     }
     /**
-     * 
-     * @return string
-     */
+    *
+    * @return string
+    */
     public function getUrl() {
         return $this->url;
     }
@@ -105,7 +116,7 @@ class Image {
     }
 
     public function setUrl($image) {
-        
+
         $this->url = $image;
         if(is_null($this->alt)){
             $this->alt = $image;
@@ -121,23 +132,23 @@ class Image {
         return $this;
     }
 
-    
+
     /**
-     * Get the value of Alt
-     *
-     * @return mixed
-     */
+    * Get the value of Alt
+    *
+    * @return mixed
+    */
     public function getAlt() {
         return $this->alt;
     }
 
     /**
-     * Set the value of Alt
-     *
-     * @param mixed alt
-     *
-     * @return self
-     */
+    * Set the value of Alt
+    *
+    * @param mixed alt
+    *
+    * @return self
+    */
     public function setAlt($alt) {
         $this->alt = $alt;
 
@@ -145,21 +156,21 @@ class Image {
     }
 
     /**
-     * Get the value of Author
-     *
-     * @return mixed
-     */
+    * Get the value of Author
+    *
+    * @return mixed
+    */
     public function getAuthor() {//: Category
         return $this->author;
     }
 
     /**
-     * Set the value of Author
-     *
-     * @param mixed author
-     *
-     * @return self
-     */
+    * Set the value of Author
+    *
+    * @param mixed author
+    *
+    * @return self
+    */
     public function setAuthor($author) {
         $this->author = $author;
 
@@ -169,6 +180,7 @@ class Image {
     public function addLike($user_id) {
         if (!in_array($user_id, $this->likes)) {
             $this->likes[] = $user_id;
+            $this->likesNumber++ ;
         }
         return $this;
     }
@@ -176,6 +188,7 @@ class Image {
     public function removeLike($user_id) {
         if (in_array($user_id, $this->likes)) {
             array_splice($this->likes, array_search($user_id, $this->likes), 1);
+            $this->likesNumber-- ;
         }
         return $this;
     }
@@ -201,5 +214,69 @@ class Image {
         return $this;
     }
 
+
+
+    /**
+    * Set the value of Likes
+    *
+    * @param mixed likes
+    *
+    * @return self
+    */
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    /**
+    * Get the value of Likes Number
+    *
+    * @return mixed*
+    */
+    public function getLikesNumber()
+    {
+        return $this->likesNumber;
+    }
+
+    /**
+    * Set the value of Likes Number
+    *
+    * @param mixed likesNumber
+    *
+    * @return self
+    */
+    public function setLikesNumber($likesNumber)
+    {
+        $this->likesNumber = $likesNumber;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get the value of Bird
+     *
+     * @return mixed
+     */
+    public function getBird()
+    {
+        return $this->bird;
+    }
+
+    /**
+     * Set the value of Bird
+     *
+     * @param mixed bird
+     *
+     * @return self
+     */
+    public function setBird($bird)
+    {
+        $this->bird = $bird;
+
+        return $this;
+    }
 
 }
