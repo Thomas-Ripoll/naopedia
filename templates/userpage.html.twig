@@ -22,7 +22,7 @@
                             {{ user.bio ? user.bio : "l'utilisateur n'a pas encore fournit de bio." }}
                         </p>
 
-                       
+
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
@@ -96,21 +96,19 @@
     <script src="{{ asset("build/js/app.min.js") }}"></script>
     <script>
         $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        if ($(".usermap").length)
-                $(".usermap").birdApp()
-                
+            $('[data-toggle="tooltip"]').tooltip();
+                    if ($(".usermap").length)
+                    $(".usermap").birdApp()
+
                     $(".owl-carousel").owlCarousel({
-                items: 3,
-                center: true,
-                margin: 10,
-                loop: true,
-                nav: true,
-                dots: true,
-                navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-                    });
-                    
-                                        })
-                                        })
-                                        </script>
+                    items: 3,
+                    center: true,
+                    margin: 10,
+                    loop: true,
+                    nav: true,
+                    dots: true,
+                    navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+            });
+        });
+    </script>
 {% endblock %}
