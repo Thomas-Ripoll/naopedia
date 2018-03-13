@@ -3,7 +3,8 @@
             <meta property="og:title" content="Naopedia - {{bird.name}} - {{bird.latinName}}" />
             <meta property="og:type" content="siteweb" />
             <meta property="og:url" content="{{- absolute_url(app.request.uri) -}}" />
-            <meta property="og:image" content="{{- absolute_url(asset(bird|trendImage)) -}}" />
+            {% set trendIpmage = bird|trendImage %}
+            <meta property="og:image" content="{{-  "http" in trendIpmage? trendIpmage :absolute_url(asset(trendIpmage)) -}}" />
             <meta property="og:image:alt" content="Participez à l’observation et la protection de notre biodiversité." />
     {% endblock -%}
     {% block content %}
