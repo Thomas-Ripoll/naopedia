@@ -549,7 +549,9 @@ L.Icon.Default.mergeOptions({
             var endDay = endDate.getDate();
             var endDateInt = endDate.getFullYear() + (" 00" + (parseInt(endDate.getMonth()) + 1)).substr(-2);
             var bird = (this.filters.bird.data) ? this.filters.bird.data.birdId : "all";
-            //console.log(bird)
+            console.log(bird)
+            console.log(this.cache);
+            console.log(this.filters.dates.data);
             var rotationDateInt = 0;
             do {
                 rotationDateInt = rotationDate.getFullYear() + (" 00" + (parseInt(rotationDate.getMonth()) + 1)).substr(-2)
@@ -587,16 +589,6 @@ L.Icon.Default.mergeOptions({
 })(jQuery)
 
 
-window.birdApp = $(".birdAppContainer").birdApp();
 
-$(".birdAppContainer .search ").birdSearch(function (item) {
-    $(this).val("");
-    birdApp.birdApp.updateFilters("bird", item);
-
-});
-$(".filter-btn").on("click",function(e){
-    e.preventDefault();
-    $(this).parent().find('.filter-column-inner .filters-box').toggleClass("open");
-})
 
 

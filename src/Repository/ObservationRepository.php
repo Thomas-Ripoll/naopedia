@@ -12,7 +12,7 @@ class ObservationRepository extends ServiceEntityRepository {
         parent::__construct($registry, Observation::class);
     }
 
-    public function findbyFilters($filters, $all = false) {
+    public function findByFilter($filters, $all = false) {
 
         $qb = $this->createQueryBuilder('o');
         if (key_exists("bird", $filters)) {

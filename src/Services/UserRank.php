@@ -20,8 +20,10 @@ use Twig\TwigFilter;
 class UserRank extends AbstractExtension{
     
     private $userRanks;
-    public function __construct($userRanks) {
+    private $em;
+    public function __construct($userRanks, \Doctrine\ORM\EntityManagerInterface $em) {
         $this->userRanks = $userRanks;
+        $this->em = $em;
     }
     public function getFilters()
     {
@@ -31,7 +33,9 @@ class UserRank extends AbstractExtension{
     }
     public function userRank(User $user){
         
-        $nbObs = count($user->getObservations());
+        $observations = $this->em->getRepository(\App\Entity\Observation::class)->findByFilter(["user"=> $user->getId()])
+;        $nbObs = count($observations);
+        
         $rank = [
             "statut"=>null,
             "image"=>null,

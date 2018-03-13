@@ -45,13 +45,14 @@ class AppController extends Controller {
      * @Route("/user/{username}", name="userpage")
      * @ParamConverter("user", options={"mapping": {"username": "username"}})
      */
-    public function userpage(User $user,  GetObservations $go) {
-        
+    public function userpage(User $user, EntityManagerInterface $em, GetObservations $go) {
+        $observations = $em->getRepository(Observation::class)->findByFilter(["user"=>$user->getId()]);
         $dataArray = [
-            "data" => ["all" =>  $go->generateObservations($user->getObservations(),[])]
+            "data" => ["all" =>  $go->generateObservations($observations,["filters"=>[]])]
         ];
         return $this->render("userpage.html.twig", array(
                     'user' => $user,
+                    'observations' => $observations, 
                     'mapData' =>  $dataArray));
     }
 
@@ -148,7 +149,7 @@ class AppController extends Controller {
         
         $parameters = $qsd->decode();
 
-        $observations = $em->getRepository(Observation::class)->findByFilters($parameters["query"]);
+        $observations = $em->getRepository(Observation::class)->findByFilter($parameters["query"]);
 
         
         $bird = ($request->query->has("bird")) ? $parameters["query"]["bird"] : "all";
@@ -170,12 +171,12 @@ class AppController extends Controller {
     public function getObservations(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd, GetObservations $go) {
 
         $query = $qsd->decode();
-        $observations = $em->getRepository(Observation::class)->findByFilters($query["query"]);
+        $observations = $em->getRepository(Observation::class)->findByFilter($query["query"]);
 
         if (count($observations) <= 0 && $this->getParameter('fake_data') && $request->request->has("bird")) {
 
             $this->get("data_faker")->getfakeObservations($request->request->get("bird"));
-            $observations = $em->getRepository(Observation::class)->findByFilters($query["query"]);
+            $observations = $em->getRepository(Observation::class)->findByFilter($query["query"]);
         }
         
 

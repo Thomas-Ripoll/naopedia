@@ -21,19 +21,18 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  */
 class GetObservations{
     
-    private $request;
-    private $qsd;
-    private $query = null;
-    public function __construct( QueryStringDecoder $qsd, TokenStorageInterface $security_context, UploaderHelper $vichHelper) {
+    private $vichHelper;
+    private $securityContext;
+    
+    public function __construct(  TokenStorageInterface $security_context, UploaderHelper $vichHelper) {
        
-        $this->qsd = $qsd;
         $this->securityContext = $security_context;
         $this->vichHelper =$vichHelper;
         
     }
     public function generateObservations($observations,$qs){
         
-        $this->query = $qs;
+        
         
         $datesArray = [];
         $user = ($this->securityContext->getToken()->getUser() != "anon.")?
@@ -64,13 +63,13 @@ class GetObservations{
                 ] : null
             ];
         }
-        /*if ($this->query["hasdates"]) {
-            foreach ($this->query["dates"] as $date) {
+        if (key_exists("dates", $qs["filters"])) {
+            foreach ($qs["query"]["dates"] as $date) {
                 if (!key_exists($date, $datesArray)) {
                     $datesArray[$date] = [];
                 }
             }
-        }*/
+        }
         return $datesArray;
     }
     
