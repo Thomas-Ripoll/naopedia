@@ -1,0 +1,30 @@
+.birdsPage{
+    .search{
+        text-align: center;
+    }
+    h4{
+        margin: 5px;
+    }
+    h2 {
+        margin-top: 50px;
+        text-align: center;
+    }
+    .container {
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap
+    }
+    .card {
+        margin: 30px;
+        padding: 40px;
+    
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+    .card-title {
+        color: #1e5d93;
+    }
+    .img-ok {
+        margin: 20px;
+    }
+}

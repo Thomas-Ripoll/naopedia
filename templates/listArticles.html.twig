@@ -12,14 +12,11 @@
       <div class="col-10 col-md-8 ">
           <div class="jumbotron">
               <h2 class="text-center">{{trendArticle.title}}</h2>
-              <div class="img-ok"><img src="{{ vich_uploader_asset(trendArticle.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ trendArticle.images[0].alt }}" class="img-responsive img-width"></div>
-              <div class="row">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                      <a  href="{{ path('article', {'id': trendArticle.id }) }}" role="button" class="btn btn-danger btn-lg ">
-                        <p>Lire l'article</p>
-                      </a>
-                  </div>
+              <div class="img-ok">
+                <img src="{{ vich_uploader_asset(trendArticle.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ trendArticle.images[0].alt }}" class="img-responsive img-width">
               </div>
+              <a href="{{ path('article', {'id': trendArticle.id }) }}" class="btn btn-primary">Lire l'article</a>
+
 
           </div>
       </div>
