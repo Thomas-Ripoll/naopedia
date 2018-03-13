@@ -2,20 +2,23 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\Bird;
 use App\Entity\Image;
 use App\Entity\Observation;
 use App\Entity\User;
 use App\Form\ObservationType;
+use App\Services\GetObservations;
 use App\Services\QueryStringDecoder;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Services\Mailer;
+
 
 class AppController extends Controller {
 
@@ -24,8 +27,8 @@ class AppController extends Controller {
      */
     public function index(EntityManagerInterface $em) {
 
-        $articlesRep = $em->getRepository(\App\Entity\Article::class);
-        $lastObservations = $em->getRepository(\App\Entity\Observation::class)->findBy([], ["date" => "DESC"], 3);
+        $articlesRep = $em->getRepository(Article::class);
+        $lastObservations = $em->getRepository(Observation::class)->findBy([], ["date" => "DESC"], 3);
         $lastArticles = $articlesRep->findBy([], ["date" => "DESC"], 2);
 
         $artMisenAvant = $articlesRep->findByCategory('trend');
@@ -43,44 +46,15 @@ class AppController extends Controller {
      * @Route("/user/{username}", name="userpage")
      * @ParamConverter("user", options={"mapping": {"username": "username"}})
      */
-    public function userpage(User $user, UploaderHelper $vichHelper) {
-        $datesArray = [];
-        $obsValid = [];
 
-        foreach ($user->getObservations() as $obs){ // On affiche que les observation validées 
-            if($obs->getValid() == false){
-                $obsValid[] = $obs;
-            }
-        }
-        foreach ($obsValid as $obs) {
-            $img = $obs->getImage();
-            if (!key_exists($obs->getSearchDate(), $datesArray)) {
-                $datesArray[$obs->getSearchDate()] = [];
-            }
-            $datesArray[$obs->getSearchDate()][] = [
-                "id" => $obs->getId(),
-                "lat" => $obs->getGeoloc("lat"),
-                "lng" => $obs->getGeoloc("lng"),
-                "url" => (!is_null($img)) ? $img->getUrl() : "",
-                "caption" => $obs->getDescription(),
-                "author" => $obs->getUser()->getUsername(),
-                "day" => $obs->getDate()->format("j"),
-                "date" => $obs->getDate()->format("d/m/Y"),
-                "birdName" => $obs->getBird()->getLatinName(),
-                "birdSlug" => $obs->getBird()->getSlug(),
-                "img" => (!is_null($img)) ? [
-            "id" => $img->getId(),
-            "url" => (preg_match("/http/", $img->getUrl())) ? $img->getUrl() : $vichHelper->asset($img, "imageFile"),
-            "liked" => !is_null($user) && in_array($user->getId(), $img->getLikes()),
-            "countLikes" => count($img->getLikes())
-                ] : null
-            ];
-        }
+    public function userpage(User $user, EntityManagerInterface $em, GetObservations $go) {
+        $observations = $em->getRepository(Observation::class)->findByFilter(["user"=>$user->getId()]);
         $dataArray = [
-            "data" => ["all" => $datesArray]
+            "data" => ["all" =>  $go->generateObservations($observations,["filters"=>[]])]
         ];
         return $this->render("userpage.html.twig", array(
                     'user' => $user,
+                    'observations' => $observations, 
                     'mapData' =>  $dataArray));
     }
 
@@ -192,48 +166,16 @@ class AppController extends Controller {
     /**
      * @Route("/carte", name="map")
      */
-    public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd, UploaderHelper $vichHelper) {
-        $parameters = $qsd->decodeUrl($request->query);
+    public function application(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd,  GetObservations $go) {
+        
+        $parameters = $qsd->decode();
 
-        $observations = $em->getRepository(Observation::class)->findByFilters($parameters["query"]);
+        $observations = $em->getRepository(Observation::class)->findByFilter($parameters["query"]);
 
-        $datesArray = [];
-        $user = $this->getUser();
-        foreach ($observations as $obs) {
-            $img = $obs->getImage();
-            if (!key_exists($obs->getSearchDate(), $datesArray)) {
-                $datesArray[$obs->getSearchDate()] = [];
-            }
-            $datesArray[$obs->getSearchDate()][] = [
-                "id" => $obs->getId(),
-                "lat" => $obs->getGeoloc("lat"),
-                "lng" => $obs->getGeoloc("lng"),
-                "url" => (!is_null($img)) ? $img->getUrl() : "",
-                "caption" => $obs->getDescription(),
-                "author" => $obs->getUser()->getUsername(),
-                "day" => $obs->getDate()->format("j"),
-                "date" => $obs->getDate()->format("d/m/Y"),
-                "birdName" => $obs->getBird()->getLatinName(),
-                "birdSlug" => $obs->getBird()->getSlug(),
-                "img" => (!is_null($img)) ? [
-            "id" => $img->getId(),
-            "url" => (preg_match("/http/", $img->getUrl())) ? $img->getUrl() : $vichHelper->asset($img, "imageFile"),
-            "liked" => !is_null($user) && in_array($user->getId(), $img->getLikes()),
-            "countLikes" => count($img->getLikes())
-                ] : null
-            ];
-        }
-        if (key_exists("dates", $parameters["query"]) && count($parameters["query"]["dates"]) > 0) {
-            foreach ($parameters["query"]["dates"] as $date) {
-                if (!key_exists($date, $datesArray)) {
-                    $datesArray[$date] = [];
-                }
-            }
-        }
+        
         $bird = ($request->query->has("bird")) ? $parameters["query"]["bird"] : "all";
-        $dataArray = [];
         $dataArray = [
-            "data" => [$bird => $datesArray],
+            "data" => [$bird => $go->generateObservations($observations,$parameters)],
             "filters" => $parameters["filters"]
         ];
 
@@ -247,58 +189,19 @@ class AppController extends Controller {
      *
      * @Route("/get-observations", name="getObservations")
      */
-    public function getObservations(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd, UploaderHelper $vichHelper) {
+    public function getObservations(Request $request, EntityManagerInterface $em, QueryStringDecoder $qsd, GetObservations $go) {
 
-        $query = $qsd->decode($request->query);
-        //dump($query);
-        $observations = $em->getRepository(Observation::class)->findByFilters($query);
+        $query = $qsd->decode();
+        $observations = $em->getRepository(Observation::class)->findByFilter($query["query"]);
 
-        if (count($observations) <= 0 && $this->getParameter('fake_data') && $request->query->has("bird")) {
+        if (count($observations) <= 0 && $this->getParameter('fake_data') && $request->request->has("bird")) {
 
-            $this->get("data_faker")->getfakeObservations($request->query->get("bird"));
-            $observations = $em->getRepository(Observation::class)->findByFilters($query);
+            $this->get("data_faker")->getfakeObservations($request->request->get("bird"));
+            $observations = $em->getRepository(Observation::class)->findByFilter($query["query"]);
         }
-        //$observations = [];
-        /* foreach($em->getRepository(Observation::class)->findAll() as $obs){
-          $obs->setDate($obs->getDate());
-          $em->persist($obs);
-          }
-          $em->flush(); */
-        $datesArray = [];
-        $user = $this->getUser();
-        foreach ($observations as $obs) {
-            $img = $obs->getImage();
-            if (!key_exists($obs->getSearchDate(), $datesArray)) {
-                $datesArray[$obs->getSearchDate()] = [];
-            }
-            $datesArray[$obs->getSearchDate()][] = [
-                "id" => $obs->getId(),
-                "lat" => $obs->getGeoloc("lat"),
-                "lng" => $obs->getGeoloc("lng"),
-                "url" => (!is_null($img)) ? $img->getUrl() : "",
-                "caption" => $obs->getDescription(),
-                "author" => $obs->getUser()->getUsername(),
-                "day" => $obs->getDate()->format("j"),
-                "date" => $obs->getDate()->format("d/m/Y"),
-                "birdName" => $obs->getBird()->getLatinName(),
-                "birdSlug" => $obs->getBird()->getSlug(),
-                "img" => (!is_null($img)) ? [
-            "id" => $img->getId(),
-            "url" => (preg_match("/http/", $img->getUrl())) ? $img->getUrl() : $vichHelper->asset($img, "imageFile"),
-            "liked" => !is_null($user) && in_array($user->getId(), $img->getLikes()),
-            "countLikes" => count($img->getLikes())
-                ] : null
-            ];
-        }
-        if ($request->query->has("dates")) {
-            foreach ($query["dates"] as $date) {
-                if (!key_exists($date, $datesArray)) {
-                    $datesArray[$date] = [];
-                }
-            }
-        }
+        
 
-        return $this->json($datesArray);
+        return $this->json($go->generateObservations($observations, $query));
     }
 
     /**

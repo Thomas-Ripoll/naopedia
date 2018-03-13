@@ -20,7 +20,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 * @UniqueEntity(fields="email", message="Un utilisateur existe déjà avec cet email")
  * @Vich\Uploadable
 */
-class User  implements UserInterface
+class User  implements UserInterface, \Serializable
 {
   /**
   * @ORM\Id
@@ -316,7 +316,7 @@ public function getFormatedRoles()
           $this->username,
           $this->password,
           // see section on salt below
-          // $this->salt,
+           $this->salt,
       ));
   }
 
@@ -328,7 +328,7 @@ public function getFormatedRoles()
           $this->username,
           $this->password,
           // see section on salt below
-          // $this->salt
+           $this->salt
       ) = unserialize($serialized);
   }
 

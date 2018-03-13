@@ -94,6 +94,7 @@ L.Icon.Default.mergeOptions({
 
 
     var birdApp = function (element) {
+        
         var _this = this;
         this.birdId = null;
         this.container = element;
@@ -104,13 +105,13 @@ L.Icon.Default.mergeOptions({
         this.isLoading = false;
         this.fakeEmpty = false;
         this.observeMode = false;
-        $(".searchBirds").click(function (e) {
+        $(".searchBirds").on('click',function (e) {
             e.preventDefault();
             if (!_this.isLoading) {
-                _this.container.addClass("loading");
                 _this.updateAddress();
                 _this.searchBird();
             }
+            return false;
         });
         $(".filters").on("click", ".filter-item .close", function () {
             var filterNode = $(this).closest(".filter-item");
@@ -247,6 +248,7 @@ L.Icon.Default.mergeOptions({
             [42.06560675405716, 8.613281250000002]
         ];
         this.map = this.L.map(this.mapNode[0]).fitBounds(franceBounds);
+        
         this.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -321,7 +323,7 @@ L.Icon.Default.mergeOptions({
         if($("#quick-obs").val()){
             _this.toggleObserveMode(true);
             var inputToRepl = this.sightModal.find("#"+$("#file-upload-btn").attr("for"));
-            console.log(inputToRepl);
+            
             var $clone = $("#quick-obs").clone();
             $($clone).attr("id",inputToRepl.attr("id"))
                     .attr("name",inputToRepl.attr("name"));  
@@ -495,6 +497,7 @@ L.Icon.Default.mergeOptions({
                     type: "updateFiltersEvent",
                     newfilter: {filterName: data}
                 });
+        
 
     }
     birdApp.prototype.renderFilters = function () {
@@ -521,8 +524,8 @@ L.Icon.Default.mergeOptions({
         {
             _this.renderBirds();
             _this.isLoading = false;
-            _this.container.removeClass("loading");
         } else {
+            
             $.postConnect("/get-observations",
                     parameters,
                     function (data) {
@@ -530,10 +533,8 @@ L.Icon.Default.mergeOptions({
 
                         _this.renderBirds();
                         _this.isLoading = false;
-                        _this.container.removeClass("loading");
+                        //_this.container.removeClass("loading");
                         _this.container.find('.filter-column-inner .filters-box').removeClass("open");
-                    },{
-                        method:"GET"
                     });
         }
     }
@@ -548,7 +549,9 @@ L.Icon.Default.mergeOptions({
             var endDay = endDate.getDate();
             var endDateInt = endDate.getFullYear() + (" 00" + (parseInt(endDate.getMonth()) + 1)).substr(-2);
             var bird = (this.filters.bird.data) ? this.filters.bird.data.birdId : "all";
-            //console.log(bird)
+            console.log(bird)
+            console.log(this.cache);
+            console.log(this.filters.dates.data);
             var rotationDateInt = 0;
             do {
                 rotationDateInt = rotationDate.getFullYear() + (" 00" + (parseInt(rotationDate.getMonth()) + 1)).substr(-2)
@@ -587,15 +590,5 @@ L.Icon.Default.mergeOptions({
 
 
 
-window.birdApp = $(".birdAppContainer").birdApp();
 
-$(".birdAppContainer .search ").birdSearch(function (item) {
-    $(this).val("");
-    birdApp.birdApp.updateFilters("bird", item);
-
-});
-$(".filter-btn").on("click",function(e){
-    e.preventDefault();
-    $(this).parent().find('.filter-column-inner .filters-box').toggleClass("open");
-})
 

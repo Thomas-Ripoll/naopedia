@@ -72,10 +72,16 @@
                         des différentes espèces d’oiseaux en France..</h1>
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                            <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble"><img src="images/carte.svg" class="picto3" alt=" "/><p>Découvrez la carte</p></a>
+
+                            <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble btn-center-middle">
+                                <img src="images/carte.svg" class="picto3" alt=" "/>
+                                <p>Découvrir la carte</p></a> 
+
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                            <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble"><img src="images/ajouter.svg" class="picto3" alt=" "/><p>Ajouter une observation</p></a>
+                            <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble btn-center-middle">
+                                <img src="images/ajouter.svg" class="picto3" alt=" "/>
+                                <p>Ajouter une observation</p></a>
                         </div>
                     </div>
 
@@ -128,7 +134,7 @@
                                 <div class="col-8 ">
                                     <div class="caption ublue">
                                         <ul class="blue">
-                                            <p> La carte vous permet :</p> <li>d’<b>ajouter</b> vos observations
+                                            <p> La carte permet :</p> <li>d’<b>ajouter</b> vos observations
                                             </li>
                                             <li>de <b>découvrir</b> les oiseaux ajoutés
                                             </li>
@@ -143,7 +149,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12"><div >
-                                        <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble"><p>Je découvre la carte</p></a>
+                                        <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg bt-dble"><p>Découvrir la carte</p></a>
                                     </div>
                                 </div>
                             </div>
@@ -183,8 +189,11 @@
                         D’un ouvrage de référence?
                     </h2>
                     <div class="book">
-                        <p>Nous vous offrons ce livre sur les bonnes pratiques d’observation</p> <img src="images/bird-1.png" alt="Thumbnail Image 1" >
-                        <a  href="{{ app.user ? path("userpage", {"username":app.user.username }) : path("signin") }}"  class="btn-lg btn-danger bt-dble" role="button">J'en profite</a>
+                        <p>Nous offrons ce livre sur les bonnes pratiques d’observation</p> 
+                        <img src="images/bird-1.png" alt="Thumbnail Image 1" >
+                        <a  href="{{ app.user ? path("userpage", {"username":app.user.username }) : path("signin") }}"  class="btn-lg btn-danger bt-dble" role="button">
+                            En profiter
+                        </a>
                     </div>
                 </div>
             </div>
@@ -215,7 +224,7 @@
 
                     </div>
                     <div >
-                        <a  href="{{ path("articles") }}" role="button" class="btn btn-danger btn-lg bt-dble"><p>J'accède aux autres articles</p></a>
+                        <a  href="{{ path("articles") }}" role="button" class="btn btn-danger btn-lg bt-dble"><p>Accéder aux autres articles</p></a>
                     </div>
                 </div>
             </div>
@@ -252,8 +261,10 @@
             <div class="col-10 col-lg-8 ">
                 <div class="jumbotron ">
 
-                    <h2 >Contactez-nous !</h2> <div class="form-area">
+
+                    <h2 >Contact !</h2> <div class="form-area">
                         <form  method="post" action="{{ path('contact')}}" role="form">
+
                             <br style="clear:both">
                             <div class="row" style="display:flex">
                                 <div class="col-12 col-md-6">
