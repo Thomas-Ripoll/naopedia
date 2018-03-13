@@ -24,6 +24,9 @@
   {{entity.date|date}}
   <img src="{{asset('images/post/'~ entity.image.url)}} ">
 
+  {% if entity.description is defined %}
+    <p> Message : {{entity.description}}</p>
+  {% endif %}
   <a class="btn btn-primary" href=" {{ path('valid', {'observationId': entity.id }) }}">Valider</a>
   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#RefuseModal">Refuser</button>
 
