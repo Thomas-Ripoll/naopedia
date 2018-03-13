@@ -1,0 +1,42 @@
+.blog{
+    .jumbotron{
+      background-color: white;
+    }
+    h2{
+      margin-top: 50px;
+      text-align: center;
+  
+  
+    }
+    .container{
+        text-align:center;
+        display:flex;
+        flex-wrap: wrap
+      }
+  
+      .card{
+        margin:30px;
+        padding:40px;
+      }
+  
+      .card-title{
+        color:#1e5d93;
+      }
+      .linkAuthor{
+        font-style:italic;
+      }
+      .img-ok{
+        margin: 20px;
+      }
+    }
+
+    .article{
+      .articleTitle{
+      }
+      .col-centered{
+        float: none;
+        margin: 0 auto;
+    }
+
+    
+      }

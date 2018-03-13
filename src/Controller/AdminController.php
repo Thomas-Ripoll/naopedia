@@ -68,13 +68,15 @@ class AdminController extends BaseAdminController {
     /**
      * @Route("/admin/valid{observationId}", name="valid")
      */
-    public function observationAction($observationId) {
+    public function observationAction($observationId,  Mailer $mailer ) {
         $em = $this->getDoctrine()->getManager();
         $observation = $em->getRepository(Observation::Class)->find($observationId);
 
         $observation->setValid(True);
         $em->persist($observation);
         $em->flush();
+
+
         return $this->redirectToRoute('admin');
     }
 
@@ -88,6 +90,9 @@ class AdminController extends BaseAdminController {
         $bird->setDescriptionValid(True);
         $em->persist($bird);
         $em->flush();
+
+        $mailer->sendObservatioValid($observation);
+
         return $this->redirectToRoute('admin');
     }
 
@@ -104,6 +109,10 @@ class AdminController extends BaseAdminController {
 
         $em->persist($bird);
         $em->flush();
+
+        
+        $mailer->sendObservatioRefuse($observation);
+
         return $this->redirectToRoute('admin');
     }
 

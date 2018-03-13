@@ -40,8 +40,8 @@ var dates = $(".dates").flatpickr({
     }
 });
 
-$(birdApp.birdApp).on("updateFiltersEvent",function(e){
-    
-});
+//$(birdApp.birdApp).on("updateFiltersEvent",function(e){
+//    
+//});
 
 

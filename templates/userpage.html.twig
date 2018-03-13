@@ -1,153 +1,116 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-    <div class="container user-content">
-        <div class='row'>
-            <div class="col-8">
-                <img class="avatar" src="{{ vich_uploader_asset(user, "avatarFile") }}" alt="{{user.username}} avatar">
-                <h2>{{user.username}}</h2>
-                <p>vous êtes {{user.formatedRoles}}</p>
-                <p>email : {{user.email}}</p>
-                <div>
-                    <h3>bio:</h3>
-                    <p>
-                        {{ user.bio ? user.bio : "l'utilisateur n'a pas encore fournit de bio." }}
-                    </p>
+    <div class="row">
+        <div class="container user-content">
+            <div class='row'>
+                <div class="col-12 col-md-8">
+                    <img class="avatar" src="{{ vich_uploader_asset(user, "avatarFile") }}" alt="{{user.username}} avatar">
+                    <h2>{{user.username}}</h2>
+                    <p>vous êtes {{user.formatedRoles}}</p>
+                    {% if app.user == user %}
+                        <a href="{{ path('settings') }}", class="btn btn-primary ">
+                            <i class="fas fa-wrench"></i> Paramètres
+                        </a>
 
-                </div>
-            </div>
-            <div class="col-4">
-                <div>
-                    {% set rank = user|rank %}
-                    Statut: {{ rank.statut }}
-                    <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="<p style='white-space:nowrap; width:300px;'><strong>Prochain Statut:</strong> {{ rank.next }}<br><strong>Observations restantes:</strong> {{ rank.left }}</p>">
-                        <i class="fas fa-question-circle" ></i>
-                    </span>
-                    <div class='statut-image'>
-                        <img src="{{ asset("images/"~rank.image) }}" alt="statut {{ rank.statut }}">
+                    {% endif %}
+
+
+                    <p>email : {{user.email}}</p>
+                    <div>
+                        <h3>bio:</h3>
+                        <p>
+                            {{ user.bio ? user.bio : "l'utilisateur n'a pas encore fournit de bio." }}
+                        </p>
+
+                       
                     </div>
-
                 </div>
-            </div>
-                    <div class="col-12">
-                        <img src="{{ asset("images/bird-1.png") }}" alt="">
-                        <a href="" class="btn btn-danger btn-lg">Téléchargez votre livre blanc</a>
-                    </div>        
-
-
-
-            {% if is_granted('ROLE_ADMIN')%}
-                <form method="post" action="{{ path('changeRole', {'user': user.id }) }}">
-                    <input type="checkbox" name="ROLE[]" value="ROLE_ADMIN_SUPER" {% if 'ROLE_ADMIN_SUPER' in user.roles %} checked {% endif %} > Super admin<br>
-                    <input type="checkbox" name="ROLE[]" value="ROLE_NATURALISTE" {% if 'ROLE_NATURALISTE' in user.roles %} checked {% endif %}  >Naturaliste<br>
-                    <input type="checkbox" name="ROLE[]" value="ROLE_REDACTEUR" {% if 'ROLE_REDACTEUR' in user.roles %} checked {% endif %}  >Redacteur<br>
-
-                    <button type="submit" class="btn btn-primary">Valider</button>
-                </form>
-            {% endif %}
-
-            {% if app.user == user %}
-
-
-                <!-- Modal -->
-                <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Paramètres</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
+                <div class="col-12 col-md-4">
+                    <div>
+                        {% set rank = user|rank %}
+                        Statut: {{ rank.statut }}
+                        <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="<p style='white-space:nowrap; width:300px;'><strong>Prochain Statut:</strong> {{ rank.next }}<br><strong>Observations restantes:</strong> {{ rank.left }}</p>">
+                            <i class="fas fa-question-circle" ></i>
+                        </span>
+                        <div class='statut-image'>
+                            <img src="{{ asset("images/"~rank.image) }}" alt="statut {{ rank.statut }}">
                         </div>
+
                     </div>
                 </div>
 
-                <button type="button" id="settings" class="btn btn-primary col-lg-3 " data-toggle="modal" data-target="#settingsModal">
-                    <i class="fas fa-wrench"></i> Paramètres
-                </button>
 
-            {% endif %}
-            <div class='col-12'>
-                <h3> {{ app.user == user ? "Mes" : "Ses" }} observations ({{ user.observations|length }}) </h3>
+                {% if is_granted('ROLE_ADMIN')%}
+                    <form method="post" action="{{ path('changeRole', {'user': user.id }) }}">
+                        <input type="checkbox" name="ROLE[]" value="ROLE_ADMIN_SUPER" {% if 'ROLE_ADMIN_SUPER' in user.roles %} checked {% endif %} > Super admin<br>
+                        <input type="checkbox" name="ROLE[]" value="ROLE_NATURALISTE" {% if 'ROLE_NATURALISTE' in user.roles %} checked {% endif %}  >Naturaliste<br>
+                        <input type="checkbox" name="ROLE[]" value="ROLE_REDACTEUR" {% if 'ROLE_REDACTEUR' in user.roles %} checked {% endif %}  >Redacteur<br>
 
+                        <button type="submit" class="btn btn-primary">Valider</button>
+                    </form>
+                {% endif %}
 
-                <div class='owl-carousel owl-theme'>
-                    {% for obs in user.observations %}
-                        <div class='observation'>
-                            <div>
-                                <img  src="{{ "http" in obs.image.url? obs.image.url : vich_uploader_asset(obs.image,"imageFile", 'App\\Entity\\Image') }} ">
-                            </div>
-                            <div>
-                                <a class="username" href="{{ path('birdpage', {'slug': obs.bird.slug }) }}">{{obs.bird.name}}</a>
-                            </div>
-                            <div>
-                                Vu le {{obs.date|date("d/m/Y")}}
-                            </div>
+                <hr>
+                <div class='col-12'>
+                    {% if observations|length %}
+                        <h3> {{ app.user == user ? "Mes" : "Ses" }} observations ({{ observations|length }}) </h3>
 
 
+                        <div class='owl-carousel owl-theme'>
+                            {% for obs in observations %}
+                                <div class='observation'>
+                                    <div>
+                                        <img  src="{{ "http" in obs.image.url? obs.image.url : vich_uploader_asset(obs.image,"imageFile", 'App\\Entity\\Image') }} ">
+                                    </div>
+                                    <div>
+                                        <a class="username" href="{{ path('birdpage', {'slug': obs.bird.slug }) }}">{{obs.bird.name}}</a>
+                                    </div>
+                                    <div>
+                                        Vu le {{obs.date|date("d/m/Y")}}
+                                    </div>
+                                </div>
+
+                            {% endfor %}
                         </div>
+                        <div class="usermap"  data-birdsloaded="{{ mapData|json_encode|e('html_attr') }}">
+                            <div class="map"></div>
+                        </div>
+                    {% else %}
+                        <p class='no-obs'>Aucune observation n'a été validée</p>
+                    {% endif %}
 
-                    {% endfor %}
                 </div>
-                <div class="usermap"  data-birdsloaded="{{ mapData|json_encode|e('html_attr') }}">
-                    <div class="map"></div>
-                </div>
-            </div>
-        </div>    
-    {% endblock %}
-    {% block javascript %}
-        {{ parent() }}
-        <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
-                integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
-        crossorigin=""></script>
-        <script src="{{ asset("build/js/app.min.js") }}"></script>
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
+                <div class="col-12">
+                    <img src="{{ asset("images/bird-1.png") }}" alt="">
+                    <a href="" class="btn btn-danger btn-lg">Téléchargez votre livre blanc</a>
+                </div>       
+            </div>    
+        </div>                
+    </div>                
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+            integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+    crossorigin=""></script>
+    <script src="{{ asset("build/js/app.min.js") }}"></script>
+    <script>
+        $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        if ($(".usermap").length)
                 $(".usermap").birdApp()
-                $(".owl-carousel").owlCarousel({
-                    items: 3,
-                    center: true,
-                    margin: 10,
-                    loop: true,
-                    nav: true,
-                    dots: true,
-                    navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
                 
-                });
-                $('#settings').on('click', function (e) {
-                    e.preventDefault();
-                    $.getJSON("/settings", function (result) {
-                        var content = $(result.view);
-                        $('.modal-body').html(content);
-                        $('#settings').modal("show");
-                        $("#settingsForm").on('submit', function (e) {
-                            e.preventDefault();
-                            var formData = new FormData(this);
-                            var url = $(this).attr('action');
-                            $.ajax({
-                                type: "POST",
-                                url: url,
-                                data: formData,
-                                success: function (e) {
-                                    if (e.state = 'success') {
-                                        location.reload();
-                                    }
-                                },
-                                dataType: 'json',
-                                contentType: false,
-                                processData: false,
-                            });
-                        })
-                    })
-                })
-            })
-        </script>
-    {% endblock %}
+                    $(".owl-carousel").owlCarousel({
+                items: 3,
+                center: true,
+                margin: 10,
+                loop: true,
+                nav: true,
+                dots: true,
+                navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+                    });
+                    
+                                        })
+                                        })
+                                        </script>
+{% endblock %}

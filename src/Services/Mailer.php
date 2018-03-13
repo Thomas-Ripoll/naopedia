@@ -58,10 +58,10 @@ class Mailer {
 
     $message = (new \Swift_Message('Observation validée'))
         ->setFrom('naopegia@gmail.com')
-        ->setTo($user->getEmail())
+        ->setTo($observation->getUser()->getEmail())
         ->setBody(
              $this->templating->render(
-                'emails/observationValid.html.twig',
+                'emails/email-validation.html.twig',
                 array('observation' => $observation)
             ),
             'text/html'
@@ -74,10 +74,10 @@ class Mailer {
 
     $message = (new \Swift_Message('Observation Refusée'))
         ->setFrom('naopegia@gmail.com')
-        ->setTo($user->getEmail())
+        ->setTo($observation->getUser()->getEmail())
         ->setBody(
              $this->templating->render(
-                'emails/observationRefuse.html.twig',
+                'emails/email-refus.html.twig',
                 array('observation' => $observation)
             ),
             'text/html'
@@ -90,10 +90,10 @@ class Mailer {
 
     $message = (new \Swift_Message('Contribution Refusée'))
         ->setFrom('naopegia@gmail.com')
-        ->setTo($user->getEmail())
+        ->setTo($bird->getContributor()->getEmail())
         ->setBody(
              $this->templating->render(
-                'emails/contributionRefuse.html.twig',
+                'emails/email-refus.html.twig',
                 array('bird' => $bird)
             ),
             'text/html'
@@ -106,15 +106,36 @@ class Mailer {
 
     $message = (new \Swift_Message('Contribution Refusée'))
         ->setFrom('naopegia@gmail.com')
-        ->setTo($user->getEmail())
+        ->setTo($bird->getContributor()->getEmail())
         ->setBody(
              $this->templating->render(
-                'emails/contributionRefuse.html.twig',
+                'emails/email-validation.html.twig',
                 array('bird' => $bird)
             ),
             'text/html'
         );
     $this->mailer->send($message);
   }
+
+  public function  sendContact($name, $surname, $email, $mobile, $subject, $message)
+  {
+    $message = (new \Swift_Message($subject))
+        ->setFrom('naopegia@gmail.com')
+        ->setTo($email)
+        ->setBody(
+            $this->templating->render(
+                'emails/contact.html.twig',
+                array(
+                    'name' => $name,
+                    'surname'=>$surname,
+                    'email'=>$email,
+                    'mobile'=>$mobile,
+                    'message'=>$message)
+            ),
+            'text/html'
+        );
+    $this->mailer->send($message);
+  }
+
 
 }

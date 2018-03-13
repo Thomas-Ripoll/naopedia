@@ -25,7 +25,11 @@ require('webpack-jquery-ui/autocomplete');
 
             return $("<li></li>")
                     .data("item.autocomplete", item)
-                    .append($("<a></a>").html(item.label))
+                    .append(
+                        (!item.disabled)?
+                            $("<a></a>").html(item.label):
+                            $("<div></div>").html(item.label)       
+                                )
                     .appendTo(ul);
 
         },
@@ -48,19 +52,19 @@ require('webpack-jquery-ui/autocomplete');
             "source": function (request, response) {
                 _this.ajaxSearch(request.term, response)
             },
-            "minLength": 3,
             select: function (event, ui) {
-                callback.call(this, ui.item);
+                if(!ui.item.disabled)
+                    callback.call(this, ui.item);
                 return false;
             },
             focus: function () {
                 return false; 
             },
             open: function( event, ui ) {
-                console.log($(this).autocomplete( "instance" ));
+                //console.log($(this).autocomplete( "instance" ));
                 var menu = $(this).autocomplete( "instance" ).menu.element;
                 var bounding = $(this)[0].getBoundingClientRect();
-                console.log(bounding);
+                //console.log(bounding);
                 var style = {
                     top: bounding.top + bounding.height+2+window.pageYOffset ,
                     left: bounding.left,
@@ -79,6 +83,10 @@ require('webpack-jquery-ui/autocomplete');
     birdSearch.prototype.ajaxSearch = function (term, response) {
         var _this = this;
 
+        if(term.length < 3){
+            response([{disabled:true, label:'<div><span class="main">Saisir 3 lettres minimun</span></div>'}]);
+            return;
+        }
         if (_this.cache.hasOwnProperty(term.substring(0, 3))) {
 
             var results = _this.filterResults(term, _this.cache[term.substring(0, 3)]);
@@ -88,16 +96,23 @@ require('webpack-jquery-ui/autocomplete');
             $.getJSON("/get-bird-list",
                     {"term": term.substring(0, 3)},
                     function (data) {
+                        if(data.length){
+                            this.cache[term.substring(0, 3)] = data;
+                            data.map(item => {
+                                item['label'] =
+                                        (item.birdName != "")
+                                        ? '<div><span class="main">' + item.birdName + '</span><span class="latin">' + item.birdLatinName + '</span></div>'
+                                        : '<div><span class="main">' + item.birdLatinName + '</span></div>';
 
-                        _this.cache[term.substring(0, 3)] = data;
-                        data.map(item => {
-                            item['label'] =
-                                    (item.birdName != "")
-                                    ? '<div><span class="main">' + item.birdName + '</span><span class="latin">' + item.birdLatinName + '</span></div>'
-                                    : '<div><span class="main">' + item.birdLatinName + '</span></div>';
-
-                        })
-                        response(_this.filterResults(term, data));
+                            })
+                            response(_this.filterResults(term, data));
+                        }
+                        else{
+                            
+                            var data = [{disabled:true, label:'<div><span class="main">0 Résultat n\'a été trouvé</span></div>'}];
+                            this.cache[term.substring(0, 3)] = data;
+                            response(data);
+                        }
                     })
         }
     }

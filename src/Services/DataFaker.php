@@ -123,6 +123,7 @@ class DataFaker {
             $obsdate = (new \DateTime())->setTimestamp(rand($threenyearsenviron, $todaytimestamp));
             $obs->setDate($obsdate);
             $obs->setBird($bird);
+            $obs->setValid(rand(0,1) < 0.5);
             $obs->setGeoloc([
                 (rand(0, 800) / 100) + 42,
                 (rand(0, 1300) / 100) - 5

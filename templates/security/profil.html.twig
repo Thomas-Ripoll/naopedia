@@ -3,18 +3,18 @@
              <img src="{{ asset("images/loupe_1.svg") }}" height="30" alt="">
          </a> 
 {% if app.user %}
-    
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
-        <a class="dropdown-item" href="{{path('userpage',{'username':app.user.username}  )}}">Mon profil</a> 
-        <a class="dropdown-item" href="{{path('logout')}}">Se déconnecter</a> 
+
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="{{path('userpage',{'username':app.user.username}  )}}">Mon profil</a>
+        <a class="dropdown-item" href="{{path('logout')}}">Se déconnecter</a>
         {% if is_granted('ROLE_ADMIN')%}
-        <div class="dropdown-divider"></div> 
-        <a class="dropdown-item" href="{{path('admin')}}">Administration</a> 
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{path('admin')}}">Administration</a>
         {% endif %}
     </div>
-  
+
 {% else %}
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="{{path('login')}}">Se connecter</a>
         <a class="dropdown-item" href="{{path('signin')}}">S'inscrire</a>
     </div>

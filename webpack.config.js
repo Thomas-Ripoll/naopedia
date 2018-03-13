@@ -17,6 +17,7 @@ Encore
      .addEntry('js/autocomplete.min', './assets/js/autocomplete.js')
      .addEntry('js/datepicker.min', './assets/js/datepicker.js')
      .addEntry('js/naoajax.min', './assets/js/naoajax.js')
+     .addEntry('js/map.min', './assets/js/map.js')
      .addEntry('js/owl.carousel.min', './assets/js/owl.carousel.min.js')
      .addStyleEntry('css/app.min', './assets/scss/app.scss')
      .addStyleEntry('css/owl.carousel.min', './assets/scss/owl/owl.carousel.min.css')

@@ -12,7 +12,7 @@ class ObservationRepository extends ServiceEntityRepository {
         parent::__construct($registry, Observation::class);
     }
 
-    public function findbyFilters($filters) {
+    public function findByFilter($filters, $all = false) {
 
         $qb = $this->createQueryBuilder('o');
         if (key_exists("bird", $filters)) {
@@ -22,8 +22,18 @@ class ObservationRepository extends ServiceEntityRepository {
         if (key_exists("dates", $filters)) {
             $qb->andWhere('o.searchDate IN (:dates)')
                     ->setParameter('dates', $filters["dates"], \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
+        }  
+        if (key_exists("user", $filters)) {
+            $qb->andWhere('o.user = :user')
+                    ->setParameter('user', $filters["user"]);
         }
-
+        if (!$all) {
+            $qb->andWhere('o.valid = :valid')
+                    ->setParameter('valid', true);
+        }
+ 
+        
+        
         return $qb->orderBy('o.date', 'ASC')
                         ->getQuery()
                         ->getResult();
