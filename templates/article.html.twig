@@ -18,7 +18,9 @@
           <hr>
           <!-- Post Content -->
           <div class="content">{{article.content| raw}}</div>
-
+        {% for image in article.images|slice(1,-1) %}
+            <img src="{{ vich_uploader_asset(image,"imageFile", 'App\\Entity\\Image') }}" alt="{{ image.alt }}" class="img-responsive img-width img-article img-bottom"></div>
+        {% endfor %}
         </div>
     </div>
 </div>
