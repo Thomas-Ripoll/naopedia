@@ -15,7 +15,7 @@
               <div class="img-ok"><img src="{{ vich_uploader_asset(trendArticle.images[0],"imageFile", 'App\\Entity\\Image') }}" alt="{{ trendArticle.images[0].alt }}" class="img-responsive img-width"></div>
               <div class="row">
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                      <a  href="{{ path("map") }}" role="button" class="btn btn-danger btn-lg ">
+                      <a  href="{{ path('article', {'id': trendArticle.id }) }}" role="button" class="btn btn-danger btn-lg ">
                         <p>Lire l'article</p>
                       </a>
                   </div>
