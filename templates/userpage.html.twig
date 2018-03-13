@@ -35,7 +35,6 @@
                         <div class='statut-image'>
                             <img src="{{ asset("images/"~rank.image) }}" alt="statut {{ rank.statut }}">
                         </div>
-
                     </div>
                 </div>
 
@@ -82,7 +81,7 @@
                 </div>
                 <div class="col-12">
                     <img src="{{ asset("images/bird-1.png") }}" alt="">
-                    <a href="" class="btn btn-danger btn-lg">Téléchargez votre livre blanc</a>
+                    <a href="{{ path('goldenbook') }}" class="btn btn-danger btn-lg">Téléchargez votre livre blanc</a>
                 </div>       
             </div>    
         </div>                
@@ -97,18 +96,20 @@
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
-                    if ($(".usermap").length)
-                    $(".usermap").birdApp()
 
-                    $(".owl-carousel").owlCarousel({
-                    items: 3,
-                    center: true,
-                    margin: 10,
-                    loop: true,
-                    nav: true,
-                    dots: true,
-                    navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+            if ($(".usermap").length){
+                $(".usermap").birdApp();
+            }        
+            $(".owl-carousel").owlCarousel({
+                items: 3,
+                center: true,
+                margin: 10,
+                loop: true,
+                nav: true,
+                dots: true,
+                navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
             });
+
         });
     </script>
 {% endblock %}

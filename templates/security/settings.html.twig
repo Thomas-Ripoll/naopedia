@@ -2,10 +2,16 @@
 {% extends "layout.html.twig" %}
 {% block content %}
 
-<div>
-{{ form_start(form, {attr: {class: 'my-form-class', id:'settingsForm'} }) }}
-  {{ form_widget(form) }}
-{{ form_end(form) }}
-</div>
+    <div>
+        <div class="form-wrapper">
+            <div class="form-div">
+                <h2>Paramètres</h2>
+                {{ form_start(form, {attr: {class: 'my-form-class', id:'settingsForm'} }) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+    </div>
 
 {% endblock %}

@@ -109,7 +109,7 @@ class Mailer {
         ->setTo($bird->getContributor()->getEmail())
         ->setBody(
              $this->templating->render(
-                'emails/email-validation.html.twig',
+                'emails/email-validation-oiseau.html.twig',
                 array('bird' => $bird)
             ),
             'text/html'
@@ -134,6 +134,16 @@ class Mailer {
             ),
             'text/html'
         );
+    $this->mailer->send($message);
+  }
+
+  public function  sendGoldenbook($user)
+  {
+    $message = (new \Swift_Message("Le livre d'or"))
+        ->setFrom('naopegia@gmail.com')
+        ->setTo($user->getEmail())
+        ->setBody(
+            $this->templating->render('emails/email-livre-nao.html.twig'),'text/html');
     $this->mailer->send($message);
   }
 

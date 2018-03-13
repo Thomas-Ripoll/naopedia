@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Image;
+use App\Entity\Bird;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -13,16 +14,16 @@ class ImageRepository extends ServiceEntityRepository
         parent::__construct($registry, Image::class);
     }
 
-    /*
-    public function findBySomething($value)
+    
+    public function findByTrend(Bird $bird)
     {
         return $this->createQueryBuilder('i')
-            ->where('i.something = :value')->setParameter('value', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('i.bird = :value')->setParameter('value', $bird->getId())
+            ->setMaxResults(1)//On veux seulement le plus grand 
+            ->orderBy('i.likesNumber', 'DESC')
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
-    */
+    
 }

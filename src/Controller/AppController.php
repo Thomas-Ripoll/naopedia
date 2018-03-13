@@ -44,6 +44,17 @@ class AppController extends Controller {
     }
 
     /**
+     * @Route("/goldenbook", name="goldenbook")
+     */
+
+    public function goldenbook(Mailer $mailer) {
+        $user = $this->getUser();
+        $mailer->sendGoldenbook($user);
+        $this->get('session')->getFlashBag()->add('sucess', "Le livre d'or vous a été envoyé");
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
      * @Route("/user/{username}", name="userpage")
      * @ParamConverter("user", options={"mapping": {"username": "username"}})
      */
@@ -127,11 +138,13 @@ class AppController extends Controller {
     /**
      * @Route("/oiseau/{slug}", name="birdpage")
      */
-    public function birdPage($slug) {
+    public function birdPage($slug, GetObservations $go) {
         $em = $this->getDoctrine()->getManager();
         $bird = $em->getRepository(Bird::class)->findOneBy(['slug' => $slug]);
         $observations = $em->getRepository(Observation::class)->findBy(['bird' => $bird]);
-
+        $dataArray = [
+            "data" => ["all" =>  $go->generateObservations($observations,["filters"=>[]])]
+        ];
 
         if (!$bird) {
             $this->get('session')->getFlashBag()->add('alert', 'Il n\'y a pas d\'oiseau à ce nom');
@@ -140,7 +153,8 @@ class AppController extends Controller {
         } else {
             return $this->render("birdpage.html.twig", array(
                         'bird' => $bird,
-                        'obs' => $observations));
+                        'observations' => $observations,
+                        'mapData'=>$dataArray));
         }
     }
 
