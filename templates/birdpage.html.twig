@@ -3,7 +3,7 @@
             <meta property="og:title" content="Naopedia - {{bird.name}} - {{bird.latinName}}" />
             <meta property="og:type" content="siteweb" />
             <meta property="og:url" content="{{- absolute_url(app.request.uri) -}}" />
-            <meta property="og:image" content="{{- absolute_url(asset("images/"~bird|trendImage)) -}}" />
+            <meta property="og:image" content="{{- absolute_url(asset(bird|trendImage)) -}}" />
             <meta property="og:image:alt" content="Participez à l’observation et la protection de notre biodiversité." />
     {% endblock -%}
     {% block content %}
@@ -15,9 +15,7 @@
 
                 <p>{{bird.famille}}</p>
                 {% if bird.images %}
-                    {% for image in bird.images %}
-                        <img style="width:100px" src="{{asset('images/uploads/'~ image.url)}} ">
-                    {% endfor %}
+                    
 
                     {% if bird.description is null %}
                         <h3>Il n'y a pas de fiche pour cet oiseaux. </h3>
