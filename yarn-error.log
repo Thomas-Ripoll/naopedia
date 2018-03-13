@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js run encore dev
+  /usr/bin/node /usr/share/yarn/bin/yarn.js run encore dev --watch
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
@@ -8,7 +8,7 @@ Yarn version:
   1.5.1
 
 Node version: 
-  8.9.4
+  8.10.0
 
 Platform: 
   linux x64

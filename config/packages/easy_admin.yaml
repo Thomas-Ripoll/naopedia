@@ -71,7 +71,7 @@ easy_admin:
             dashboard: ["avatar","username"]
             list:
                 fields:
-                  - { property: 'avatar', type: 'image', base_path: '/images/avatar' }
+                  - { property: 'avatar', type: 'image', base_path: '%app.path.images%' }
                   - { property: 'username', label: 'Pseudo' }
                   - email
                   - { property: 'formatedRoles', label: 'Roles' }

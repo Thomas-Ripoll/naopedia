@@ -22,7 +22,7 @@
 
   <a class="username" href="{{ path('birdpage', {'slug': entity.bird.slug }) }}">{{entity.bird.name}}</a>
   {{entity.date|date}}
-  <img src="{{asset('images/post/'~ entity.image.url)}} ">
+  <img src="{{ vich_uploader_asset(entity.image,"imageFile") }}">
 
   {% if entity.description is defined %}
     <p> Message : {{entity.description}}</p>

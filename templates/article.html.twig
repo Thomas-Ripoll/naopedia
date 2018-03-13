@@ -1,4 +1,11 @@
 {% extends "layout.html.twig" %}
+{% block opengraph -%}
+            <meta property="og:title" content="Naopedia - article - {{article.title}}" />
+            <meta property="og:type" content="siteweb" />
+            <meta property="og:url" content="{{- absolute_url(app.request.uri) -}}" />
+            <meta property="og:image" content="{{- absolute_url( vich_uploader_asset(article.images[0],"imageFile", 'App\\Entity\\Image') )) -}}" />
+            <meta property="og:image:alt" content="Participez à l’observation et la protection de notre biodiversité." />
+    {% endblock -%}
 {% block content %}
 <div class ="container article center-block ">
     <div class="row">
@@ -18,9 +25,9 @@
           <hr>
           <!-- Post Content -->
           <div class="content">{{article.content| raw}}</div>
-        {% for image in article.images|slice(1,-1) %}
-            <img src="{{ vich_uploader_asset(image,"imageFile", 'App\\Entity\\Image') }}" alt="{{ image.alt }}" class="img-responsive img-width img-article img-bottom"></div>
-        {% endfor %}
+            {% for image in article.images|slice(1,-1) %}
+                <img src="{{ vich_uploader_asset(image,"imageFile", 'App\\Entity\\Image') }}" alt="{{ image.alt }}" class="img-responsive img-width img-article img-bottom"></div>
+            {% endfor %}
         </div>
     </div>
 </div>
