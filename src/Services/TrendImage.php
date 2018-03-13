@@ -31,7 +31,7 @@ class TrendImage extends AbstractExtension{
     public function trendImage(Bird $bird){
         
         $image = $this->em->getRepository(\App\Entity\Image::class)->findByTrend($bird);
-        $url=(is_null($image))? 'images/bird.png': ((!strpos($image->getUrl(),"http"))?'images/uploads/':"").$image->getUrl();
+        $url=(is_null($image))? 'images/bird.png': ((strpos($image->getUrl(),"http")===false)?'images/uploads/':"").$image->getUrl();
 
         return $url;
     }
