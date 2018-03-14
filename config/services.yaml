@@ -38,9 +38,6 @@ knp_paginator:
         pagination: paginator/twitter_bootstrap_v4_pagination.html.twig    # sliding pagination controls template
         sortable: paginator/sortable_link.html.twig                         # sort link template
         
-web_profiler:
-    toolbar:              true
-    intercept_redirects:  false
     
 services:
     # default configuration for services in *this* file
