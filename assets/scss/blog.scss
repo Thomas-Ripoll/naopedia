@@ -9,6 +9,11 @@
     margin-top: 50px;
     text-align: center;
   }
+  #mainArticle{
+      h2{
+         margin-top: 0px; 
+      }
+  }
   .container {
     text-align: center;
     display: flex;
@@ -29,7 +34,13 @@
     font-style: italic;
   }
   .img-ok {
-    margin: 20px;
+    margin: 20px 0px;
+    img{
+        height:100%;
+        width:100%;
+        object-fit: contain;
+        object-position: center;
+    }
   }
 }
 
