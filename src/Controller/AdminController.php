@@ -76,14 +76,35 @@ class AdminController extends BaseAdminController {
         $em->persist($observation);
         $em->flush();
 
+        $mailer->sendObservatioValid($observation);
+
 
         return $this->redirectToRoute('admin');
     }
 
+
     /**
+     * @Route("/admin/refuse{observationId}", name="refuse")
+     */
+    public function RefuseAction($observationId, Mailer $mailer, Request $request) {
+
+        $refuseMessage = $request->request->get('refuseMessage');
+        $em = $this->getDoctrine()->getManager();
+        $observation = $em->getRepository(Observation::Class)->find($observationId);
+
+        $observation->setRefuseMessage($refuseMessage);
+        $em->persist($observation);
+        $em->flush();
+
+        $mailer->sendObservatioRefuse($observation);
+
+        return $this->redirectToRoute('admin');
+    }
+
+        /**
      * @Route("/admin/valid/contribution{birdId}", name="validContribution")
      */
-    public function contributionAction($birdId) {
+    public function contributionAction($birdId , Mailer $mailer) {
         $em = $this->getDoctrine()->getManager();
         $bird = $em->getRepository(bird::Class)->find($birdId);
 
@@ -91,7 +112,7 @@ class AdminController extends BaseAdminController {
         $em->persist($bird);
         $em->flush();
 
-        $mailer->sendObservatioValid($observation);
+        $mailer->sendContributionValid($bird);
 
         return $this->redirectToRoute('admin');
     }
@@ -99,7 +120,7 @@ class AdminController extends BaseAdminController {
     /**
      * @Route("/admin/refuse/contribution{birdId}", name="refuseContribution")
      */
-    public function refuseContributionAction($birdId) {
+    public function refuseContributionAction($birdId,  Mailer $mailer) {
         $em = $this->getDoctrine()->getManager();
         $bird = $em->getRepository(bird::Class)->find($birdId);
 
@@ -111,27 +132,11 @@ class AdminController extends BaseAdminController {
         $em->flush();
 
         
-        $mailer->sendObservatioRefuse($observation);
+        $mailer->sendContributionRefuse($bird);
 
         return $this->redirectToRoute('admin');
     }
-
-    /**
-     * @Route("/admin/refuse{observationId}", name="refuse")
-     */
-    public function RefuseAction($observationId, Request $request) {
-
-        $refuseMessage = $request->request->get('refuseMessage');
-        $em = $this->getDoctrine()->getManager();
-        $observation = $em->getRepository(Observation::Class)->find($observationId);
-
-        $observation->setRefuseMessage($refuseMessage);
-        $em->persist($observation);
-        $em->flush();
-
-        return $this->redirectToRoute('admin');
-    }
-
+    
     /**
      * @Route("/admin/changeRole/{user}", name="changeRole")
      * @Security("has_role('ROLE_ADMIN_SUPER')")

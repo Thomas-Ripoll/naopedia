@@ -93,7 +93,7 @@ class Mailer {
         ->setTo($bird->getContributor()->getEmail())
         ->setBody(
              $this->templating->render(
-                'emails/email-refus.html.twig',
+                'emails/email-refus-contribution.html.twig',
                 array('bird' => $bird)
             ),
             'text/html'
